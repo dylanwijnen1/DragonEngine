@@ -29,18 +29,18 @@ namespace dragon
 		void SetSourceRect(Rect rect) { m_srcRect = rect; }
 		Rect GetSourceRect() const { return m_srcRect; }
 		
-		//void SetPosition(Vector2f pos);
-		//Vector2f GetPosition() const;
+		//void SetPosition(Vector2f pos) { m_transform.SetPosition(pos); }
+		//Vector2f GetPosition() const { return m_transform.GetPosition(); }
 
-		//void SetRotation(float rotation);
-		//float GetRotation() const;
+		//void SetRotation(float rotation) { m_transform.SetRotation(rotation); }
+		//float GetRotation() const { return m_transform.GetRotation(); }
 
-		//void SetScale(Vector2f scale);
-		//Vector2f GetScale() const;
+		//void SetScale(Vector2f scale) { m_transform.SetScale(scale); }
+		//Vector2f GetScale() const { return m_transform.GetScale(); }
 
 	protected:
 		// Inherited via Drawable
-		virtual void Draw(RenderTarget& target, RenderState state) final override;
+		virtual void Draw(const RenderTarget& target, RenderState state) const final override;
 	};
 
 }

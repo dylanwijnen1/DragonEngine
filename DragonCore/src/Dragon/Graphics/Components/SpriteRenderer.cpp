@@ -4,7 +4,7 @@
 
 namespace dragon
 {
-	void SpriteRenderer::Draw(RenderTarget& target, RenderState state)
+	void SpriteRenderer::Draw(const RenderTarget& target, RenderState state) const
 	{
 	}
 }

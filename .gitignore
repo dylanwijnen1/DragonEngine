@@ -3,6 +3,15 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Dragon Core Files
+[Tt]ools/
+[Pp]rojects/
+[Tt]emp/
+
+*.sln
+*.vcxproj*
+*.hint
+
 # User-specific files
 *.suo
 *.user

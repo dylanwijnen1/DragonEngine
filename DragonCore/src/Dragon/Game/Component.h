@@ -29,12 +29,21 @@ namespace dragon
 	class Component : public ISerializable
 	{
 		class GameObject* m_pOwner;
-		bool m_active;
+
+		bool m_isActive;
+
+		/// <summary>
+		/// Used to get around the "GetComponent(RenderComponent)" issues in correlation with scripting and serialization.
+		/// GameObjects can have multiple renderable components.
+		/// </summary>
+		bool m_isRenderable;
 
 	public:
+
 		Component()
 			: m_pOwner(nullptr)
-			, m_active(true)
+			, m_isActive(true)
+			, m_isRenderable(false)
 		{}
 
 		virtual ~Component() = default;
@@ -52,8 +61,12 @@ namespace dragon
 		void SetOwner(GameObject* pOwner) { m_pOwner = pOwner; }
 
 		// Active
-		bool IsActive() const { return m_active; }
-		virtual void SetActive(bool active) { m_active = active; }
+		bool IsActive() const { return m_isActive; }
+		virtual void SetActive(bool active) { m_isActive = active; }
+
+		// Renderable
+		bool IsRenderable() const { return m_isRenderable; }
+		void SetRenderable(bool render) { m_isRenderable = true; }
 
 		virtual bool Init() { return true; }
 		virtual bool PostInit() { return true; }

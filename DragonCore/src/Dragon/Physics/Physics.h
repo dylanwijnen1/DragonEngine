@@ -48,4 +48,14 @@ namespace b2
 		aabb.upperBound = b2::Convert(Vector2f::Max(min, max));
 		return aabb;
 	}
+
+	inline Color Convert(b2Color color)
+	{
+		return Color(color.r, color.g, color.b, color.a);
+	}
+
+	inline b2Color Convert(Color color)
+	{
+		return b2Color(color.r, color.g, color.b, color.a);
+	}
 }
