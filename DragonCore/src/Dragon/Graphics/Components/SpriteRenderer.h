@@ -1,16 +1,20 @@
 #pragma once
 
 #include <Dragon/Game/Component.h>
-#include <Dragon/Graphics/Drawable.h>
+#include <Dragon/Graphics/Renderable.h>
+#include <Dragon/Graphics/Vertex.h>
+#include <Dragon/Math/Math.h>
 
 namespace dragon
 {
 
-	class SpriteRenderer : public Component, public Drawable
+	class SpriteRenderer : public Component, public Renderable
 	{
 		class Texture* m_pTexture;
 		//Transform m_transform; // Position, Size, Rotation
 		Rect m_srcRect;
+
+		Vertex m_vertices[4];
 
 	public:
 		COMPONENT_ID(SpriteRenderer)
@@ -23,11 +27,13 @@ namespace dragon
 		SpriteRenderer& operator=(const SpriteRenderer&) = default;
 		SpriteRenderer& operator=(SpriteRenderer&&) = default;
 
-		void SetTexture(Texture* pTexture) { m_pTexture = pTexture; }
-		//void SetTexture(const eastl::string& path);
+		void SetTexture(Texture* pTexture);
 
 		void SetSourceRect(Rect rect) { m_srcRect = rect; }
 		Rect GetSourceRect() const { return m_srcRect; }
+
+		void SetColor(Color color);
+		Color GetColor() const;
 		
 		//void SetPosition(Vector2f pos) { m_transform.SetPosition(pos); }
 		//Vector2f GetPosition() const { return m_transform.GetPosition(); }
@@ -40,7 +46,7 @@ namespace dragon
 
 	protected:
 		// Inherited via Drawable
-		virtual void Draw(const RenderTarget& target, RenderState state) const final override;
+		virtual void Render(const RenderTarget& target, const RenderState& state) const final override;
 	};
 
 }

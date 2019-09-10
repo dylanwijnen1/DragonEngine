@@ -1,6 +1,8 @@
 #pragma once
 
-#include <Dragon/Application/Debug/Debug.h>
+// CONFLICT: Python defines a ssize_t typedef and so does EASTL, however they're not of the same type in x86.
+
+#include <Dragon/Application/Debugging/Debug.h>
 
 #include <stdint.h>
 
@@ -23,9 +25,3 @@
 /// 
 /// EASTL Configuration
 /// 
-
-// Issue: Python defines a ssize_t typedef and so does EASTL, however they're not of the same type in x86.
-#if !defined(_WIN64)
-	#define _SSIZE_T_
-	#define _SSIZE_T_DEFINED
-#endif

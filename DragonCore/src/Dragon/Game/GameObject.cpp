@@ -1,6 +1,6 @@
 #include "GameObject.h"
 
-#include <Dragon/Game/DragonWorld.h>
+#include <Dragon/Game/Scene.h>
 #include <Dragon/Game/DragonComponentFactory.h>
 #include <Generic/InStream.h>
 #include <Generic/OutStream.h>
@@ -32,7 +32,7 @@ namespace dragon
 		}
 	}
 
-	GameObject* GameObject::Clone(DragonWorld* pWorld) const
+	GameObject* GameObject::Clone(Scene* pWorld) const
 	{
 		if (pWorld)
 		{

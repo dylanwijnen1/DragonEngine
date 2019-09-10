@@ -1,8 +1,7 @@
 #include "DragonComponentFactory.h"
 #include <Generic/StringHash.h>
 
-#include <Dragon/Application/Debug/Debug.h>
-
+#include <Dragon/Application/Debugging/Debug.h>
 
 #pragma region Engine Components
 
@@ -20,7 +19,6 @@ namespace dragon
 		switch (id)
 		{
 #if defined(ENGINE_COMPONENTS)
-		//CASE_COMPONENT(SpriteRenderer);
 		ENGINE_COMPONENTS
 #endif
 		default:

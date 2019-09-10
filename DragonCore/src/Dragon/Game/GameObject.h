@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Dragon/Game/Component.h>
-#include <Dragon/Application/Debug/Debug.h>
+#include <Dragon/Application/Debugging/Debug.h>
 
 #include <Generic/ISerializable.h>
 
@@ -16,7 +16,7 @@ namespace dragon
 	class GameObject final : public ISerializable
 	{
 		// What world does this GameObject belong too.
-		class DragonWorld* m_pWorld; 
+		class Scene* m_pWorld; 
 
 		// The id of this game object in the world.
 		GameObjectId m_id;
@@ -43,9 +43,9 @@ namespace dragon
 		~GameObject();
 
 		// World: Get/Set
-		DragonWorld* GetWorld() { return m_pWorld; }
-		DragonWorld* GetWorld() const { return m_pWorld; }
-		void SetWorld(DragonWorld* pWorld) { m_pWorld = pWorld; }
+		Scene* GetScene() { return m_pWorld; }
+		Scene* GetScene() const { return m_pWorld; }
+		void SetWorld(Scene* pWorld) { m_pWorld = pWorld; }
 
 		// GameObject::m_active, Get/Set
 		bool IsActive() const { return m_active; }
@@ -55,7 +55,7 @@ namespace dragon
 		void Destroy();
 
 		GameObject* Clone() const;
-		GameObject* Clone(DragonWorld* pWorld) const;
+		GameObject* Clone(Scene* pWorld) const;
 
 		GameObjectId GetId() const { return m_id; }
 

@@ -1,14 +1,14 @@
 #include "RenderTarget.h"
 
-#include <Dragon/Graphics/Drawable.h>
+#include <Dragon/Graphics/Renderable.h>
 #include <Dragon/Graphics/Texture.h>
 
 namespace dragon
 {
 
-	void RenderTarget::Draw(const Drawable& drawable) const
+	void RenderTarget::Draw(const Renderable& renderable, const RenderState& state)
 	{
-		drawable.Draw(*this, m_renderState);
+		renderable.Render(*this, state);
 	}
 
 }

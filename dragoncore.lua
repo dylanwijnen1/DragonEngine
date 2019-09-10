@@ -36,7 +36,7 @@ function build_dependencies()
     -- | Box2D
     -- --------------------------------------------------------------------------
     printf("[Box2D] Generating Project Files")
-    os.execute([[premake5 --file="./dependencies/Box2D/premake5.lua" vs2019]])
+    os.execute([[tools\premake5.exe --file="./dependencies/Box2D/premake5.lua" vs2019]])
     
     printf("[Box2D] Building Project Binaries")
 
@@ -73,7 +73,7 @@ function build_dependencies()
     -- | enet
     -- --------------------------------------------------------------------------
     printf("[ENet] Generating Project Files")
-    os.execute([[premake5 --file="./dependencies/enet/premake4.lua" vs2019]])
+    os.execute([[tools\premake5.exe --file="./dependencies/enet/premake4.lua" vs2019]])
 
     -- --------------------------------------------------------------------------
     -- | tmxlite
@@ -272,7 +272,9 @@ function link_dragondependencies()
 
     defines
     {
-        "EASTL_EASTDC_VSNPRINTF=0"
+        "EASTL_EASTDC_VSNPRINTF=0",
+        "_SSIZE_T_",
+        "_SSIZE_T_DEFINED"
     }
 
     links

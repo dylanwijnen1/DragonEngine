@@ -17,19 +17,25 @@ namespace dragon
 
 	struct RenderState
 	{
-		class Shader* m_pShader;
-		class Texture* m_pTexture;
-		//Transform m_transform;
-		BlendMode m_blendMode;
+		class Shader* pShader;
+		class Texture* pTexture;
+		//Transform transform;
+		BlendMode blendMode;
+		//Camera camera;
 
 	public:
+
+		static const RenderState Default;
+
 		RenderState()
-			: m_pShader(nullptr)
-			, m_pTexture(nullptr)
+			: pShader(nullptr)
+			, pTexture(nullptr)
 			//, m_transform(Transform::Identity())
-			, m_blendMode(BlendMode::Alpha)
+			, blendMode(BlendMode::Alpha)
 		{}
 
 	};
+
+	inline const RenderState RenderState::Default = RenderState();
 
 }

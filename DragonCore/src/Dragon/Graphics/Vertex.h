@@ -6,6 +6,17 @@
 namespace dragon
 {
 
+	enum struct VertexType
+	{
+		Points,
+		Lines,
+		LineLoop,
+		LineStrip,
+		Triangles,
+		TriangleStrip,
+		TriangleFan,
+	};
+
 	struct Vertex
 	{
 	public:

@@ -2,193 +2,197 @@
 
 #include <stdint.h>
 
-class Color
+namespace dragon
 {
-public:
-	constexpr Color()
-		: Color(0.0f, 0.0f, 0.0f)
-	{}
-
-	constexpr Color(float r, float g, float b, float a)
-		: r(r)
-		, g(g)
-		, b(b)
-		, a(a)
-	{}
-
-	constexpr Color(float r, float g, float b) 
-		: Color(r, g, b, 1.0f)
-	{}
-
-	constexpr Color HexToRGB(uint32_t hex)
+	class Color
 	{
-		Color color;
-		color.r = ((hex >> 16) & 0xFF) / 255.0f;
-		color.g = ((hex >> 8) & 0xFF) / 255.0f;
-		color.b = (hex & 0xFF) / 255.0f;
-		color.a = 1.0f;
-		return color;
-	}
+	public:
+		constexpr Color()
+			: Color(0.0f, 0.0f, 0.0f)
+		{}
 
-	float r;
-	float g;
-	float b;
-	float a;
+		constexpr Color(float r, float g, float b, float a)
+			: r(r)
+			, g(g)
+			, b(b)
+			, a(a)
+		{}
 
-};
+		constexpr Color(float r, float g, float b)
+			: Color(r, g, b, 1.0f)
+		{}
+
+		constexpr Color HexToRGB(uint32_t hex)
+		{
+			Color color;
+			color.r = ((hex >> 16) & 0xFF) / 255.0f;
+			color.g = ((hex >> 8) & 0xFF) / 255.0f;
+			color.b = (hex & 0xFF) / 255.0f;
+			color.a = 1.0f;
+			return color;
+		}
+
+		float r;
+		float g;
+		float b;
+		float a;
+
+	};
 
 #pragma region Predefined Colors Definition
-namespace Colors
-{
-	constexpr Color AliceBlue	(0.94f, 0.97f, 1.00f, 1.0f);
-	constexpr Color AntiqueWhite	(0.98f, 0.92f, 0.84f, 1.0f);
-	constexpr Color Aqua	(0.00f, 1.00f, 1.00f, 1.0f);
-	constexpr Color Aquamarine	(0.50f, 1.00f, 0.83f, 1.0f);
-	constexpr Color Azure	(0.94f, 1.00f, 1.00f, 1.0f);
-	constexpr Color Beige	(0.96f, 0.96f, 0.86f, 1.0f);
-	constexpr Color Bisque	(1.00f, 0.89f, 0.77f, 1.0f);
-	constexpr Color Black	(0.00f, 0.00f, 0.00f, 1.0f);
-	constexpr Color BlanchedAlmond	(1.00f, 0.92f, 0.80f, 1.0f);
-	constexpr Color Blue	(0.00f, 0.00f, 1.00f, 1.0f);
-	constexpr Color BlueViolet	(0.54f, 0.17f, 0.89f, 1.0f);
-	constexpr Color Brown	(0.65f, 0.16f, 0.16f, 1.0f);
-	constexpr Color BurlyWood	(0.87f, 0.72f, 0.53f, 1.0f);
-	constexpr Color CadetBlue	(0.37f, 0.62f, 0.63f, 1.0f);
-	constexpr Color Chartreuse	(0.50f, 1.00f, 0.00f, 1.0f);
-	constexpr Color Chocolate	(0.82f, 0.41f, 0.12f, 1.0f);
-	constexpr Color Coral	(1.00f, 0.50f, 0.31f, 1.0f);
-	constexpr Color CornflowerBlue	(0.39f, 0.58f, 0.93f, 1.0f);
-	constexpr Color Cornsilk	(1.00f, 0.97f, 0.86f, 1.0f);
-	constexpr Color Crimson	(0.86f, 0.08f, 0.24f, 1.0f);
-	constexpr Color Cyan	(0.00f, 1.00f, 1.00f, 1.0f);
-	constexpr Color DarkBlue	(0.00f, 0.00f, 0.55f, 1.0f);
-	constexpr Color DarkCyan	(0.00f, 0.55f, 0.55f, 1.0f);
-	constexpr Color DarkGoldenRod	(0.72f, 0.53f, 0.04f, 1.0f);
-	constexpr Color DarkGray	(0.66f, 0.66f, 0.66f, 1.0f);
-	constexpr Color DarkGrey	(0.66f, 0.66f, 0.66f, 1.0f);
-	constexpr Color DarkGreen	(0.00f, 0.39f, 0.00f, 1.0f);
-	constexpr Color DarkKhaki	(0.74f, 0.72f, 0.42f, 1.0f);
-	constexpr Color DarkMagenta	(0.55f, 0.00f, 0.55f, 1.0f);
-	constexpr Color DarkOliveGreen	(0.33f, 0.42f, 0.18f, 1.0f);
-	constexpr Color DarkOrange	(1.00f, 0.55f, 0.00f, 1.0f);
-	constexpr Color DarkOrchid	(0.60f, 0.20f, 0.80f, 1.0f);
-	constexpr Color DarkRed	(0.55f, 0.00f, 0.00f, 1.0f);
-	constexpr Color DarkSalmon	(0.91f, 0.59f, 0.48f, 1.0f);
-	constexpr Color DarkSeaGreen	(0.56f, 0.74f, 0.56f, 1.0f);
-	constexpr Color DarkSlateBlue	(0.28f, 0.24f, 0.55f, 1.0f);
-	constexpr Color DarkSlateGray	(0.18f, 0.31f, 0.31f, 1.0f);
-	constexpr Color DarkSlateGrey	(0.18f, 0.31f, 0.31f, 1.0f);
-	constexpr Color DarkTurquoise	(0.00f, 0.81f, 0.82f, 1.0f);
-	constexpr Color DarkViolet	(0.58f, 0.00f, 0.83f, 1.0f);
-	constexpr Color DeepPink	(1.00f, 0.08f, 0.58f, 1.0f);
-	constexpr Color DeepSkyBlue	(0.00f, 0.75f, 1.00f, 1.0f);
-	constexpr Color DimGray	(0.41f, 0.41f, 0.41f, 1.0f);
-	constexpr Color DimGrey	(0.41f, 0.41f, 0.41f, 1.0f);
-	constexpr Color DodgerBlue	(0.12f, 0.56f, 1.00f, 1.0f);
-	constexpr Color FireBrick	(0.70f, 0.13f, 0.13f, 1.0f);
-	constexpr Color FloralWhite	(1.00f, 0.98f, 0.94f, 1.0f);
-	constexpr Color ForestGreen	(0.13f, 0.55f, 0.13f, 1.0f);
-	constexpr Color Fuchsia	(1.00f, 0.00f, 1.00f, 1.0f);
-	constexpr Color Gainsboro	(0.86f, 0.86f, 0.86f, 1.0f);
-	constexpr Color GhostWhite	(0.97f, 0.97f, 1.00f, 1.0f);
-	constexpr Color Gold	(1.00f, 0.84f, 0.00f, 1.0f);
-	constexpr Color GoldenRod	(0.85f, 0.65f, 0.13f, 1.0f);
-	constexpr Color Gray	(0.50f, 0.50f, 0.50f, 1.0f);
-	constexpr Color Grey	(0.50f, 0.50f, 0.50f, 1.0f);
-	constexpr Color Green	(0.00f, 0.50f, 0.00f, 1.0f);
-	constexpr Color GreenYellow	(0.68f, 1.00f, 0.18f, 1.0f);
-	constexpr Color HoneyDew	(0.94f, 1.00f, 0.94f, 1.0f);
-	constexpr Color HotPink	(1.00f, 0.41f, 0.71f, 1.0f);
-	constexpr Color IndianRed	(0.80f, 0.36f, 0.36f, 1.0f);
-	constexpr Color Indigo	(0.29f, 0.00f, 0.51f, 1.0f);
-	constexpr Color Ivory	(1.00f, 1.00f, 0.94f, 1.0f);
-	constexpr Color Khaki	(0.94f, 0.90f, 0.55f, 1.0f);
-	constexpr Color Lavender	(0.90f, 0.90f, 0.98f, 1.0f);
-	constexpr Color LavenderBlush	(1.00f, 0.94f, 0.96f, 1.0f);
-	constexpr Color LawnGreen	(0.49f, 0.99f, 0.00f, 1.0f);
-	constexpr Color LemonChiffon	(1.00f, 0.98f, 0.80f, 1.0f);
-	constexpr Color LightBlue	(0.68f, 0.85f, 0.90f, 1.0f);
-	constexpr Color LightCoral	(0.94f, 0.50f, 0.50f, 1.0f);
-	constexpr Color LightCyan	(0.88f, 1.00f, 1.00f, 1.0f);
-	constexpr Color LightGoldenRodYellow	(0.98f, 0.98f, 0.82f, 1.0f);
-	constexpr Color LightGray	(0.83f, 0.83f, 0.83f, 1.0f);
-	constexpr Color LightGrey	(0.83f, 0.83f, 0.83f, 1.0f);
-	constexpr Color LightGreen	(0.56f, 0.93f, 0.56f, 1.0f);
-	constexpr Color LightPink	(1.00f, 0.71f, 0.76f, 1.0f);
-	constexpr Color LightSalmon	(1.00f, 0.63f, 0.48f, 1.0f);
-	constexpr Color LightSeaGreen	(0.13f, 0.70f, 0.67f, 1.0f);
-	constexpr Color LightSkyBlue	(0.53f, 0.81f, 0.98f, 1.0f);
-	constexpr Color LightSlateGray	(0.47f, 0.53f, 0.60f, 1.0f);
-	constexpr Color LightSlateGrey	(0.47f, 0.53f, 0.60f, 1.0f);
-	constexpr Color LightSteelBlue	(0.69f, 0.77f, 0.87f, 1.0f);
-	constexpr Color LightYellow	(1.00f, 1.00f, 0.88f, 1.0f);
-	constexpr Color Lime	(0.00f, 1.00f, 0.00f, 1.0f);
-	constexpr Color LimeGreen	(0.20f, 0.80f, 0.20f, 1.0f);
-	constexpr Color Linen	(0.98f, 0.94f, 0.90f, 1.0f);
-	constexpr Color Magenta	(1.00f, 0.00f, 1.00f, 1.0f);
-	constexpr Color Maroon	(0.50f, 0.00f, 0.00f, 1.0f);
-	constexpr Color MediumAquaMarine	(0.40f, 0.80f, 0.67f, 1.0f);
-	constexpr Color MediumBlue	(0.00f, 0.00f, 0.80f, 1.0f);
-	constexpr Color MediumOrchid	(0.73f, 0.33f, 0.83f, 1.0f);
-	constexpr Color MediumPurple	(0.58f, 0.44f, 0.86f, 1.0f);
-	constexpr Color MediumSeaGreen	(0.24f, 0.70f, 0.44f, 1.0f);
-	constexpr Color MediumSlateBlue	(0.48f, 0.41f, 0.93f, 1.0f);
-	constexpr Color MediumSpringGreen	(0.00f, 0.98f, 0.60f, 1.0f);
-	constexpr Color MediumTurquoise	(0.28f, 0.82f, 0.80f, 1.0f);
-	constexpr Color MediumVioletRed	(0.78f, 0.08f, 0.52f, 1.0f);
-	constexpr Color MidnightBlue	(0.10f, 0.10f, 0.44f, 1.0f);
-	constexpr Color MintCream	(0.96f, 1.00f, 0.98f, 1.0f);
-	constexpr Color MistyRose	(1.00f, 0.89f, 0.88f, 1.0f);
-	constexpr Color Moccasin	(1.00f, 0.89f, 0.71f, 1.0f);
-	constexpr Color NavajoWhite	(1.00f, 0.87f, 0.68f, 1.0f);
-	constexpr Color Navy	(0.00f, 0.00f, 0.50f, 1.0f);
-	constexpr Color OldLace	(0.99f, 0.96f, 0.90f, 1.0f);
-	constexpr Color Olive	(0.50f, 0.50f, 0.00f, 1.0f);
-	constexpr Color OliveDrab	(0.42f, 0.56f, 0.14f, 1.0f);
-	constexpr Color Orange	(1.00f, 0.65f, 0.00f, 1.0f);
-	constexpr Color OrangeRed	(1.00f, 0.27f, 0.00f, 1.0f);
-	constexpr Color Orchid	(0.85f, 0.44f, 0.84f, 1.0f);
-	constexpr Color PaleGoldenRod	(0.93f, 0.91f, 0.67f, 1.0f);
-	constexpr Color PaleGreen	(0.60f, 0.98f, 0.60f, 1.0f);
-	constexpr Color PaleTurquoise	(0.69f, 0.93f, 0.93f, 1.0f);
-	constexpr Color PaleVioletRed	(0.86f, 0.44f, 0.58f, 1.0f);
-	constexpr Color PapayaWhip	(1.00f, 0.94f, 0.84f, 1.0f);
-	constexpr Color PeachPuff	(1.00f, 0.85f, 0.73f, 1.0f);
-	constexpr Color Peru	(0.80f, 0.52f, 0.25f, 1.0f);
-	constexpr Color Pink	(1.00f, 0.75f, 0.80f, 1.0f);
-	constexpr Color Plum	(0.87f, 0.63f, 0.87f, 1.0f);
-	constexpr Color PowderBlue	(0.69f, 0.88f, 0.90f, 1.0f);
-	constexpr Color Purple	(0.50f, 0.00f, 0.50f, 1.0f);
-	constexpr Color RebeccaPurple	(0.40f, 0.20f, 0.60f, 1.0f);
-	constexpr Color Red	(1.00f, 0.00f, 0.00f, 1.0f);
-	constexpr Color RosyBrown	(0.74f, 0.56f, 0.56f, 1.0f);
-	constexpr Color RoyalBlue	(0.25f, 0.41f, 0.88f, 1.0f);
-	constexpr Color SaddleBrown	(0.55f, 0.27f, 0.07f, 1.0f);
-	constexpr Color Salmon	(0.98f, 0.50f, 0.45f, 1.0f);
-	constexpr Color SandyBrown	(0.96f, 0.64f, 0.38f, 1.0f);
-	constexpr Color SeaGreen	(0.18f, 0.55f, 0.34f, 1.0f);
-	constexpr Color SeaShell	(1.00f, 0.96f, 0.93f, 1.0f);
-	constexpr Color Sienna	(0.63f, 0.32f, 0.18f, 1.0f);
-	constexpr Color Silver	(0.75f, 0.75f, 0.75f, 1.0f);
-	constexpr Color SkyBlue	(0.53f, 0.81f, 0.92f, 1.0f);
-	constexpr Color SlateBlue	(0.42f, 0.35f, 0.80f, 1.0f);
-	constexpr Color SlateGray	(0.44f, 0.50f, 0.56f, 1.0f);
-	constexpr Color SlateGrey	(0.44f, 0.50f, 0.56f, 1.0f);
-	constexpr Color Snow	(1.00f, 0.98f, 0.98f, 1.0f);
-	constexpr Color SpringGreen	(0.00f, 1.00f, 0.50f, 1.0f);
-	constexpr Color SteelBlue	(0.27f, 0.51f, 0.71f, 1.0f);
-	constexpr Color Tan	(0.82f, 0.71f, 0.55f, 1.0f);
-	constexpr Color Teal	(0.00f, 0.50f, 0.50f, 1.0f);
-	constexpr Color Thistle	(0.85f, 0.75f, 0.85f, 1.0f);
-	constexpr Color Tomato	(1.00f, 0.39f, 0.28f, 1.0f);
-	constexpr Color Turquoise	(0.25f, 0.88f, 0.82f, 1.0f);
-	constexpr Color Violet	(0.93f, 0.51f, 0.93f, 1.0f);
-	constexpr Color Wheat	(0.96f, 0.87f, 0.70f, 1.0f);
-	constexpr Color White	(1.00f, 1.00f, 1.00f, 1.0f);
-	constexpr Color WhiteSmoke	(0.96f, 0.96f, 0.96f, 1.0f);
-	constexpr Color Yellow	(1.00f, 1.00f, 0.00f, 1.0f);
-	constexpr Color YellowGreen	(0.60f, 0.80f, 0.20f, 1.0f);
+	namespace Colors
+	{
+		inline constexpr Color AliceBlue(0.94f, 0.97f, 1.00f, 1.0f);
+		inline constexpr Color AntiqueWhite(0.98f, 0.92f, 0.84f, 1.0f);
+		inline constexpr Color Aqua(0.00f, 1.00f, 1.00f, 1.0f);
+		inline constexpr Color Aquamarine(0.50f, 1.00f, 0.83f, 1.0f);
+		inline constexpr Color Azure(0.94f, 1.00f, 1.00f, 1.0f);
+		inline constexpr Color Beige(0.96f, 0.96f, 0.86f, 1.0f);
+		inline constexpr Color Bisque(1.00f, 0.89f, 0.77f, 1.0f);
+		inline constexpr Color Black(0.00f, 0.00f, 0.00f, 1.0f);
+		inline constexpr Color BlanchedAlmond(1.00f, 0.92f, 0.80f, 1.0f);
+		inline constexpr Color Blue(0.00f, 0.00f, 1.00f, 1.0f);
+		inline constexpr Color BlueViolet(0.54f, 0.17f, 0.89f, 1.0f);
+		inline constexpr Color Brown(0.65f, 0.16f, 0.16f, 1.0f);
+		inline constexpr Color BurlyWood(0.87f, 0.72f, 0.53f, 1.0f);
+		inline constexpr Color CadetBlue(0.37f, 0.62f, 0.63f, 1.0f);
+		inline constexpr Color Chartreuse(0.50f, 1.00f, 0.00f, 1.0f);
+		inline constexpr Color Chocolate(0.82f, 0.41f, 0.12f, 1.0f);
+		inline constexpr Color Coral(1.00f, 0.50f, 0.31f, 1.0f);
+		inline constexpr Color CornflowerBlue(0.39f, 0.58f, 0.93f, 1.0f);
+		inline constexpr Color Cornsilk(1.00f, 0.97f, 0.86f, 1.0f);
+		inline constexpr Color Crimson(0.86f, 0.08f, 0.24f, 1.0f);
+		inline constexpr Color Cyan(0.00f, 1.00f, 1.00f, 1.0f);
+		inline constexpr Color DarkBlue(0.00f, 0.00f, 0.55f, 1.0f);
+		inline constexpr Color DarkCyan(0.00f, 0.55f, 0.55f, 1.0f);
+		inline constexpr Color DarkGoldenRod(0.72f, 0.53f, 0.04f, 1.0f);
+		inline constexpr Color DarkGray(0.66f, 0.66f, 0.66f, 1.0f);
+		inline constexpr Color DarkGrey(0.66f, 0.66f, 0.66f, 1.0f);
+		inline constexpr Color DarkGreen(0.00f, 0.39f, 0.00f, 1.0f);
+		inline constexpr Color DarkKhaki(0.74f, 0.72f, 0.42f, 1.0f);
+		inline constexpr Color DarkMagenta(0.55f, 0.00f, 0.55f, 1.0f);
+		inline constexpr Color DarkOliveGreen(0.33f, 0.42f, 0.18f, 1.0f);
+		inline constexpr Color DarkOrange(1.00f, 0.55f, 0.00f, 1.0f);
+		inline constexpr Color DarkOrchid(0.60f, 0.20f, 0.80f, 1.0f);
+		inline constexpr Color DarkRed(0.55f, 0.00f, 0.00f, 1.0f);
+		inline constexpr Color DarkSalmon(0.91f, 0.59f, 0.48f, 1.0f);
+		inline constexpr Color DarkSeaGreen(0.56f, 0.74f, 0.56f, 1.0f);
+		inline constexpr Color DarkSlateBlue(0.28f, 0.24f, 0.55f, 1.0f);
+		inline constexpr Color DarkSlateGray(0.18f, 0.31f, 0.31f, 1.0f);
+		inline constexpr Color DarkSlateGrey(0.18f, 0.31f, 0.31f, 1.0f);
+		inline constexpr Color DarkTurquoise(0.00f, 0.81f, 0.82f, 1.0f);
+		inline constexpr Color DarkViolet(0.58f, 0.00f, 0.83f, 1.0f);
+		inline constexpr Color DeepPink(1.00f, 0.08f, 0.58f, 1.0f);
+		inline constexpr Color DeepSkyBlue(0.00f, 0.75f, 1.00f, 1.0f);
+		inline constexpr Color DimGray(0.41f, 0.41f, 0.41f, 1.0f);
+		inline constexpr Color DimGrey(0.41f, 0.41f, 0.41f, 1.0f);
+		inline constexpr Color DodgerBlue(0.12f, 0.56f, 1.00f, 1.0f);
+		inline constexpr Color FireBrick(0.70f, 0.13f, 0.13f, 1.0f);
+		inline constexpr Color FloralWhite(1.00f, 0.98f, 0.94f, 1.0f);
+		inline constexpr Color ForestGreen(0.13f, 0.55f, 0.13f, 1.0f);
+		inline constexpr Color Fuchsia(1.00f, 0.00f, 1.00f, 1.0f);
+		inline constexpr Color Gainsboro(0.86f, 0.86f, 0.86f, 1.0f);
+		inline constexpr Color GhostWhite(0.97f, 0.97f, 1.00f, 1.0f);
+		inline constexpr Color Gold(1.00f, 0.84f, 0.00f, 1.0f);
+		inline constexpr Color GoldenRod(0.85f, 0.65f, 0.13f, 1.0f);
+		inline constexpr Color Gray(0.50f, 0.50f, 0.50f, 1.0f);
+		inline constexpr Color Grey(0.50f, 0.50f, 0.50f, 1.0f);
+		inline constexpr Color Green(0.00f, 0.50f, 0.00f, 1.0f);
+		inline constexpr Color GreenYellow(0.68f, 1.00f, 0.18f, 1.0f);
+		inline constexpr Color HoneyDew(0.94f, 1.00f, 0.94f, 1.0f);
+		inline constexpr Color HotPink(1.00f, 0.41f, 0.71f, 1.0f);
+		inline constexpr Color IndianRed(0.80f, 0.36f, 0.36f, 1.0f);
+		inline constexpr Color Indigo(0.29f, 0.00f, 0.51f, 1.0f);
+		inline constexpr Color Ivory(1.00f, 1.00f, 0.94f, 1.0f);
+		inline constexpr Color Khaki(0.94f, 0.90f, 0.55f, 1.0f);
+		inline constexpr Color Lavender(0.90f, 0.90f, 0.98f, 1.0f);
+		inline constexpr Color LavenderBlush(1.00f, 0.94f, 0.96f, 1.0f);
+		inline constexpr Color LawnGreen(0.49f, 0.99f, 0.00f, 1.0f);
+		inline constexpr Color LemonChiffon(1.00f, 0.98f, 0.80f, 1.0f);
+		inline constexpr Color LightBlue(0.68f, 0.85f, 0.90f, 1.0f);
+		inline constexpr Color LightCoral(0.94f, 0.50f, 0.50f, 1.0f);
+		inline constexpr Color LightCyan(0.88f, 1.00f, 1.00f, 1.0f);
+		inline constexpr Color LightGoldenRodYellow(0.98f, 0.98f, 0.82f, 1.0f);
+		inline constexpr Color LightGray(0.83f, 0.83f, 0.83f, 1.0f);
+		inline constexpr Color LightGrey(0.83f, 0.83f, 0.83f, 1.0f);
+		inline constexpr Color LightGreen(0.56f, 0.93f, 0.56f, 1.0f);
+		inline constexpr Color LightPink(1.00f, 0.71f, 0.76f, 1.0f);
+		inline constexpr Color LightSalmon(1.00f, 0.63f, 0.48f, 1.0f);
+		inline constexpr Color LightSeaGreen(0.13f, 0.70f, 0.67f, 1.0f);
+		inline constexpr Color LightSkyBlue(0.53f, 0.81f, 0.98f, 1.0f);
+		inline constexpr Color LightSlateGray(0.47f, 0.53f, 0.60f, 1.0f);
+		inline constexpr Color LightSlateGrey(0.47f, 0.53f, 0.60f, 1.0f);
+		inline constexpr Color LightSteelBlue(0.69f, 0.77f, 0.87f, 1.0f);
+		inline constexpr Color LightYellow(1.00f, 1.00f, 0.88f, 1.0f);
+		inline constexpr Color Lime(0.00f, 1.00f, 0.00f, 1.0f);
+		inline constexpr Color LimeGreen(0.20f, 0.80f, 0.20f, 1.0f);
+		inline constexpr Color Linen(0.98f, 0.94f, 0.90f, 1.0f);
+		inline constexpr Color Magenta(1.00f, 0.00f, 1.00f, 1.0f);
+		inline constexpr Color Maroon(0.50f, 0.00f, 0.00f, 1.0f);
+		inline constexpr Color MediumAquaMarine(0.40f, 0.80f, 0.67f, 1.0f);
+		inline constexpr Color MediumBlue(0.00f, 0.00f, 0.80f, 1.0f);
+		inline constexpr Color MediumOrchid(0.73f, 0.33f, 0.83f, 1.0f);
+		inline constexpr Color MediumPurple(0.58f, 0.44f, 0.86f, 1.0f);
+		inline constexpr Color MediumSeaGreen(0.24f, 0.70f, 0.44f, 1.0f);
+		inline constexpr Color MediumSlateBlue(0.48f, 0.41f, 0.93f, 1.0f);
+		inline constexpr Color MediumSpringGreen(0.00f, 0.98f, 0.60f, 1.0f);
+		inline constexpr Color MediumTurquoise(0.28f, 0.82f, 0.80f, 1.0f);
+		inline constexpr Color MediumVioletRed(0.78f, 0.08f, 0.52f, 1.0f);
+		inline constexpr Color MidnightBlue(0.10f, 0.10f, 0.44f, 1.0f);
+		inline constexpr Color MintCream(0.96f, 1.00f, 0.98f, 1.0f);
+		inline constexpr Color MistyRose(1.00f, 0.89f, 0.88f, 1.0f);
+		inline constexpr Color Moccasin(1.00f, 0.89f, 0.71f, 1.0f);
+		inline constexpr Color NavajoWhite(1.00f, 0.87f, 0.68f, 1.0f);
+		inline constexpr Color Navy(0.00f, 0.00f, 0.50f, 1.0f);
+		inline constexpr Color OldLace(0.99f, 0.96f, 0.90f, 1.0f);
+		inline constexpr Color Olive(0.50f, 0.50f, 0.00f, 1.0f);
+		inline constexpr Color OliveDrab(0.42f, 0.56f, 0.14f, 1.0f);
+		inline constexpr Color Orange(1.00f, 0.65f, 0.00f, 1.0f);
+		inline constexpr Color OrangeRed(1.00f, 0.27f, 0.00f, 1.0f);
+		inline constexpr Color Orchid(0.85f, 0.44f, 0.84f, 1.0f);
+		inline constexpr Color PaleGoldenRod(0.93f, 0.91f, 0.67f, 1.0f);
+		inline constexpr Color PaleGreen(0.60f, 0.98f, 0.60f, 1.0f);
+		inline constexpr Color PaleTurquoise(0.69f, 0.93f, 0.93f, 1.0f);
+		inline constexpr Color PaleVioletRed(0.86f, 0.44f, 0.58f, 1.0f);
+		inline constexpr Color PapayaWhip(1.00f, 0.94f, 0.84f, 1.0f);
+		inline constexpr Color PeachPuff(1.00f, 0.85f, 0.73f, 1.0f);
+		inline constexpr Color Peru(0.80f, 0.52f, 0.25f, 1.0f);
+		inline constexpr Color Pink(1.00f, 0.75f, 0.80f, 1.0f);
+		inline constexpr Color Plum(0.87f, 0.63f, 0.87f, 1.0f);
+		inline constexpr Color PowderBlue(0.69f, 0.88f, 0.90f, 1.0f);
+		inline constexpr Color Purple(0.50f, 0.00f, 0.50f, 1.0f);
+		inline constexpr Color RebeccaPurple(0.40f, 0.20f, 0.60f, 1.0f);
+		inline constexpr Color Red(1.00f, 0.00f, 0.00f, 1.0f);
+		inline constexpr Color RosyBrown(0.74f, 0.56f, 0.56f, 1.0f);
+		inline constexpr Color RoyalBlue(0.25f, 0.41f, 0.88f, 1.0f);
+		inline constexpr Color SaddleBrown(0.55f, 0.27f, 0.07f, 1.0f);
+		inline constexpr Color Salmon(0.98f, 0.50f, 0.45f, 1.0f);
+		inline constexpr Color SandyBrown(0.96f, 0.64f, 0.38f, 1.0f);
+		inline constexpr Color SeaGreen(0.18f, 0.55f, 0.34f, 1.0f);
+		inline constexpr Color SeaShell(1.00f, 0.96f, 0.93f, 1.0f);
+		inline constexpr Color Sienna(0.63f, 0.32f, 0.18f, 1.0f);
+		inline constexpr Color Silver(0.75f, 0.75f, 0.75f, 1.0f);
+		inline constexpr Color SkyBlue(0.53f, 0.81f, 0.92f, 1.0f);
+		inline constexpr Color SlateBlue(0.42f, 0.35f, 0.80f, 1.0f);
+		inline constexpr Color SlateGray(0.44f, 0.50f, 0.56f, 1.0f);
+		inline constexpr Color SlateGrey(0.44f, 0.50f, 0.56f, 1.0f);
+		inline constexpr Color Snow(1.00f, 0.98f, 0.98f, 1.0f);
+		inline constexpr Color SpringGreen(0.00f, 1.00f, 0.50f, 1.0f);
+		inline constexpr Color SteelBlue(0.27f, 0.51f, 0.71f, 1.0f);
+		inline constexpr Color Tan(0.82f, 0.71f, 0.55f, 1.0f);
+		inline constexpr Color Teal(0.00f, 0.50f, 0.50f, 1.0f);
+		inline constexpr Color Thistle(0.85f, 0.75f, 0.85f, 1.0f);
+		inline constexpr Color Tomato(1.00f, 0.39f, 0.28f, 1.0f);
+		inline constexpr Color Turquoise(0.25f, 0.88f, 0.82f, 1.0f);
+		inline constexpr Color Violet(0.93f, 0.51f, 0.93f, 1.0f);
+		inline constexpr Color Wheat(0.96f, 0.87f, 0.70f, 1.0f);
+		inline constexpr Color White(1.00f, 1.00f, 1.00f, 1.0f);
+		inline constexpr Color WhiteSmoke(0.96f, 0.96f, 0.96f, 1.0f);
+		inline constexpr Color Yellow(1.00f, 1.00f, 0.00f, 1.0f);
+		inline constexpr Color YellowGreen(0.60f, 0.80f, 0.20f, 1.0f);
 
-}
+	}
 
 #pragma endregion
+
+}

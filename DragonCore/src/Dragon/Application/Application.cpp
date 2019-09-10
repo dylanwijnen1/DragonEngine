@@ -7,7 +7,6 @@
 #include <Dragon/dragon_module.h>
 
 // Services
-#include <Dragon/Application/Debug/Debug.h>
 #include <Dragon/Application/System/DragonSystem.h>
 #include <Dragon/Application/Window/DragonWindow.h>
 

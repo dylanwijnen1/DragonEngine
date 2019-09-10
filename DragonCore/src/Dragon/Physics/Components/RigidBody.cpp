@@ -10,7 +10,7 @@ namespace dragon
 {
 	RigidBody::~RigidBody()
 	{
-		b2World* pWorld = (b2World*)(GetOwner()->GetWorld());
+		b2World* pWorld = (b2World*)(GetOwner()->GetScene());
 		pWorld->DestroyBody(m_pBody);
 	}
 
@@ -32,7 +32,7 @@ namespace dragon
 			float angle = 0.0f;
 			def.angle = angle;
 
-			b2World* pWorld = (b2World*)GetOwner()->GetWorld();
+			b2World* pWorld = (b2World*)GetOwner()->GetScene();
 			m_pBody = pWorld->CreateBody(&def);
 		}
 
@@ -44,7 +44,7 @@ namespace dragon
 		RigidBody* pOther = dynamic_cast<RigidBody*>(pComponent);
 		if(pComponent)
 		{
-			b2World* pWorld = (b2World*)(GetOwner()->GetWorld());
+			b2World* pWorld = (b2World*)(GetOwner()->GetScene());
 			b2BodyDef def;
 			m_pBody = pWorld->CreateBody(&def);
 

@@ -8,16 +8,28 @@ newoption
     description = "The name of the project"
 }
 
+--- Sets the PROJECT_LOCATION local variable.
+newoption 
+{
+    trigger     = "projectlocation",
+    description = "The name of the project"
+}
+
 local PROJECT_NAME = _OPTIONS["projectname"] or "NewProject"
 local outputdir = "%{cfg.buildcfg}_%{cfg.architecture}/%{prj.name}"
 local DRAGON_ENGINE_PATH = path.join(path.getabsolute("../"))
 
+-- TODO
+local PROJECT_LOCATION = _OPTIONS["projectlocation"] or DRAGON_ENGINE_PATH .. "/../Projects/"
+
+
 
 printf("Generating project: %s", PROJECT_NAME)
+printf("Generating project at: %s", PROJECT_LOCATION)
 printf("[DEBUG] DRAGON_ENGINE_PATH: %s", DRAGON_ENGINE_PATH)
 
 workspace(PROJECT_NAME)
-    location (PROJECT_NAME)
+    location (PROJECT_LOCATION .. PROJECT_NAME)
 
     startproject(PROJECT_NAME)
 
