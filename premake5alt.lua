@@ -1,8 +1,8 @@
-include "dragoncore.lua"
+include "tools/dragoncore-utils.lua"
 
-build_dragon_dependencies()
+include "dependencies/premake5_eastl"
 
-printf("[DragonEngine] Building Project Files")
+dragon_list_dependencies()
 
 workspace "DragonEngine"
 
@@ -22,6 +22,8 @@ workspace "DragonEngine"
     }
 
 local outputdir = "%{cfg.buildcfg}_%{cfg.architecture}/%{prj.name}"
+
+dragon_create_dependency_projects("dependencies/")
 
 project "DragonCore"
 
@@ -65,11 +67,11 @@ project "DragonCore"
         optimize "On"
         runtime "Release"
 
+        
     -- Reset filters
     filter {}
 
-    include_dragon_dependencies()
-    link_dragon_dependencies()
+    dragon_add_dependencies("dependencies/")
 
 -- Generate UnitTests project
 project "DragonCore_UnitTests"
@@ -105,3 +107,5 @@ project "DragonCore_UnitTests"
         architecture "x86"
 
     filter {}
+
+    dragon_include_dependencies("dependencies/")

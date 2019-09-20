@@ -6,7 +6,7 @@
 # Dragon Core Files
 [Pp]rojects/
 [Tt]emp/
-[Dd]ependencies/
+[Dd]ependencies/*/
 
 *.sln
 *.vcxproj*
