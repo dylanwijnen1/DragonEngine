@@ -11,34 +11,39 @@
 /// https://docs.microsoft.com/en-us/windows/console/readconsole
 /// </summary>
 
-void dragon::WindowsConsoleWindow::ProcessEvents()
+namespace dragon
 {
 
-}
+	void WindowsConsoleWindow::ProcessEvents()
+	{
 
-void* dragon::WindowsConsoleWindow::GetNativeWindowHandle() const
-{
-	return GetConsoleWindow();
-}
+	}
 
-Vector2 dragon::WindowsConsoleWindow::GetPosition()
-{
-	HWND handle = GetConsoleWindow();
-	tagRECT rect;
-	rect.left = 0;
-	rect.top = 0;
-	GetWindowRect(handle, &rect);
-	return Vector2(rect.left, rect.top);
-}
+	void* WindowsConsoleWindow::GetNativeWindowHandle() const
+	{
+		return GetConsoleWindow();
+	}
 
-Vector2 dragon::WindowsConsoleWindow::GetSize()
-{
-	HWND handle = GetConsoleWindow();
-	tagRECT rect;
-	rect.left = 0;
-	rect.top = 0;
-	rect.bottom = 0;
-	rect.right = 0;
-	GetWindowRect(handle, &rect);
-	return Vector2(rect.right - rect.left, rect.bottom - rect.top);
+	Vector2 WindowsConsoleWindow::GetPosition()
+	{
+		HWND handle = GetConsoleWindow();
+		tagRECT rect;
+		rect.left = 0;
+		rect.top = 0;
+		GetWindowRect(handle, &rect);
+		return Vector2(rect.left, rect.top);
+	}
+
+	Vector2 WindowsConsoleWindow::GetSize()
+	{
+		HWND handle = GetConsoleWindow();
+		tagRECT rect;
+		rect.left = 0;
+		rect.top = 0;
+		rect.bottom = 0;
+		rect.right = 0;
+		GetWindowRect(handle, &rect);
+		return Vector2(rect.right - rect.left, rect.bottom - rect.top);
+	}
+
 }

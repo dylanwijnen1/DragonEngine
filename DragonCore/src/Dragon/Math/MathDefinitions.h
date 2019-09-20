@@ -3,6 +3,9 @@
 #include <mathfu/rect.h>
 #include <mathfu/matrix.h>
 
+#include <Generic/InStream.h>
+#include <Generic/OutStream.h>
+
 namespace dragon
 {
 
@@ -25,86 +28,83 @@ namespace dragon
 	template<int Rows, int Columns>
 	using Matrix = mathfu::Matrix<float, Rows, Columns>;
 
-#include <Generic/InStream.h>
-#include <Generic/OutStream.h>
+};
 
-	// Float
-	template<>
-	inline void OutStream::Write(const Vector2f& vec) { Write(vec.x); Write(vec.y); }
+// Float
+template<>
+inline void OutStream::Write(const dragon::Vector2f& vec) { Write(vec.x); Write(vec.y); }
 
-	template<>
-	inline Vector2f InStream::Read()
-	{
-		Vector2f vec;
-		vec.x = Read<float>();
-		vec.y = Read<float>();
-		return vec;
-	}
+template<>
+inline dragon::Vector2f InStream::Read()
+{
+	dragon::Vector2f vec;
+	vec.x = Read<float>();
+	vec.y = Read<float>();
+	return vec;
+}
 
-	template<>
-	inline void OutStream::Write(const Vector3f& vec) { Write(vec.x); Write(vec.y); Write(vec.z); }
+template<>
+inline void OutStream::Write(const dragon::Vector3f& vec) { Write(vec.x); Write(vec.y); Write(vec.z); }
 
-	template<>
-	inline Vector3f InStream::Read()
-	{
-		Vector3f vec;
-		vec.x = Read<float>();
-		vec.y = Read<float>();
-		vec.z = Read<float>();
-		return vec;
-	}
+template<>
+inline dragon::Vector3f InStream::Read()
+{
+	dragon::Vector3f vec;
+	vec.x = Read<float>();
+	vec.y = Read<float>();
+	vec.z = Read<float>();
+	return vec;
+}
 
-	template<>
-	inline void OutStream::Write(const Vector4f& vec) { Write(vec.x); Write(vec.y); Write(vec.w); }
+template<>
+inline void OutStream::Write(const dragon::Vector4f& vec) { Write(vec.x); Write(vec.y); Write(vec.w); }
 
-	template<>
-	inline  Vector4f InStream::Read()
-	{
-		Vector4f vec;
-		vec.x = Read<float>();
-		vec.y = Read<float>();
-		vec.w = Read<float>();
-		return vec;
-	}
+template<>
+inline  dragon::Vector4f InStream::Read()
+{
+	dragon::Vector4f vec;
+	vec.x = Read<float>();
+	vec.y = Read<float>();
+	vec.w = Read<float>();
+	return vec;
+}
 
-	// Integral
+// Integral
 
-	template<>
-	inline void OutStream::Write(const Vector2& vec) { Write(vec.x); Write(vec.y); }
+template<>
+inline void OutStream::Write(const dragon::Vector2& vec) { Write(vec.x); Write(vec.y); }
 
-	template<>
-	inline Vector2 InStream::Read()
-	{
-		Vector2 vec;
-		vec.x = Read<int>();
-		vec.y = Read<int>();
-		return vec;
-	}
+template<>
+inline dragon::Vector2 InStream::Read()
+{
+	dragon::Vector2 vec;
+	vec.x = Read<int>();
+	vec.y = Read<int>();
+	return vec;
+}
 
-	template<>
-	inline void OutStream::Write(const Vector3& vec) { Write(vec.x); Write(vec.y); Write(vec.z); }
+template<>
+inline void OutStream::Write(const dragon::Vector3& vec) { Write(vec.x); Write(vec.y); Write(vec.z); }
 
-	template<>
-	inline Vector3 InStream::Read()
-	{
-		Vector3 vec;
-		vec.x = Read<int>();
-		vec.y = Read<int>();
-		vec.z = Read<int>();
-		return vec;
-	}
+template<>
+inline dragon::Vector3 InStream::Read()
+{
+	dragon::Vector3 vec;
+	vec.x = Read<int>();
+	vec.y = Read<int>();
+	vec.z = Read<int>();
+	return vec;
+}
 
-	template<>
-	inline void OutStream::Write(const Vector4& vec) { Write(vec.x); Write(vec.y); Write(vec.w); }
+template<>
+inline void OutStream::Write(const dragon::Vector4& vec) { Write(vec.x); Write(vec.y); Write(vec.w); }
 
-	template<>
-	inline Vector4 InStream::Read()
-	{
-		Vector4 vec;
-		vec.x = Read<int>();
-		vec.y = Read<int>();
-		vec.w = Read<int>();
-		return vec;
-	}
-
+template<>
+inline dragon::Vector4 InStream::Read()
+{
+	dragon::Vector4 vec;
+	vec.x = Read<int>();
+	vec.y = Read<int>();
+	vec.w = Read<int>();
+	return vec;
 }

@@ -30,13 +30,13 @@ namespace dragon
 		template<class Type>
 		Type Max(Type left, Type right)
 		{
-			return std::max(left, right)
+			return std::max(left, right);
 		}
 
 		template<class Type>
 		Type Min(Type left, Type right)
 		{
-			return std::Min(left, right)
+			return std::Min(left, right);
 		}
 	}
 }

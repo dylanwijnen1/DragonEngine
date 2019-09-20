@@ -78,8 +78,8 @@ namespace dragon
 
 #pragma region Serialization
 
-		virtual void Serialize(OutStream& out) {}
-		virtual void Deserialize(InStream& in) {}
+		virtual void Serialize(OutStream& out) override {}
+		virtual void Deserialize(InStream& in) override {}
 
 #pragma endregion
 

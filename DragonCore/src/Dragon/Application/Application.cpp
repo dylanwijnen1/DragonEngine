@@ -3,9 +3,6 @@
 #include <Dragon/Application/Layer.h>
 #include <Dragon/Application/ApplicationEvent.h>
 
-// Python Module
-#include <Dragon/dragon_module.h>
-
 // Services
 #include <Dragon/Application/System/DragonSystem.h>
 #include <Dragon/Application/Window/DragonWindow.h>
@@ -20,8 +17,6 @@
 
 #include <iostream>
 
-namespace py = pybind11;
-
 namespace dragon
 {
 
@@ -34,10 +29,6 @@ namespace dragon
 		//delete m_pGraphics;
 		//delete m_pAudio;
 #endif
-
-		// Cleanup python bindings
-		m_dragonModule.release();
-		py::finalize_interpreter();
 	}
 
 	bool Application::Init()
@@ -49,20 +40,6 @@ namespace dragon
 		m_pSystem = DragonSystem::Create();
 		APP_DIE("DragonSystem", m_pSystem);
 		Debug::GetInstance().SetSystem(m_pSystem);
-
-		// Initialize python bindings
-		py::initialize_interpreter();
-		
-		// TODO: Find a way to disable exceptions in the pybind11 module.
-		try
-		{
-			m_dragonModule = py::module::import("pydragon");
-		}
-		catch (const std::exception& e)
-		{
-			ERR("[PyDragon] %s", e.what());
-		}
-
 
 		// Load Application Settings
 		// APP_CONTINUE("DragonSettings", DragonSettings::GetInstance());

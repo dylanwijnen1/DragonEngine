@@ -28,8 +28,9 @@ namespace dragon
 		// Game level components
 		pComponent = m_pGameFactory->CreateComponent();
 		
+		// TODO: Scriptable Components.
 		// Script level components
-		// pComponent = m_createScriptComponent(); // Python callback automatically attached to by the engine scripts.
+		// pComponent = m_createScriptComponent(); // LuaVar::Call();
 
 		if (!pComponent)
 		{

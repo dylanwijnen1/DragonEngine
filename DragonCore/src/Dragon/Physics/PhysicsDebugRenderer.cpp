@@ -6,13 +6,9 @@
 namespace dragon
 {
 
-
-
 	void PhysicsDebugRenderer::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 	{
-		// VertexBuffer buffer;
 
-		//m_pRenderTarget->Render(polygon, );
 	}
 
 	void PhysicsDebugRenderer::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)

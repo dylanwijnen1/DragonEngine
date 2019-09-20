@@ -9,7 +9,7 @@ namespace dragon
 	{
 	protected:
 		friend class RenderTarget;
-		virtual void Render(const RenderTarget& target, const RenderState& state) const = 0;
+		virtual void Render(RenderTarget& target, RenderState state = RenderState::Default) const = 0;
 	};
 
 }

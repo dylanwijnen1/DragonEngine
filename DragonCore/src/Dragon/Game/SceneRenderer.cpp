@@ -1,6 +1,8 @@
 #include "SceneRenderer.h"
 
+#include <Dragon/Graphics/RenderTarget.h>
 #include <Dragon/Graphics/Components/RenderComponent.h>
+
 #include <Dragon/Game/GameObject.h>
 #include <Dragon/Application/Debugging/Debug.h>
 
@@ -23,7 +25,7 @@ namespace dragon
 
 			if (pRenderable)
 			{
-				pRenderable->Render(target);
+				target.Draw(*pRenderable);
 				++it;
 			}
 			else

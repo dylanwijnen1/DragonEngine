@@ -18,6 +18,8 @@
 
 namespace b2
 {
+	using namespace dragon;
+
 	inline Vector2f Convert(b2Vec2 vec) { return Vector2f(vec.x, vec.y); }
 	inline b2Vec2 Convert(Vector2f vec) { return b2Vec2(vec.x, vec.y); }
 

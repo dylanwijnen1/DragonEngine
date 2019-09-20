@@ -7,9 +7,6 @@
 
 #include <EASTL/stack.h>
 
-#include <pybind11/embed.h>
-namespace py = pybind11;
-
 /// \namespace dragon
 namespace dragon
 {
@@ -59,9 +56,6 @@ namespace dragon
 		class AudioSystem* m_pAudioSystem;
 		class DragonGraphics* m_pGraphics;
 		class DragonWindow* m_pWindow;
-
-		// As soon as the application shuts down the python interpreter will too.
-		py::module m_dragonModule;
 
 	public:
 
