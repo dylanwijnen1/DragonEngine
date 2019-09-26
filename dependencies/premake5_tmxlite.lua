@@ -7,6 +7,8 @@ local function tmxlite_project(basedir)
         location (tmxlitedir .."Build/")
         kind "StaticLib"
 
+        characterset("ASCII")
+
         dragon_project_defaults()
         
         files 

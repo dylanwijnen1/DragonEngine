@@ -17,9 +17,7 @@ end
 local function box2d_includes(basedir)
     local box2d_dir = basedir .. "Box2D/";
 
-    files { box2d_dir .. [[Box2D/**]] }
     includedirs { box2d_dir }
-
 end
 
 local function box2d_link()
