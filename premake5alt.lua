@@ -5,6 +5,7 @@ include "dependencies/premake5_sfml"
 include "dependencies/premake5_box2d"
 include "dependencies/premake5_enet"
 include "dependencies/premake5_tmxlite"
+include "dependencies/premake5_mathfu"
 
 dragon_list_dependencies()
 
@@ -37,6 +38,8 @@ project "DragonCore"
 
     targetdir("bin/" .. outputdir)
     objdir("temp/" .. outputdir)
+
+    characterset("ASCII")
     
     cppdialect "C++17"
     systemversion "latest"

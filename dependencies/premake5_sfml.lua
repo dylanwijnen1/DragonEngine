@@ -106,6 +106,8 @@ local function sfml_project(basedir)
 		{
 			sfmldir .. [[include/]],
 			sfmldir .. [[src/]],
+			sfmldir .. [[extlibs/headers/stb_image/]],
+			sfmldir .. [[extlibs/headers/freetype2/]],
 		}
 			
 		filter {}
@@ -138,6 +140,8 @@ local function sfml_project(basedir)
         {
             sfmldir .. [[include/]],
 			sfmldir .. [[src/]],
+			sfmldir .. [[extlibs/headers/stb_image/]],
+			sfmldir .. [[extlibs/headers/freetype2/]]
         }
 		
 		links
@@ -149,17 +153,12 @@ local function sfml_project(basedir)
 end
 
 local function sfml_includes(basedir)
-    local eastldir = basedir .. "EASTL/";
+    local sfmldir = basedir .. "SFML/";
 
     includedirs
     {
-        eastldir .. [[include]],
-        eastldir .. [[test/packages/EABase/include/Common]]
-    }
-
-    files 
-    {
-        eastldir .. "doc/EASTL.natvis"
+		sfmldir .. [[include/]],
+		sfmldir .. [[src/]],
     }
 
     defines "SFML_STATIC"
