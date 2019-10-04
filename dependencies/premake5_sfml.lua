@@ -158,8 +158,12 @@ local function sfml_includes(basedir)
     includedirs
     {
 		sfmldir .. [[include/]],
-		sfmldir .. [[src/]],
-    }
+	}
+	
+	libdirs
+	{
+		sfmldir .. [[extlibs/libs-msvc/x64/]],
+	}
 
     defines "SFML_STATIC"
 end
@@ -170,8 +174,18 @@ local function sfml_link()
         "sfml-graphics",
 		"sfml-audio",
 		"sfml-system",
-		"sfml-window"
-    }
+		"sfml-window",
+		"flac.lib",
+		"freetype.lib",
+		"ogg.lib",
+		"openal32.lib",
+		"vorbis.lib",
+		"vorbisenc.lib",
+		"vorbisfile.lib",
+		"opengl32.lib",
+		"gdi32.lib",
+		"winmm.lib"
+	}
 end
 
 add_dependency_project("SFML", sfml_project, sfml_includes, sfml_link)

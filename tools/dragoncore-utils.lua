@@ -8,6 +8,8 @@ function dragon_project_defaults()
     cppdialect "C++17"
     systemversion "latest"
 
+    staticruntime "Off"
+
     targetdir("bin/" .. outputdir)
     objdir("temp/" .. outputdir)
 
