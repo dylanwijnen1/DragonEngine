@@ -1,7 +1,13 @@
 local DEPENDENCY_MAP = {}
 
-local outputdir = "%{cfg.buildcfg}_%{cfg.architecture}/%{prj.name}"
+function dragon_default_outdir()
+    return "%{cfg.buildcfg}_%{cfg.architecture}/%{prj.name}";
+end
+local outputdir = dragon_default_outdir();
 
+
+---Adds the default settings for any dragon project.
+---To override the defaults call this function first.
 function dragon_project_defaults()
 
     language "C++"
@@ -35,6 +41,7 @@ function dragon_project_defaults()
 
 end
 
+---Add a project to the dependency list.
 ---@param project_name string   | "Name of the project that is being generated."
 ---@param project function      | "The function that generates the project."
 ---@param include function      | "The function that includes the project files."
@@ -55,6 +62,9 @@ function add_dependency_project(project_name, project, include, link)
     end
 end
 
+
+---Creates the dependency projects.
+---@param dependencydir     | "The root of the dependency directory"
 function dragon_create_dependency_projects(dependencydir)
     for k, v in pairs(DEPENDENCY_MAP) do
         filter {}
@@ -64,6 +74,8 @@ function dragon_create_dependency_projects(dependencydir)
     end
 end
 
+---Link and Include the dependencies.
+---@param dependencydir     | "The root of the dependency directory"
 function dragon_add_dependencies(dependencydir)
 
     for k, v in pairs(DEPENDENCY_MAP) do
@@ -78,6 +90,8 @@ function dragon_add_dependencies(dependencydir)
 
 end
 
+---Include the dependencies.
+---@param dependencydir     | "The root of the dependency directory"
 function dragon_include_dependencies(dependencydir)
 
     for k, v in pairs(DEPENDENCY_MAP) do
@@ -97,8 +111,4 @@ function dragon_list_dependencies()
         print("\t: " .. k);
     end
 
-end
-
-function dragon_default_outdir()
-    return "%{cfg.buildcfg}_%{cfg.architecture}/%{prj.name}";
 end

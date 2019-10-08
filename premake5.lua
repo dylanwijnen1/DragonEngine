@@ -33,19 +33,11 @@ workspace "DragonEngine"
 
 project "DragonCore"
 
+    dragon_project_defaults();
+
     location "DragonCore"
-    kind "StaticLib"
-    language "C++"
-
-    staticruntime "Off"
-
-    targetdir("bin/" .. outputdir)
-    objdir("temp/" .. outputdir)
-
     characterset("ASCII")
-    
-    cppdialect "C++17"
-    systemversion "latest"
+    kind "StaticLib"    
 
     files 
     {
@@ -56,39 +48,29 @@ project "DragonCore"
     -- This allows for <Dragon/...> includes.
     includedirs "%{prj.name}/src"
 
-    filter "platforms:x64"
-        architecture "x64"
-
-    filter "platforms:x86"
-        architecture "x86"
-
     filter "configurations:Debug"
         defines "DRAGON_DEBUG"
-        symbols "full"
-        runtime "Debug"
 
     filter "configurations:Release"
         defines "DRAGON_RELEASE"
-        optimize "On"
-        runtime "Release"
 
     filter "configurations:Distribution"
         defines "DRAGON_DIST"
-        optimize "On"
-        runtime "Release"
 
         
     -- Reset filters
     filter {}
 
+    -- Links and Includes the dependency projects.
     dragon_add_dependencies("dependencies/")
 
 -- Generate UnitTests project
 project "DragonCore_UnitTests"
-    location "DragonCore_UnitTests"
-    kind "ConsoleApp"
 
     dragon_project_defaults()
+
+    location "DragonCore_UnitTests"
+    kind "ConsoleApp"
 
     includedirs 
     {
@@ -109,5 +91,5 @@ project "DragonCore_UnitTests"
 
     filter {}
 
-    --dragon_include_dependencies("dependencies/")
-    dragon_add_dependencies("dependencies/")
+    dragon_include_dependencies("dependencies/")
+    --dragon_add_dependencies("dependencies/")

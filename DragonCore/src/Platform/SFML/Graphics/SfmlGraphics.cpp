@@ -1,4 +1,4 @@
-#include "SfmlRenderTarget.h"
+#include "SfmlGraphics.h"
 
 #include <SFML/Graphics.hpp>
 
