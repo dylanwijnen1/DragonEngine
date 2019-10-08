@@ -6,7 +6,11 @@
 # Dragon Core Files
 [Pp]rojects/
 [Tt]emp/
+<<<<<<< Updated upstream
 [Dd]ependencies/
+=======
+[Dd]ependencies/*
+>>>>>>> Stashed changes
 
 *.sln
 *.vcxproj*

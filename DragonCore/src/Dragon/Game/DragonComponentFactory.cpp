@@ -1,5 +1,5 @@
 #include "DragonComponentFactory.h"
-#include <Generic/StringHash.h>
+#include <Dragon/Generic/StringHash.h>
 
 #include <Dragon/Application/Debugging/Debug.h>
 
@@ -34,7 +34,7 @@ namespace dragon
 
 		if (!pComponent)
 		{
-			WARN("[DragonComponentFactory] Could not create component with the id of %u", id);
+			DWARN("[DragonComponentFactory] Could not create component with the id of %u", id);
 		}
 
 

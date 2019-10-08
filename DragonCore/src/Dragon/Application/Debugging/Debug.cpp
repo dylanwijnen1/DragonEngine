@@ -78,7 +78,7 @@ namespace dragon
 		outputText.sprintf_va_list(fmt, args);
 		va_end(args);
 
-		if (ch.m_outputs & DebugOutput::Debugger)
+		if (ch.m_outputs & DebugOutput::Debugger && m_pDebugger)
 		{
 			m_debugLock.lock();
 
@@ -91,14 +91,14 @@ namespace dragon
 			m_debugLock.unlock();
 		}
 
-		if (ch.m_outputs & DebugOutput::File)
-		{
+		if (ch.m_outputs & DebugOutput::File && m_pFile)
+		{		
 			m_fileLock.lock();
 			*m_pFile << "[" << channel << "] " << outputText.c_str() << std::endl;
 			m_fileLock.unlock();
 		}
 
-		if (ch.m_outputs & DebugOutput::Console)
+		if (ch.m_outputs & DebugOutput::Console && m_pConsole)
 		{
 			m_consoleLock.lock();
 			*m_pConsole << "[" << channel << "] " << outputText.c_str() << std::endl;

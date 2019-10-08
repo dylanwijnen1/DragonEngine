@@ -9,7 +9,7 @@
 #include <Dragon/Physics/Components/CircleCollider.h>
 #include <Dragon/Physics/Components/PolygonCollider.h>
 
-#include <Dragon/Math/Math.h>
+#include <Dragon/Generic/Math.h>
 
 // Helper methods
 #include <Box2D/Common/b2Math.h>

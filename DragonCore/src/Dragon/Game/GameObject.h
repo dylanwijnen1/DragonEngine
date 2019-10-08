@@ -3,7 +3,7 @@
 #include <Dragon/Game/Component.h>
 #include <Dragon/Application/Debugging/Debug.h>
 
-#include <Generic/ISerializable.h>
+#include <Dragon/Generic/Serialization/ISerializable.h>
 
 #include <EASTL/unordered_map.h>
 #include <EASTL/string.h>

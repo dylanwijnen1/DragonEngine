@@ -1,6 +1,6 @@
 #include "SfmlWindow.h"
 
-#include <Dragon/Math/Math.h>
+#include <Dragon/Generic/Math.h>
 #include <Dragon/Application/Window/WindowEvents.h>
 
 #include <SFML/Window.hpp>

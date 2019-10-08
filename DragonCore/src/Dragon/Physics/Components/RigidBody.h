@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Dragon/Game/Component.h>
-#include <Dragon/Math/Math.h>
+#include <Dragon/Generic/Math.h>
 
 class b2Body;
 

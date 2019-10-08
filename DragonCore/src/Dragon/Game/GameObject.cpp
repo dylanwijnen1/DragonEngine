@@ -2,8 +2,8 @@
 
 #include <Dragon/Game/Scene.h>
 #include <Dragon/Game/DragonComponentFactory.h>
-#include <Generic/InStream.h>
-#include <Generic/OutStream.h>
+#include <Dragon/Generic/Serialization/InStream.h>
+#include <Dragon/Generic/Serialization/OutStream.h>
 
 namespace dragon
 {
@@ -27,7 +27,7 @@ namespace dragon
 		}
 		else
 		{
-			WARN("[GameObject] Trying to clone a gameobject not associated with a world.");
+			DWARN("[GameObject] Trying to clone a gameobject not associated with a world.");
 			return nullptr;
 		}
 	}
@@ -40,7 +40,7 @@ namespace dragon
 		}
 		else
 		{
-			WARN("[GameObject] Trying to clone a gameobject to an invalid world.");
+			DWARN("[GameObject] Trying to clone a gameobject to an invalid world.");
 			return nullptr;
 		}
 	}
@@ -65,12 +65,12 @@ namespace dragon
 				return pComponent;
 			}
 
-			WARN("[GameObject] Component id {%u} could not be created.", id);
+			DWARN("[GameObject] Component id {%u} could not be created.", id);
 			return nullptr;
 		}
 		else
 		{
-			WARN("[GameObject] Trying to add an already existing component to the GameObject, ID: %u", m_id);
+			DWARN("[GameObject] Trying to add an already existing component to the GameObject, ID: %u", m_id);
 			return result->second;
 		}
 

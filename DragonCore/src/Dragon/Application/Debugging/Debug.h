@@ -2,7 +2,7 @@
 
 #include <Dragon/Graphics/Color.h>
 
-#include <Generic/MacroMagic.h>
+#include <Dragon/Generic/MacroMagic.h>
 
 #include <EASTL/string_hash_map.h>
 
@@ -12,15 +12,15 @@
 #if DRAGON_ENABLE_TRACE
 	#define TRACE_FMT(fmt) __FILE__ "(" STRINGIFY(__LINE__) "): in function \"%s\":" fmt "\n\n"
 
-	#define DEBUG(CHANNEL, fmt, ...) dragon::Debug::GetInstance().WriteChannel(CHANNEL, TRACE_FMT(fmt), __FUNCTION__, __VA_ARGS__)
-	#define ERR(fmt, ...) DEBUG("Error", fmt, __VA_ARGS__)
-	#define WARN(fmt, ...) DEBUG("Warning", fmt, __VA_ARGS__)
-	#define LOG(fmt, ...) DEBUG("Info", fmt, __VA_ARGS__)
+	#define DDEBUG(CHANNEL, fmt, ...) dragon::Debug::GetInstance().WriteChannel(CHANNEL, TRACE_FMT(fmt), __FUNCTION__, __VA_ARGS__)
+	#define DERR(fmt, ...) DDEBUG("Error", fmt, __VA_ARGS__)
+	#define DWARN(fmt, ...) DDEBUG("Warning", fmt, __VA_ARGS__)
+	#define DLOG(fmt, ...) DDEBUG("Info", fmt, __VA_ARGS__)
 #else
-	#define DEBUG(CHANNEL, fmt, ...) dragon::Debug::GetInstance().WriteChannel(CHANNEL, fmt, __VA_ARGS__)
-	#define ERR(fmt, ...) DEBUG("Error", fmt, __VA_ARGS__)
-	#define WARN(fmt, ...) DEBUG("Warning", fmt, __VA_ARGS__)
-	#define LOG(fmt, ...) DEBUG("Info", fmt, __VA_ARGS__)
+	#define DDEBUG(CHANNEL, fmt, ...) dragon::Debug::GetInstance().WriteChannel(CHANNEL, fmt, __VA_ARGS__)
+	#define DERR(fmt, ...) DDEBUG("Error", fmt, __VA_ARGS__)
+	#define DWARN(fmt, ...) DDEBUG("Warning", fmt, __VA_ARGS__)
+	#define DLOG(fmt, ...) DDEBUG("Info", fmt, __VA_ARGS__)
 #endif
 
 namespace dragon

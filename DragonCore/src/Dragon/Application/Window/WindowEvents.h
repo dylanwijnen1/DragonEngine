@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Dragon/Application/ApplicationEvent.h>
-#include <Dragon/Math/Math.h>
+#include <Dragon/Generic/Math.h>
 #include <Dragon/Application/Input/Key.h>
 #include <Dragon/Application/Input/MouseButton.h>
 

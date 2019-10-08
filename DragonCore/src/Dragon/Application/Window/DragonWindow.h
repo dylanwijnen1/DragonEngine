@@ -1,16 +1,17 @@
 #pragma once
 
-#include <Dragon/Math/Math.h>
+#include <Dragon/Generic/Math.h>
 #include <Dragon/Application/ApplicationEvent.h>
 #include <Dragon/Application/Input/Key.h>
 #include <Dragon/Application/Input/MouseButton.h>
 
 #include <EASTL/functional.h>
-#include <EASTL/vector.h>
 
 namespace dragon
 {
-	/// \class IWindow
+	class DragonGraphics;
+
+	/// \class DragonWindow
 	/// <summary>
 	/// This is object creates the window for the current platform and owns the Keyboard and Mouse.
 	/// </summary>				
@@ -91,6 +92,8 @@ namespace dragon
 		/// </summary>
 		/// <returns></returns>
 		virtual Vector2 GetSize() = 0;
+
+		DragonGraphics* CreateGraphics();
 	};
 
 };

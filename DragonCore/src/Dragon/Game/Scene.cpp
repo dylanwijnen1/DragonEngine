@@ -2,13 +2,14 @@
 
 #include <Dragon/Application/Debugging/Debug.h>
 
-#include <Generic/OutStream.h>
-#include <Generic/InStream.h>
+#include <Dragon/Generic/Serialization/OutStream.h>
+#include <Dragon/Generic/Serialization/InStream.h>
 
 #include <Box2D/Box2D.h>
 #include <Dragon/Physics/Physics.h>
 
 #include <EASTL/unordered_set.h>
+
 
 namespace dragon
 {
@@ -72,7 +73,7 @@ namespace dragon
 
 	void Scene::Render(RenderTarget& target)
 	{
-		m_sceneRenderer.Render(target);
+
 	}
 
 	GameObject* Scene::Add(const GameObject& gameObject)
@@ -84,7 +85,7 @@ namespace dragon
 			return &(*result.first).second;
 		}
 
-		WARN("[Scene] Unsuccesfully added the gameobject.");
+		DWARN("[Scene] Unsuccesfully added the gameobject.");
 		return nullptr;
 	}
 
@@ -97,7 +98,7 @@ namespace dragon
 			return &(*result.first).second;
 		}
 
-		WARN("[Scene] Unsuccesfully added the gameobject.");
+		DWARN("[Scene] Unsuccesfully added the gameobject.");
 		return nullptr;
 	}
 
@@ -112,7 +113,7 @@ namespace dragon
 			return &(*result.first).second;
 		}
 
-		WARN("[Scene] Unsuccesfully added the gameobject.");
+		DWARN("[Scene] Unsuccesfully added the gameobject.");
 		return nullptr;
 	}
 
@@ -133,7 +134,7 @@ namespace dragon
 			return &((*result).second);
 		}
 
-		WARN("[Scene] Could not find the game object with id: %i", id);
+		DWARN("[Scene] Could not find the game object with id: %i", id);
 
 		return nullptr;
 	}

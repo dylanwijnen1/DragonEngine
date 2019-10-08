@@ -6,10 +6,11 @@
 // Services
 #include <Dragon/Application/System/DragonSystem.h>
 #include <Dragon/Application/Window/DragonWindow.h>
+#include <Dragon/Graphics/DragonGraphics.h>
 
 #if defined(DRAGON_DEBUG)
-	#define APP_DIE(SERVICE, PSERVICE, ...) if(!PSERVICE->Init(__VA_ARGS__)) { ERR("["##SERVICE##"] could not be initialized, Exiting..."); return false; }
-	#define APP_CONTINUE(SERVICE, PSERVICE, ...) if(!PSERVICE->Init(__VA_ARGS__)) { WARN("["##SERVICE##"] could not be intialized. Acting like nothing happened..."); }
+	#define APP_DIE(SERVICE, PSERVICE, ...) if(!PSERVICE->Init(__VA_ARGS__)) { DERR("["##SERVICE##"] could not be initialized, Exiting..."); return false; }
+	#define APP_CONTINUE(SERVICE, PSERVICE, ...) if(!PSERVICE->Init(__VA_ARGS__)) { DWARN("["##SERVICE##"] could not be intialized. Acting like nothing happened..."); }
 #elif defined(DRAGON_RELEASE)
 	#define APP_DIE(...) 
 	#define APP_CONTINUE(...) 
@@ -34,7 +35,7 @@ namespace dragon
 	bool Application::Init()
 	{
 		if(!Debug::GetInstance().Init())
-			WARN("[DragonDebug] could not be intialized. Acting like nothing happened...");
+			DWARN("[DragonDebug] could not be intialized. Acting like nothing happened...");
 
 		// System Service
 		m_pSystem = DragonSystem::Create();
@@ -46,29 +47,23 @@ namespace dragon
 
 		// Window Service
 		m_pWindow = m_pSystem->CreateSystemWindow();
-		APP_DIE("DragonWindow", m_pWindow, APP_NAME, DRAGON_WINDOW_WIDTH, DRAGON_WINDOW_HEIGHT);
+		APP_DIE("DragonWindow", m_pWindow, DRAGON_APP_NAME, DRAGON_WINDOW_WIDTH, DRAGON_WINDOW_HEIGHT);
 		m_pWindow->SetEventCallback([this] (ApplicationEvent & ev) { Application::OnEvent(ev); });
 
-#if DRAGON_RENDERSKIN != DRAGON_RENDERSKIN_NONE
-
-		// TODO: Take Audio service out of the renderskin, We will be using FMOD for the Audio System so it does not rely on SFML
 		// Audio Service, Die
 		// m_pAudioSystem = DragonAudioSystem::Create();
 		// APP_DIE("DragonAudioSystem", m_pAudioSystem);
 
 		// Graphics Service, Die
-		// m_pGraphics = m_pWindow->CreateGraphicsContext();??
-		// m_pGraphics = DragonGraphics::CreateContext();
-		// APP_DIE("DragonGraphics", m_pGraphics);
-
-#endif
+		m_pGraphics = m_pWindow->CreateGraphics();
+		APP_DIE("DragonGraphics", m_pGraphics, m_pWindow);
 
 		return OnInit();
 	}
 
 	void Application::Shutdown()
 	{
-		LOG("[DragonApplication] Application is shutting down.");
+		DLOG("[DragonApplication] Application is shutting down.");
 		m_pWindow->Close();
 		m_running = false;
 	}
@@ -76,7 +71,7 @@ namespace dragon
 	void Application::Run()
 	{
 		m_running = true;
-		LOG("[DragonApplication] Application has started.");
+		DLOG("[DragonApplication] Application has started.");
 
 		TimePoint start = Clock::now();
 		TimePoint end = Clock::now();
@@ -101,10 +96,8 @@ namespace dragon
 			// Update
 			Update((float)deltaTime);
 
-#if DRAGON_RENDERSKIN != DRAGON_RENDERSKIN_NONE
 			// Render
 			Render();
-#endif
 
 			// Calculate deltaTime
 			end = Clock::now();
@@ -113,7 +106,7 @@ namespace dragon
 			// Breakpoint was set or we're running slow.
 			if (deltaTime > 1.0)
 			{
-				WARN("[DragonApplication] Application is running slow. Frame took: %d seconds.", deltaTime);
+				DWARN("[DragonApplication] Application is running slow. Frame took: %d seconds.", deltaTime);
 				deltaTime = m_fixedStep;
 			}
 
@@ -131,18 +124,18 @@ namespace dragon
 		m_fixedCounter.Tick();
 	}
 
-#if DRAGON_RENDERSKIN != DRAGON_RENDERSKIN_NONE
-
 	void Application::Render()
 	{
+		m_pGraphics->Clear(Colors::Black);
+
 		auto& layerStack = m_layers.get_container();
 		for (Layer* pLayer : layerStack)
-			pLayer->Render();
+			pLayer->Render(*m_pGraphics);
+
+		m_pGraphics->Display();
 
 		m_drawCounter.Tick();
 	}
-
-#endif
 
 	void Application::Update(float dt)
 	{
@@ -166,6 +159,22 @@ namespace dragon
 			Layer* pLayer = *it;
 			pLayer->OnEvent(ev);
 		}
+	}
+
+	void Application::PushLayer(Layer* pLayer)
+	{
+		m_layers.emplace_back(pLayer);
+		pLayer->OnAttach();
+	}
+
+	void Application::PopLayer()
+	{
+		Layer* pLayer = m_layers.top();
+		pLayer->OnDetach();
+
+		m_layers.pop();
+
+		delete pLayer;
 	}
 
 	//void Application::ShowDebugInfo()

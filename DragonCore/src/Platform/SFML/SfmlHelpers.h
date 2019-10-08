@@ -5,7 +5,7 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Color.hpp>
 
-#include <Dragon/Math/Math.h>
+#include <Dragon/Generic/Math.h>
 #include <Dragon/Graphics/Color.h>
 
 namespace sf
@@ -17,6 +17,10 @@ namespace sf
 	// Vector2
 	inline dragon::Vector2 Convert(sf::Vector2i vec) { return dragon::Vector2(vec.x, vec.y); }
 	inline sf::Vector2i Convert(dragon::Vector2 vec) { return sf::Vector2i(vec.x, vec.y); }
+
+	// RectF
+	inline dragon::RectF Convert(sf::FloatRect rect) { return { rect.left, rect.top, rect.width, rect.height }; }
+	inline sf::FloatRect Convert(dragon::RectF rect) { return { rect.pos.x, rect.pos.y, rect.size.x, rect.size.y }; }
 
 	// Color
 	inline dragon::Color Convert(sf::Color color) 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Dragon/Physics/Components/Collider.h>
-#include <Dragon/Math/Math.h>
+#include <Dragon/Generic/Math.h>
 
 class b2Fixture;
 

@@ -96,12 +96,12 @@ namespace dragon
 		/// PushLayer(new UILayer());
 		/// </code>
 		/// <param name="pLayer">The layer to push.</param>
-		void PushLayer(Layer* pLayer) { m_layers.push(pLayer); }
+		void PushLayer(Layer* pLayer);
 
 		/// <summary>
 		/// Pops a layer from the stack.
 		/// </summary>
-		void PopLayer() { m_layers.pop(); }
+		void PopLayer();
 
 		size_t GetFixedRate() const { return m_fixedCounter.GetCount(); }
 		size_t GetUpdateRate() const { return m_updateCounter.GetCount(); }

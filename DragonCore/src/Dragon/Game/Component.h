@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Generic/StringHash.h>
-#include <Generic/ISerializable.h>
+#include <Dragon/Generic/StringHash.h>
+#include <Dragon/Generic/Serialization/ISerializable.h>
 
 
 /// <summary>

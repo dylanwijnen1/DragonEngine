@@ -22,7 +22,7 @@ namespace dragon
 			: Color(r, g, b, 1.0f)
 		{}
 
-		constexpr Color HexToRGB(uint32_t hex)
+		constexpr Color FromHex(uint32_t hex)
 		{
 			Color color;
 			color.r = ((hex >> 16) & 0xFF) / 255.0f;

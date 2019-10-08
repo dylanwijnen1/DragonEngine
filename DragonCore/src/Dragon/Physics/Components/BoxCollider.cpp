@@ -75,7 +75,7 @@ namespace dragon
 		{
 			if (pFixture->GetShape()->GetType() != b2Shape::e_polygon)
 			{
-				WARN("[BoxCollider] Tried to edit BoxCollider but fixture is not of type polygon.");
+				DWARN("[BoxCollider] Tried to edit BoxCollider but fixture is not of type polygon.");
 				return;
 			}
 
@@ -86,7 +86,7 @@ namespace dragon
 			}
 			else
 			{
-				WARN("[BoxCollider] Tried to edit BoxCollider but fixture is not of type polygon.");
+				DWARN("[BoxCollider] Tried to edit BoxCollider but fixture is not of type polygon.");
 			}
 		}
 
@@ -107,7 +107,7 @@ namespace dragon
 			}
 		}
 
-		WARN("[BoxCollider] Tried to access polygon shape data but it was not a polygon shape.");
+		DWARN("[BoxCollider] Tried to access polygon shape data but it was not a polygon shape.");
 		return Vector2f(0.f, 0.f);
 	}
 
@@ -126,7 +126,7 @@ namespace dragon
 			}
 		}
 
-		WARN("[BoxCollider] Tried to edit BoxCollider but fixture is not of type polygon.");
+		DWARN("[BoxCollider] Tried to edit BoxCollider but fixture is not of type polygon.");
 		return;
 	}
 

@@ -1,11 +1,12 @@
 #pragma once
 
+#include <Dragon/Generic/Math.h>
 #include <Dragon/Game/GameObject.h>
-#include <Dragon/Game/SceneRenderer.h>
-//#include <Dragon/Coroutines/CoroutineManager.h>
-#include <Dragon/Math/Math.h>
+#include <Dragon/Graphics/RenderTarget.h>
 
-#include <Generic/ISerializable.h>
+//#include <Dragon/Coroutines/CoroutineManager.h>
+
+#include <Dragon/Generic/Serialization/ISerializable.h>
 
 #include <EASTL/unordered_map.h>
 
@@ -25,7 +26,6 @@ namespace dragon
 
 		//CoroutineManager m_coroutineManager;
 		b2World* m_pPhysicsWorld;
-		SceneRenderer m_sceneRenderer;
 
 
 	public:
@@ -56,8 +56,6 @@ namespace dragon
 #pragma region Getters / Setters
 
 		b2World* GetPhysicsWorld() const { return m_pPhysicsWorld; }
-
-		SceneRenderer& GetSceneRenderer() { return m_sceneRenderer; }
 
 #pragma endregion
 

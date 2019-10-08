@@ -1,7 +1,3 @@
-include "dragoncore.lua"
-
-build_dependencies()
-
 printf("[DragonEngine] Building Project Files")
 
 workspace "DragonEngine"

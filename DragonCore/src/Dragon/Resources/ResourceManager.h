@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Generic/StringHash.h>
+#include <Dragon/Generic/StringHash.h>
 
 #include <EASTL/queue.h>
 #include <EASTL/unordered_map.h>

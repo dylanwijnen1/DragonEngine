@@ -21,7 +21,7 @@ namespace dragon
 		}
 		else
 		{
-			WARN("[CircleCollider] Could not add collider there is no rigidbody attached to the game object.");
+			DWARN("[CircleCollider] Could not add collider there is no rigidbody attached to the game object.");
 			return false;
 		}
 
@@ -54,7 +54,7 @@ namespace dragon
 		b2Shape* pShape = m_pFixture->GetShape();
 		if (pShape; pShape->GetType() != b2Shape::e_circle)
 		{
-			WARN("[CircleCollider] Tried to edit BoxCollider but fixture is not of type circle.");
+			DWARN("[CircleCollider] Tried to edit BoxCollider but fixture is not of type circle.");
 			return;
 		}
 
@@ -65,7 +65,7 @@ namespace dragon
 		}
 		else
 		{
-			WARN("[CircleCollider] Tried to edit BoxCollider but fixture is not of type circle.");
+			DWARN("[CircleCollider] Tried to edit BoxCollider but fixture is not of type circle.");
 		}
 	}
 
@@ -81,7 +81,7 @@ namespace dragon
 			}
 		}
 
-		WARN("[CircleCollider] Tried to access data on CircleCollider but fixture is not of type circle.");
+		DWARN("[CircleCollider] Tried to access data on CircleCollider but fixture is not of type circle.");
 		return 0.0f;
 	}
 
@@ -97,7 +97,7 @@ namespace dragon
 			}
 		}
 
-		WARN("[CircleCollider] Tried to edit Circle but fixture is not of type circle.");
+		DWARN("[CircleCollider] Tried to edit Circle but fixture is not of type circle.");
 	}
 
 	Vector2f CircleCollider::GetOffset() const
@@ -112,7 +112,7 @@ namespace dragon
 			}
 		}
 
-		WARN("[CircleCollider] Tried to access circle data but fixture is not of type circle.");
+		DWARN("[CircleCollider] Tried to access circle data but fixture is not of type circle.");
 
 		return Vector2f();
 	}

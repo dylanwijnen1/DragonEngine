@@ -36,7 +36,7 @@ namespace dragon
 		template<class Type>
 		Type Min(Type left, Type right)
 		{
-			return std::Min(left, right);
+			return std::min(left, right);
 		}
 	}
 }
