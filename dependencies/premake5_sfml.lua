@@ -159,11 +159,6 @@ local function sfml_includes(basedir)
     {
 		sfmldir .. [[include/]],
 	}
-	
-	libdirs
-	{
-		sfmldir .. [[extlibs/libs-msvc/x64/]],
-	}
 
     defines "SFML_STATIC"
 end
@@ -185,6 +180,11 @@ local function sfml_link()
 		"opengl32.lib",
 		"gdi32.lib",
 		"winmm.lib"
+	}
+
+	libdirs
+	{
+		sfmldir .. [[extlibs/libs-msvc/x64/]],
 	}
 end
 

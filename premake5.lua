@@ -10,6 +10,8 @@ include "dependencies/premake5_mathfu"
 
 dragon_list_dependencies()
 
+local outputdir = "%{cfg.buildcfg}_%{cfg.architecture}/%{prj.name}"
+
 workspace "DragonEngine"
 
     startproject "DragonCore_UnitTests"
@@ -27,9 +29,7 @@ workspace "DragonEngine"
         "x86"
     }
 
-local outputdir = "%{cfg.buildcfg}_%{cfg.architecture}/%{prj.name}"
-
-dragon_create_dependency_projects("dependencies/")
+    dragon_create_dependency_projects("dependencies/")
 
 project "DragonCore"
 
@@ -102,7 +102,10 @@ project "DragonCore_UnitTests"
         "%{prj.name}/*.cpp"
     }
 
-    links "DragonCore"
+    links
+    {
+        "DragonCore"
+    }
 
     filter {}
 
