@@ -30,7 +30,7 @@ DRAGON_DEPENDENCY_DIR = path.getabsolute("dependencies")
 printf("Dependency Folder: %s", DRAGON_DEPENDENCY_DIR)
 EASTL_ROOT_DIR = path.join(DRAGON_DEPENDENCY_DIR, "EASTL")
 
-function build_dependencies()
+function build_dragon_dependencies()
 
     -- --------------------------------------------------------------------------
     -- | Box2D
@@ -82,13 +82,29 @@ function build_dependencies()
 
 end
 
+function include_sfml()
 
----TODO: Installs the dragon engine to the desired location.
-function install_dragonengine()
+    filter { "options:graphics=sfml" }
+        defines "SFML_STATIC"
+        includedirs "%{DRAGON_DEPENDENCY_DIR}/SFML/include"
+
+    filter { "options:graphics=sfml", "platforms:x86" }
+        postbuildcommands
+        {
+            [[{COPY} "%{DRAGON_DEPENDENCY_DIR}/SFML/Build/Win32/lib/Debug/*.pdb" "%{cfg.buildtarget.directory}"]],
+        }
+
+    filter { "options:graphics=sfml", "platforms:x64" }
+        postbuildcommands
+        {
+            [[{COPY} "%{DRAGON_DEPENDENCY_DIR}/SFML/Build/Win64/lib/Debug/*.pdb" "%{cfg.buildtarget.directory}"]],
+        }
+
+    filter {}
 end
 
 --- Includes dragons dependencies
-function include_dragondependencies()    
+function include_dragon_dependencies()    
     includedirs
     {
 
@@ -112,7 +128,7 @@ function include_dragondependencies()
 
         "%{DRAGON_DEPENDENCY_DIR}/enet/include",
 
-        "%{DRAGON_DEPENDENCY_DIR}/fmod/inc",
+        -- "%{DRAGON_DEPENDENCY_DIR}/fmod/inc",
         
         "%{DRAGON_DEPENDENCY_DIR}/imgui",
 
@@ -129,7 +145,7 @@ function include_dragondependencies()
     filter { "platforms:x86" }
         postbuildcommands 
         {
-            [[{COPY} "%{DRAGON_DEPENDENCY_DIR}/fmod/lib/x86/*.dll" "%{cfg.buildtarget.directory}"]],            
+            -- [[{COPY} "%{DRAGON_DEPENDENCY_DIR}/fmod/lib/x86/*.dll" "%{cfg.buildtarget.directory}"]],            
             [[{COPY} "%{DRAGON_DEPENDENCY_DIR}/python/x86/*.*" "%{cfg.buildtarget.directory}"]],
 
             -- PDB
@@ -141,48 +157,89 @@ function include_dragondependencies()
     filter { "platforms:x64" }
         postbuildcommands 
         {
-            [[{COPY} "%{DRAGON_DEPENDENCY_DIR}/fmod/lib/x64/*.dll" "%{cfg.buildtarget.directory}"]],            
+            -- [[{COPY} "%{DRAGON_DEPENDENCY_DIR}/fmod/lib/x64/*.dll" "%{cfg.buildtarget.directory}"]],            
             [[{COPY} "%{DRAGON_DEPENDENCY_DIR}/python/x64/*.*" "%{cfg.buildtarget.directory}"]],
 
             -- PDB
             [[{COPY} "%{DRAGON_DEPENDENCY_DIR}/Box2D/Build/bin/x86_64/Debug/*.pdb" "%{cfg.buildtarget.directory}"]],
             [[{COPY} "%{EASTL_ROOT_DIR}/Build/Win64/Debug/*.pdb" "%{cfg.buildtarget.directory}"]],
         }
+
+    include_sfml()
         
-
-    -- TODO: Move to include_sfml()
-    filter { "options:graphics=sfml" }
-        defines "SFML_STATIC"
-        includedirs "%{DRAGON_DEPENDENCY_DIR}/SFML/include"
-
-    filter { "options:graphics=sfml", "platforms:x86" }
-        postbuildcommands
-        {
-            [[{COPY} "%{DRAGON_DEPENDENCY_DIR}/SFML/Build/Win32/lib/Debug/*.pdb" "%{cfg.buildtarget.directory}"]],
-        }
-
-    filter { "options:graphics=sfml", "platforms:x64" }
-        postbuildcommands
-        {
-            [[{COPY} "%{DRAGON_DEPENDENCY_DIR}/SFML/Build/Win64/lib/Debug/*.pdb" "%{cfg.buildtarget.directory}"]],
-        }
-
     filter {}
 
 end
 
+function link_sfml()
+    -- SFML, Release, x64
+    filter { "configurations:not *Debug*", "options:graphics=sfml", "platforms:x64" }
+            libdirs "%{DRAGON_DEPENDENCY_DIR}/SFML/Build/Win64/lib/Release/"
+
+    -- SFML, Debug, x64
+    filter { "configurations:*Debug*", "options:graphics=sfml", "platforms:x64" }
+        libdirs "%{DRAGON_DEPENDENCY_DIR}/SFML/Build/Win64/lib/Debug/"
+
+    -- SFML, Release, x86
+    filter { "configurations:not *Debug*", "options:graphics=sfml", "platforms:x86" }
+            libdirs "%{DRAGON_DEPENDENCY_DIR}/SFML/Build/Win32/lib/Release/"
+            
+    -- SFML, Debug, x86
+    filter { "configurations:*Debug*", "options:graphics=sfml", "platforms:x86" }
+        libdirs "%{DRAGON_DEPENDENCY_DIR}/SFML/Build/Win32/lib/Debug/"
+
+    -- SFML, x64
+    filter { "options:graphics=sfml", "platforms:x64" }
+        libdirs "%{DRAGON_DEPENDENCY_DIR}/SFML/extlibs/libs-msvc/x64/"
+
+    -- SFML, x86
+    filter { "options:graphics=sfml", "platforms:x86" }
+        libdirs "%{DRAGON_DEPENDENCY_DIR}/SFML/extlibs/libs-msvc/x86/"
+
+
+    filter { "configurations:*Debug*", "options:graphics=sfml" }
+        links
+        {
+            -- SFML
+            "sfml-graphics-s-d.lib",
+            "sfml-window-s-d.lib",
+            "sfml-system-s-d.lib",
+        }
+
+    -- SFML, Release
+    filter { "configurations:not *Debug*", "options:graphics=sfml" }
+        links
+        {
+            "sfml-graphics-s.lib",
+            "sfml-window-s.lib",
+            "sfml-system-s.lib",
+        }
+
+    -- SFML
+    filter { "options:graphics=sfml" }
+        links
+        {
+            "freetype.lib",
+            "opengl32.lib",
+            "winmm.lib",
+            "gdi32.lib",
+        }
+
+    filter {}
+end
+
 --- Links dragons dependencies
-function link_dragondependencies()
+function link_dragon_dependencies()
 
     -- Release, x64
     filter { "configurations:not *Debug*", "platforms:x64" }
         libdirs
         {
-            "%{DRAGON_DEPENDENCY_DIR}/Box2D/Build/bin/x86_64/Release", --Box2D.lib/pdb
-            "%{EASTL_ROOT_DIR}/Build/Win64/Release", --EASTL.lib/pdb
-            "%{DRAGON_DEPENDENCY_DIR}/enet/bin/x64/Release", --enet_static64d.lib, enet_staticd.lib, enet_static.lib, x32
-            "%{DRAGON_DEPENDENCY_DIR}/fmod/lib/x64", --fmod_vc.lib, fmodL_vc.lib, DLL's
-            "%{DRAGON_DEPENDENCY_DIR}/tmxlite/tmxlite/x64/bin/ReleaseStatic" -- libtmxlite-s-d.lib, libtmxlite-s.lib
+            "%{DRAGON_DEPENDENCY_DIR}/Box2D/Build/bin/x86_64/Release/", --Box2D.lib/pdb
+            "%{EASTL_ROOT_DIR}/Build/Win64/Release/", --EASTL.lib/pdb
+            "%{DRAGON_DEPENDENCY_DIR}/enet/bin/x64/Release/", --enet_static64d.lib, enet_staticd.lib, enet_static.lib, x32
+            --"%{DRAGON_DEPENDENCY_DIR}/fmod/lib/x64/", --fmod_vc.lib, fmodL_vc.lib, DLL's
+            "%{DRAGON_DEPENDENCY_DIR}/tmxlite/tmxlite/x64/bin/ReleaseStatic/" -- libtmxlite-s-d.lib, libtmxlite-s.lib
         }
 
         links
@@ -194,11 +251,11 @@ function link_dragondependencies()
     filter { "configurations:*Debug*", "platforms:x64" }
         libdirs
         {
-            "%{DRAGON_DEPENDENCY_DIR}/Box2D/Build/bin/x86_64/Debug",
-            "%{EASTL_ROOT_DIR}/Build/Win64/Debug",
-            "%{DRAGON_DEPENDENCY_DIR}/enet/bin/x64/Debug",
-            "%{DRAGON_DEPENDENCY_DIR}/fmod/lib/x64", 
-            "%{DRAGON_DEPENDENCY_DIR}/tmxlite/tmxlite/x64/bin/DebugStatic"
+            "%{DRAGON_DEPENDENCY_DIR}/Box2D/Build/bin/x86_64/Debug/",
+            "%{EASTL_ROOT_DIR}/Build/Win64/Debug/",
+            "%{DRAGON_DEPENDENCY_DIR}/enet/bin/x64/Debug/",
+            --"%{DRAGON_DEPENDENCY_DIR}/fmod/lib/x64/", 
+            "%{DRAGON_DEPENDENCY_DIR}/tmxlite/tmxlite/x64/bin/DebugStatic/"
         }
 
         links
@@ -210,11 +267,11 @@ function link_dragondependencies()
     filter { "configurations:not *Debug*", "platforms:x86" }
         libdirs
         {
-            "%{DRAGON_DEPENDENCY_DIR}/Box2D/Build/bin/x86/Release",
-            "%{EASTL_ROOT_DIR}/Build/Win32/Release",
-            "%{DRAGON_DEPENDENCY_DIR}/enet/bin/x32/Release",
-            "%{DRAGON_DEPENDENCY_DIR}/fmod/lib/x86",
-            "%{DRAGON_DEPENDENCY_DIR}/tmxlite/tmxlite/bin/ReleaseStatic"
+            "%{DRAGON_DEPENDENCY_DIR}/Box2D/Build/bin/x86/Release/",
+            "%{EASTL_ROOT_DIR}/Build/Win32/Release/",
+            "%{DRAGON_DEPENDENCY_DIR}/enet/bin/x32/Release/",
+            --"%{DRAGON_DEPENDENCY_DIR}/fmod/lib/x86/",
+            "%{DRAGON_DEPENDENCY_DIR}/tmxlite/tmxlite/bin/ReleaseStatic/"
         }
 
         links
@@ -226,11 +283,11 @@ function link_dragondependencies()
     filter { "configurations:*Debug*", "platforms:x86" }
         libdirs
         {
-            "%{DRAGON_DEPENDENCY_DIR}/Box2D/Build/bin/x86/Debug",
-            "%{EASTL_ROOT_DIR}/Build/Win32/Debug",
-            "%{DRAGON_DEPENDENCY_DIR}/enet/bin/x32/Debug",
-            "%{DRAGON_DEPENDENCY_DIR}/fmod/lib/x86",
-            "%{DRAGON_DEPENDENCY_DIR}/tmxlite/tmxlite/bin/DebugStatic"
+            "%{DRAGON_DEPENDENCY_DIR}/Box2D/Build/bin/x86/Debug/",
+            "%{EASTL_ROOT_DIR}/Build/Win32/Debug/",
+            "%{DRAGON_DEPENDENCY_DIR}/enet/bin/x32/Debug/",
+            --"%{DRAGON_DEPENDENCY_DIR}/fmod/lib/x86/",
+            "%{DRAGON_DEPENDENCY_DIR}/tmxlite/tmxlite/bin/DebugStatic/"
         }
 
         links
@@ -242,7 +299,7 @@ function link_dragondependencies()
     filter { "configurations:not *Debug*" }
         links
         {
-            "fmod_vc.lib",
+            --"fmod_vc.lib",
             "libtmxlite-s.lib"
         } 
 
@@ -250,7 +307,7 @@ function link_dragondependencies()
     filter { "configurations:*Debug*" }
         links
         {
-            "fmodL_vc.lib",
+            --"fmodL_vc.lib",
             "libtmxlite-s-d.lib"
         }
 
@@ -288,61 +345,7 @@ function link_dragondependencies()
 
 end
 
-function link_sfml()
-    -- SFML, Release, x64
-    filter { "configurations:not *Debug*", "options:graphics=sfml", "platforms:x64" }
-            libdirs "%{DRAGON_DEPENDENCY_DIR}/SFML/Build/Win64/lib/Release"
-
-    -- SFML, Debug, x64
-    filter { "configurations:*Debug*", "options:graphics=sfml", "platforms:x64" }
-        libdirs "%{DRAGON_DEPENDENCY_DIR}/SFML/Build/Win64/lib/Debug"
-
-    -- SFML, Release, x86
-    filter { "configurations:not *Debug*", "options:graphics=sfml", "platforms:x86" }
-            libdirs "%{DRAGON_DEPENDENCY_DIR}/SFML/Build/Win32/lib/Release"
-            
-    -- SFML, Debug, x86
-    filter { "configurations:*Debug*", "options:graphics=sfml", "platforms:x86" }
-        libdirs "%{DRAGON_DEPENDENCY_DIR}/SFML/Build/Win32/lib/Debug"
-
-    -- SFML, x64
-    filter { "options:graphics=sfml", "platforms:x64" }
-        libdirs "%{DRAGON_DEPENDENCY_DIR}/SFML/extlibs/libs-msvc/x64"
-
-    -- SFML, x86
-    filter { "options:graphics=sfml", "platforms:x86" }
-        libdirs "%{DRAGON_DEPENDENCY_DIR}/SFML/extlibs/libs-msvc/x86"
-
-
-    filter { "configurations:*Debug*", "options:graphics=sfml" }
-        links
-        {
-            -- SFML
-            "sfml-graphics-s-d.lib",
-            "sfml-window-s-d.lib",
-            "sfml-system-s-d.lib",
-        }
-
-    -- SFML, Release
-    filter { "configurations:not *Debug*", "options:graphics=sfml" }
-        links
-        {
-            "sfml-graphics-s.lib",
-            "sfml-window-s.lib",
-            "sfml-system-s.lib",
-        }
-
-    -- SFML
-    filter { "options:graphics=sfml" }
-        links
-        {
-            "freetype.lib",
-            "opengl32.lib",
-            "winmm.lib",
-            "gdi32.lib",
-        }
-end
-
 --- Generates all the basic files required to open a game window.
-function generate_gametemplate(projectname)
+function generate_dragon_game(projectname)
+
 end
