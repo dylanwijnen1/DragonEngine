@@ -8,6 +8,8 @@
 #include <Dragon/Application/Application.h>
 #include <Dragon/Application/Layer.h>
 
+#include <Platform/SFML/Graphics/SfmlGraphics.h>
+
 class TestLayer : public dragon::Layer
 {
 

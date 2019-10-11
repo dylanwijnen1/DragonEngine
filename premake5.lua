@@ -74,7 +74,6 @@ project "DragonCore_UnitTests"
 
     includedirs 
     {
-        "DragonCore/src",
         "%{prj.name}/thirdparty/catch2/include"
     }
 
@@ -84,12 +83,4 @@ project "DragonCore_UnitTests"
         "%{prj.name}/*.cpp"
     }
 
-    links
-    {
-        "DragonCore"
-    }
-
-    filter {}
-
-    dragon_include_dependencies("dependencies/")
-    --dragon_add_dependencies("dependencies/")
+    include_dragoncore("")

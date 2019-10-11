@@ -5,6 +5,21 @@ function dragon_default_outdir()
 end
 local outputdir = dragon_default_outdir();
 
+---Adds the default settings for dragon workspaces.
+function dragon_workspace_defaults()
+    configurations
+    {
+        "Debug",
+        "Release",
+        "Distribution"
+    }
+
+    platforms
+    {
+        "x64",
+        "x86"
+    }
+end
 
 ---Adds the default settings for any dragon project.
 ---To override the defaults call this function first.
@@ -38,7 +53,6 @@ function dragon_project_defaults()
         runtime "Release"
 
     filter {}
-
 end
 
 ---Add a project to the dependency list.
@@ -87,6 +101,23 @@ function dragon_add_dependencies(dependencydir)
 
         filter {}
     end
+
+end
+
+function include_dragoncore(root)
+    
+    filter {}
+
+    includedirs(root .. "DragonCore/src")
+
+    links
+    {
+        "DragonCore"
+    }
+
+    dragon_include_dependencies(root .. "dependencies/")
+
+    filter {}
 
 end
 
