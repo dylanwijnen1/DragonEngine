@@ -5,20 +5,31 @@
 
 namespace sf
 {
+	class Texture;
+}
+
+namespace dragon
+{
 	class SfmlTexture
 	{
-		class Texture* m_pTexture;
+		sf::Texture* m_pTexture;
 
 	public:
+
+		SfmlTexture() = default;
+		~SfmlTexture() = default;
+
+		// Wrap the texture into the implementation.
+		SfmlTexture(sf::Texture* pTexture) : m_pTexture(pTexture) {}
 
 		bool LoadFromFile(const char* filename);
 		bool LoadFromMemory(const dragon::Byte* pData, size_t size);
 
 		void Destroy();
 
-		dragon::Vector2f GetSize() const;
+		Vector2f GetSize() const;
 
-		Texture* GetDeviceTexture() const { return m_pTexture; }
+		sf::Texture* GetNativeTexture() const { return m_pTexture; }
 	};
 
 }

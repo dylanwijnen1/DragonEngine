@@ -5,8 +5,8 @@
 
 // Services
 #include <Dragon/Application/System/DragonSystem.h>
-#include <Dragon/Application/Window/DragonWindow.h>
-#include <Dragon/Graphics/DragonGraphics.h>
+#include <Dragon/Application/Window/Window.h>
+#include <Dragon/Graphics/Graphics.h>
 
 #if defined(DRAGON_DEBUG)
 	#define APP_DIE(SERVICE, PSERVICE, ...) if(!PSERVICE->Init(__VA_ARGS__)) { DERR("["##SERVICE##"] could not be initialized, Exiting..."); return false; }
@@ -27,7 +27,7 @@ namespace dragon
 		delete m_pWindow;
 
 #if DRAGON_RENDERSKIN != DRAGON_RENDERSKIN_NONE
-		//delete m_pGraphics;
+		delete m_pGraphics;
 		//delete m_pAudio;
 #endif
 	}
@@ -47,7 +47,7 @@ namespace dragon
 
 		// Window Service
 		m_pWindow = m_pSystem->CreateSystemWindow();
-		APP_DIE("DragonWindow", m_pWindow, DRAGON_APP_NAME, DRAGON_WINDOW_WIDTH, DRAGON_WINDOW_HEIGHT);
+		APP_DIE("Window", m_pWindow, DRAGON_APP_NAME, DRAGON_WINDOW_WIDTH, DRAGON_WINDOW_HEIGHT);
 		m_pWindow->SetEventCallback([this] (ApplicationEvent & ev) { Application::OnEvent(ev); });
 
 		// Audio Service, Die
@@ -56,7 +56,7 @@ namespace dragon
 
 		// Graphics Service, Die
 		m_pGraphics = m_pWindow->CreateGraphics();
-		APP_DIE("DragonGraphics", m_pGraphics, m_pWindow);
+		APP_DIE("Graphics", m_pGraphics, m_pWindow, (Vector2f)m_pWindow->GetSize());
 
 		return OnInit();
 	}

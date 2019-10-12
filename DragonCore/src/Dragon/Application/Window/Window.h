@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Dragon/Config.h>
+
 #include <Dragon/Generic/Math.h>
 #include <Dragon/Application/ApplicationEvent.h>
 #include <Dragon/Application/Input/Key.h>
@@ -9,13 +11,11 @@
 
 namespace dragon
 {
-	class DragonGraphics;
-
-	/// \class DragonWindow
+	/// \class Window
 	/// <summary>
 	/// This is object creates the window for the current platform and owns the Keyboard and Mouse.
 	/// </summary>				
-	class DragonWindow
+	class Window
 	{
 	public:
 		using ApplicationEventCallback = eastl::function<void(ApplicationEvent&)>;
@@ -25,8 +25,8 @@ namespace dragon
 		ApplicationEventCallback m_callback;
 
 	public:
-		DragonWindow() = default;
-		virtual ~DragonWindow() = default;
+		Window() = default;
+		virtual ~Window() = default;
 
 		/// <summary>
 		/// Initialize the window
@@ -93,7 +93,7 @@ namespace dragon
 		/// <returns></returns>
 		virtual Vector2 GetSize() = 0;
 
-		DragonGraphics* CreateGraphics();
+		Graphics* CreateGraphics();
 	};
 
 };

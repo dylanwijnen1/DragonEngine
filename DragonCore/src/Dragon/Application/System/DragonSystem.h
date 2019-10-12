@@ -43,7 +43,7 @@ namespace dragon
 		unsigned long long m_lastModified;
 	};
 
-	class DragonWindow;
+	class Window;
 
 	class DragonSystem
 	{
@@ -90,7 +90,7 @@ namespace dragon
 		/// </summary>
 		size_t GetCpuCores() const;
 
-		virtual DragonWindow* CreateSystemWindow() = 0;
+		virtual Window* CreateSystemWindow() = 0;
 
 		//virtual DisplayInfo GetDefaultDisplayDevice() const = 0;
 		//virtual std::vector<DisplayInfo> GetAvailableDisplayDevices() const = 0;

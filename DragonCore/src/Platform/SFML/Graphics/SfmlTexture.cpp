@@ -2,48 +2,53 @@
 
 #include <SFML/Graphics/Texture.hpp>
 
-bool sf::SfmlTexture::LoadFromFile(const char* filename)
+namespace dragon
 {
-	sf::Texture* m_pTexture = new sf::Texture();
 
-	if (!m_pTexture->loadFromFile(filename))
+	bool SfmlTexture::LoadFromFile(const char* filename)
 	{
-		Destroy();
-		return false;
+		sf::Texture* m_pTexture = new sf::Texture();
+
+		if (!m_pTexture->loadFromFile(filename))
+		{
+			Destroy();
+			return false;
+		}
+
+		return true;
 	}
 
-	return true;
-}
-
-bool sf::SfmlTexture::LoadFromMemory(const dragon::Byte* pData, size_t size)
-{
-	sf::Texture* m_pTexture = new sf::Texture();
-
-	if (!m_pTexture->loadFromMemory((void*)pData, size))
+	bool SfmlTexture::LoadFromMemory(const dragon::Byte* pData, size_t size)
 	{
-		Destroy();
-		return false;
+		sf::Texture* m_pTexture = new sf::Texture();
+
+		if (!m_pTexture->loadFromMemory((void*)pData, size))
+		{
+			Destroy();
+			return false;
+		}
+
+		return true;
 	}
 
-	return true;
-}
-
-void sf::SfmlTexture::Destroy()
-{
-	delete m_pTexture;
-	m_pTexture = nullptr;
-}
-
-dragon::Vector2f sf::SfmlTexture::GetSize() const
-{
-	dragon::Vector2f size = { 0.f, 0.f };
-
-	if (m_pTexture)
+	void SfmlTexture::Destroy()
 	{
-		Vector2u texSize = m_pTexture->getSize();
-		size.x = (float)texSize.x;
-		size.y = (float)texSize.y;
+		delete m_pTexture;
+		m_pTexture = nullptr;
 	}
 
-	return size;
+	Vector2f SfmlTexture::GetSize() const
+	{
+		dragon::Vector2f size = { 0.f, 0.f };
+
+		if (m_pTexture)
+		{
+			sf::Vector2u texSize = m_pTexture->getSize();
+			size.x = (float)texSize.x;
+			size.y = (float)texSize.y;
+		}
+
+		return size;
+	}
+
 }

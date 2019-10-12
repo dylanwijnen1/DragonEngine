@@ -5,7 +5,7 @@
 namespace dragon
 {
 
-	class DragonWindow;
+	class Window;
 
 	class WindowsSystem final : public DragonSystem
 	{
@@ -50,7 +50,7 @@ namespace dragon
 		virtual void SetConsoleColor(Color color) override;
 
 		// Inherited via ISystem
-		virtual DragonWindow* CreateSystemWindow() override;
+		virtual Window* CreateSystemWindow() override;
 
 	private:
 		ConsoleColor ColorToConsoleColor(Color color);

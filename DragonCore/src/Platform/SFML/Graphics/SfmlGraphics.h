@@ -1,20 +1,26 @@
 #pragma once
 
-#include <Dragon/Graphics/DragonGraphics.h>
+#include <Dragon/Graphics/Camera.h>
 
 #include <Platform/SFML/SfmlHelpers.h>
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
-namespace sf
+namespace dragon
 {
+	class Window;
 
-	class SfmlGraphics final : public dragon::DragonGraphics, public sf::RenderTarget
+	class SfmlGraphics : public sf::RenderTarget
 	{
+		Vector2f m_size;
+		Window* m_pWindow;
 
 	public:
 
-		SfmlGraphics() = default;
+		SfmlGraphics() 
+			: m_size(1024.f, 1024.f)
+			, m_pWindow(nullptr)
+		{}
 		~SfmlGraphics() = default;
 
 		SfmlGraphics(const SfmlGraphics&) = delete;
@@ -22,18 +28,23 @@ namespace sf
 		SfmlGraphics& operator=(const SfmlGraphics&) = delete;
 		SfmlGraphics& operator=(SfmlGraphics&&) = delete;
 
-		bool Init(dragon::Vector2f size) override final;
+		Vector2f GetSize() const { return m_size; }
+		void SetSize(Vector2f size) { m_size = size; }
 
-		void Clear(dragon::Color color) override { clear(sf::Convert(color)); }
+		void SetCamera(Camera camera);
+		virtual Camera GetCamera() const;
 
-		Vector2u getSize() const final override;
+		void Clear(Color color) { clear(sf::Convert(color)); }
+		void Display();
+
+		void SetWindow(Window* pWindow) { m_pWindow = pWindow; }
+
+		bool Init(Vector2f size);
+
+		sf::RenderTarget* GetNativeTarget() { return this; }
 
 	protected:
-
-
-		void OnSizeChanged(dragon::Vector2f size) override final;
-
-		void OnCameraChanged(dragon::Camera camera) override final;
+		sf::Vector2u getSize() const final override;
 	};
 
 }

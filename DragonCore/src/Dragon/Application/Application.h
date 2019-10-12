@@ -54,8 +54,8 @@ namespace dragon
 		// Services
 		class DragonSystem* m_pSystem;
 		class AudioSystem* m_pAudioSystem;
-		class DragonGraphics* m_pGraphics;
-		class DragonWindow* m_pWindow;
+		Graphics* m_pGraphics;
+		class Window* m_pWindow;
 
 	public:
 

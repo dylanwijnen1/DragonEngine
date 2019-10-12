@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Dragon/Application/Window/DragonWindow.h>
+#include <Dragon/Application/Window/Window.h>
 
 #include <SFML/Window/Window.hpp>
 #include <SFML/Window/Keyboard.hpp>
@@ -9,7 +9,7 @@
 
 namespace dragon
 {
-	class SfmlWindow : public DragonWindow
+	class SfmlWindow : public Window
 	{
 	private:
 		sf::Window m_window;

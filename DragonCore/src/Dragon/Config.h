@@ -20,8 +20,22 @@
 #define DRAGON_WINDOW_WIDTH 1280
 #define DRAGON_WINDOW_HEIGHT 768
 
+#define FORWARD_DECLARE_RENDERSKIN_TYPE(Type, Prefix) \
+    template<typename Impl> class _##Type; \
+    using Type = _##Type<class Prefix##Type>
+
 namespace dragon
 {
 	using Entity = uint32_t;
 	using Byte = std::byte;
+
+	// Forward declare
+
+#if DRAGON_RENDERSKIN == DRAGON_RENDERSKIN_SFML
+
+	FORWARD_DECLARE_RENDERSKIN_TYPE(Graphics, Sfml);
+	FORWARD_DECLARE_RENDERSKIN_TYPE(Texture, Sfml);
+
+	//FORWARD_DECLARE_RENDERSKIN_TYPE(RenderTexture, Sfml);
+#endif
 }

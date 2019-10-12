@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Dragon/Config.h>
-#include <Dragon/Math/Math.h>
 
 namespace dragon
 {
@@ -13,6 +12,9 @@ namespace dragon
 	public:
 		_Texture() = default;
 		~_Texture() = default;
+
+		// Construct a texture from the implementation.
+		_Texture(Impl&& impl) : m_impl(impl) {}
 
 		// Copying is bad, Moving is ok!
 		_Texture(const _Texture&) = delete;
@@ -46,21 +48,10 @@ namespace dragon
 		dragon::Vector2f GetSize() const { return m_impl.GetSize(); }
 
 		/// <summary>
-		/// Get the implementation texture.
-		/// </summary>
-		const Impl& GetImplTexture() const { return m_impl; }
-
-		/// <summary>
-		/// Get the implementation texture.
+		/// Raw pointer to the native texture.
 		/// </summary>
 		/// <returns></returns>
-		Impl& GetImplTexture() { return m_impl; }
-
-		/// <summary>
-		/// Raw pointer to the device texture.
-		/// </summary>
-		/// <returns></returns>
-		void* GetDeviceTexture() const { return m_impl.GetDeviceTexture(); }
+		void* GetNativeTexture() const { return m_impl.GetNativeTexture(); }
 	};
 
 }
@@ -68,10 +59,5 @@ namespace dragon
 #if DRAGON_RENDERSKIN == DRAGON_RENDERSKIN_SFML
 
 #include <Platform/SFML/Graphics/SfmlTexture.h>
-
-namespace dragon
-{
-	using Texture = _Texture<sf::SfmlTexture>;
-}
 
 #endif

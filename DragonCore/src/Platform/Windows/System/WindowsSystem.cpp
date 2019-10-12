@@ -98,7 +98,7 @@ namespace dragon
 		}
 	}
 
-	DragonWindow* WindowsSystem::CreateSystemWindow()
+	Window* WindowsSystem::CreateSystemWindow()
 	{
 #if DRAGON_RENDERSKIN == DRAGON_RENDERSKIN_SFML
 		return new SfmlWindow();
