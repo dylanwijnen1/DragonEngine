@@ -13,7 +13,7 @@ local function mathfu_includes(basedir)
     }
 end
 
-local function mathfu_link()
+local function mathfu_link(dragonlibdir)
 end
 
 add_dependency_project("mathfu", mathfu_project, mathfu_includes, mathfu_link)

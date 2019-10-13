@@ -17,7 +17,7 @@ function dragon_workspace_defaults()
     platforms
     {
         "x64",
-        "x86"
+        "Win32"
     }
 end
 
@@ -37,7 +37,7 @@ function dragon_project_defaults()
     filter "platforms:x64"
         architecture "x64"
 
-    filter "platforms:x86"
+    filter "platforms:Win32"
         architecture "x86"
 
     filter "configurations:Debug"
@@ -82,6 +82,7 @@ end
 function dragon_create_dependency_projects(dependencydir)
     for k, v in pairs(DEPENDENCY_MAP) do
         filter {}
+
         v.project(dependencydir)
 
         filter {}
@@ -94,10 +95,12 @@ function dragon_add_dependencies(dependencydir)
 
     for k, v in pairs(DEPENDENCY_MAP) do
         filter {}
+        
         v.include(dependencydir)
 
         filter {}
-        v.link()
+        
+        v.link("%{cfg.targetdir}")
 
         filter {}
     end
@@ -108,17 +111,27 @@ function include_dragoncore(root)
     
     filter {}
 
-    includedirs(root .. "DragonCore/src")
+    local dragonlibdir = root .. "bin/%{cfg.buildcfg}_%{cfg.architecture}/";
 
+    includedirs(root .. "DragonCore/src");
+
+    -- Link the Library
     links
     {
         "DragonCore"
     }
 
+    -- Library Directory, Prebuild Commands
+    libdirs { dragonlibdir .. "/DragonCore" }
+
+    prebuildcommands
+    {
+        [[msbuild "../]] .. root .. [[DragonEngine.sln" /p:Configuration=%{cfg.buildcfg};Platform=%{cfg.platform} -m]]
+    }
+
+    -- Dependency Include and Link
     dragon_include_dependencies(root .. "dependencies/")
-
-    filter {}
-
+    dragon_link_dependencies(dragonlibdir)
 end
 
 ---Include the dependencies.
@@ -129,6 +142,20 @@ function dragon_include_dependencies(dependencydir)
 
         filter {}
         v.include(dependencydir)
+
+        filter {}
+    end
+
+end
+
+---Link the dependencies.
+---@param dragonlibdir     | "The root of the dragon output folder"
+function dragon_link_dependencies(dragonlibdir)
+
+    for k, v in pairs(DEPENDENCY_MAP) do
+
+        filter {}
+        v.link(dragonlibdir)
 
         filter {}
     end

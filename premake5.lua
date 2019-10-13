@@ -1,14 +1,5 @@
 printf("[DragonEngine] Building Project Files")
-include "tools/dragoncore-utils.lua"
-
-include "dependencies/premake5_eastl"
-include "dependencies/premake5_sfml"
-include "dependencies/premake5_box2d"
-include "dependencies/premake5_enet"
-include "dependencies/premake5_tmxlite"
-include "dependencies/premake5_mathfu"
-
-dragon_list_dependencies()
+include "tools/dragoncore.lua"
 
 local outputdir = "%{cfg.buildcfg}_%{cfg.architecture}/%{prj.name}"
 
@@ -16,20 +7,9 @@ workspace "DragonEngine"
 
     startproject "DragonCore_UnitTests"
 
-    configurations
-    {
-        "Debug",
-        "Release",
-        "Distribution"
-    }
+    dragon_workspace_defaults()
 
-    platforms
-    {
-        "x64",
-        "x86"
-    }
-
-    dragon_create_dependency_projects("dependencies/")
+dragon_create_dependency_projects("dependencies/")
 
 project "DragonCore"
 
@@ -56,10 +36,10 @@ project "DragonCore"
 
     filter "configurations:Distribution"
         defines "DRAGON_DIST"
-
         
     -- Reset filters
     filter {}
+
 
     -- Links and Includes the dependency projects.
     dragon_add_dependencies("dependencies/")
@@ -74,7 +54,8 @@ project "DragonCore_UnitTests"
 
     includedirs 
     {
-        "%{prj.name}/thirdparty/catch2/include"
+        "%{prj.name}/thirdparty/catch2/include",
+        "DragonCore/src"
     }
 
     files 
@@ -83,4 +64,12 @@ project "DragonCore_UnitTests"
         "%{prj.name}/*.cpp"
     }
 
-    include_dragoncore("")
+    -- Link the Library
+    links
+    {
+        "DragonCore"
+    }
+
+    dragon_include_dependencies("dependencies/")
+
+    

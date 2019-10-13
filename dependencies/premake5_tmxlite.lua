@@ -35,11 +35,13 @@ local function tmxlite_includes(basedir)
     includedirs { tmxlitedir .. "tmxlite/include/" }
 end
 
-local function tmxlite_link()
+local function tmxlite_link(dragonlibdir)
     links 
     {
         "tmxlite"
     }
+
+    libdirs { dragonlibdir .. "tmxlite" }
 end
 
 add_dependency_project("tmxlite", tmxlite_project, tmxlite_includes, tmxlite_link)

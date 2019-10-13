@@ -22,10 +22,15 @@ local function enet_includes(basedir)
     includedirs { enetdir .. "include/" }
 end
 
-local function enet_link()
+local function enet_link(dragonlibdir)
     links 
     {
         "enet"
+    }
+
+    libdirs
+    {
+        dragonlibdir .. "enet"
     }
 end
 

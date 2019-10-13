@@ -160,15 +160,22 @@ local function sfml_includes(basedir)
 		sfmldir .. [[include/]],
 	}
 
-	libdirs
-	{
-		sfmldir .. [[extlibs/libs-msvc/x64/]],
-	}
+	filter "architecture:x64"
+		libdirs
+		{
+			sfmldir .. [[extlibs/libs-msvc/x64/]],
+		}
+
+	filter "architecture:x86"
+		libdirs
+		{
+			sfmldir .. [[extlibs/libs-msvc/x86/]],
+		}
 
     defines "SFML_STATIC"
 end
 
-local function sfml_link()
+local function sfml_link(dragonlibdir)
     links 
     {
         "sfml-graphics",
@@ -185,6 +192,14 @@ local function sfml_link()
 		"opengl32.lib",
 		"gdi32.lib",
 		"winmm.lib"
+	}
+
+	libdirs 
+	{
+		dragonlibdir .. "sfml-graphics",
+		dragonlibdir .. "sfml-audio",
+		dragonlibdir .. "sfml-system",
+		dragonlibdir .. "sfml-window",
 	}
 end
 

@@ -20,10 +20,15 @@ local function box2d_includes(basedir)
     includedirs { box2d_dir }
 end
 
-local function box2d_link()
+local function box2d_link(dragonlibdir)
     links 
     {
         "Box2D"
+    }
+
+    libdirs
+    {
+        dragonlibdir .. "Box2D"
     }
 end
 

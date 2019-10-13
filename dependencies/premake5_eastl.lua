@@ -51,10 +51,15 @@ local function eastl_includes(basedir)
     }
 end
 
-local function eastl_link()
+local function eastl_link(dragonlibdir)
     links 
     {
         "EASTL"
+    }
+
+    libdirs
+    {
+        dragonlibdir .. "EASTL"
     }
 end
 
