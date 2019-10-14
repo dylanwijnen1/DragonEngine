@@ -11,7 +11,7 @@
 #if defined(DRAGON_DEBUG)
 	#define APP_DIE(SERVICE, PSERVICE, ...) if(!PSERVICE->Init(__VA_ARGS__)) { DERR("["##SERVICE##"] could not be initialized, Exiting..."); return false; }
 	#define APP_CONTINUE(SERVICE, PSERVICE, ...) if(!PSERVICE->Init(__VA_ARGS__)) { DWARN("["##SERVICE##"] could not be intialized. Acting like nothing happened..."); }
-#elif defined(DRAGON_RELEASE)
+#else
 	#define APP_DIE(...) 
 	#define APP_CONTINUE(...) 
 #endif
