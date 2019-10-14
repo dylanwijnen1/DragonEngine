@@ -11,6 +11,8 @@
 
 namespace dragon
 {
+	class Graphics;
+
 	/// \class Window
 	/// <summary>
 	/// This is object creates the window for the current platform and owns the Keyboard and Mouse.

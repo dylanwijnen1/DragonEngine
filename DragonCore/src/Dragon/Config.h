@@ -29,13 +29,7 @@ namespace dragon
 	using Entity = uint32_t;
 	using Byte = std::byte;
 
-	// Forward declare
-
-#if DRAGON_RENDERSKIN == DRAGON_RENDERSKIN_SFML
-
-	FORWARD_DECLARE_RENDERSKIN_TYPE(Graphics, Sfml);
-	FORWARD_DECLARE_RENDERSKIN_TYPE(Texture, Sfml);
-
-	//FORWARD_DECLARE_RENDERSKIN_TYPE(RenderTexture, Sfml);
-#endif
+	// TODO: Possibly forward declare the RENDERSKIN specific Rendering classes with aliases.
+	//		 This could confuse users with intellisense giving more options. A factory method on the class would mitigage this problem.
+	//		 RenderTexture::Create(...); Texture::Create(...); Sprite::Create(...);
 }

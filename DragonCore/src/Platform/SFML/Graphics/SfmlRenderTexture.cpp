@@ -1,48 +1,57 @@
 #include "SfmlRenderTexture.h"
 
-#include <Dragon/Application/Debugging/Debug.h>
+#include <SFML/Graphics/RenderTexture.hpp>
 
 namespace dragon
 {
-
-	Vector2f SfmlRenderTexture::GetSize() const
+	void SfmlRenderTexture::OnCameraChanged(Camera camera)
 	{
-		sf::Vector2u size = getSize();
-		return { (float)size.x, (float)size.y };
-	}
-
-	void SfmlRenderTexture::SetSize(Vector2f size)
-	{
-		DWARN("Cannot set size of SfmlRenderTexture after it's been created.");
-	}
-
-	void SfmlRenderTexture::SetCamera(Camera camera)
-	{
-		sf::View view = getDefaultView();
+		sf::View view = m_pTarget->getDefaultView();
 
 		view.setCenter(sf::Convert(camera.m_position));
 		view.setSize(sf::Convert(camera.m_size));
 		view.setViewport(sf::Convert(camera.m_viewport));
 
-		setView(view);
+		m_pTarget->setView(view);
 	}
 
-	Camera SfmlRenderTexture::GetCamera() const
+	void SfmlRenderTexture::OnSizeChanged(Vector2f size)
 	{
-		const sf::View& view = getView();
-
-		Camera camera;
-		camera.m_position = sf::Convert(view.getCenter());
-		camera.m_size = sf::Convert(view.getSize());
-		camera.m_viewport = sf::Convert(view.getViewport());
-
-		return camera;
+		//TODO: Needs testing. This could not be possibly.
+		m_pTarget->create((unsigned int)size.x, (unsigned int)size.y);
 	}
 
-	sf::Texture* SfmlRenderTexture::GetNativeTexture()
+	SfmlRenderTexture::~SfmlRenderTexture()
 	{
-		// TODO: Very unsafe const cast. But only way to reference the texture.
-		return const_cast<sf::Texture*>(&getTexture());
+		delete m_pTarget;
+	}
+
+	bool SfmlRenderTexture::Init(Vector2f size)
+	{
+		if (m_pTarget)
+		{
+			DWARN("Attempted to reinitialize SfmlRenderTexture.");
+			return false;
+		}
+
+		m_pTarget = new sf::RenderTexture();
+		m_pTarget->create((unsigned int)size.x, (unsigned int)size.y);
+		return true;
+	}
+
+	void SfmlRenderTexture::Display()
+	{
+		m_pTarget->display();
+	}
+
+	void SfmlRenderTexture::Clear(Color color)
+	{
+		m_pTarget->clear(sf::Convert(color));
+	}
+
+	const void* SfmlRenderTexture::GetNativeTexture() const
+	{
+		return &(m_pTarget->getTexture());
 	}
 
 }

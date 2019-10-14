@@ -16,6 +16,9 @@ namespace dragon
 	/// </summary>
 	class RenderTarget
 	{
+		Vector2f m_size;
+		Camera m_camera;
+
 	public:
 		RenderTarget() = default;
 		~RenderTarget() = default;
@@ -32,15 +35,15 @@ namespace dragon
 		/// </summary>
 		/// <param name="size"></param>
 		/// <returns></returns>
-		virtual bool Init(Vector2f size) = 0;
+		virtual bool Init(Vector2f size);
 
-		virtual Vector2f GetSize() const = 0;
-		virtual void SetSize(Vector2f size) = 0;
+		Vector2f GetSize() const { return m_size; }
+		void SetSize(Vector2f size) { m_size = size; OnSizeChanged(size); }
 
 		virtual void Clear(Color color) = 0;
 
-		virtual void SetCamera(Camera camera) = 0;
-		virtual Camera GetCamera() const = 0;
+		virtual Camera GetCamera() const { return m_camera; }
+		void SetCamera(Camera camera) { m_camera = camera; OnCameraChanged(camera); }
 
 		/// <summary>
 		/// Return the native skin implementation target.
@@ -49,15 +52,18 @@ namespace dragon
 		virtual void* GetNativeTarget() = 0;
 
 		// Drawing Entities
-
 		void Draw(Renderable& renderable);
 
 		// Convenience Methods, Mainly used for debugging
+		virtual void DrawRect(RectF rect, Color color) { DWARN("RenderTarget::DrawRect not available for this target."); }
+		virtual void DrawFillRect(RectF rect, Color color, Color outlineColor, float outlineSize) { DWARN("RenderTarget::DrawFillRect not available for this target."); }
 
-		virtual void DrawRect(RectF rect, Color color) {}
-		virtual void DrawFillRect(RectF rect, Color color, Color outlineColor, float outlineSize) {}
+		virtual void DrawCircle(Vector2f pos, float radius, Color color) { DWARN("RenderTarget::DrawCircle not available for this target."); }
+		virtual void DrawFillCircle(Vector2f pos, float radius, Color color, Color outlineColor, float outlineSize) { DWARN("RenderTarget::DrawFillCircle not available for this target."); }
 
-		virtual void DrawCircle(Vector2f pos, float radius, Color color) {}
-		virtual void DrawCircle(Vector2f pos, float radius, Color color, Color outlineColor, float outlineSize) {}
+	protected:
+
+		virtual void OnSizeChanged(Vector2f size) {}
+		virtual void OnCameraChanged(Camera camera) {}
 	};
 }

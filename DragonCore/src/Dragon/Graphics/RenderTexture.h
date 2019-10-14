@@ -6,38 +6,27 @@
 namespace dragon
 {
 
-	template<typename Impl>
-	class _RenderTexture : public RenderTarget
+	class RenderTexture : public RenderTarget
 	{
-		Impl m_impl;
-
-		Texture* m_pTexture;
-
 	public:
 
-		_RenderTexture() 
-			: m_pTexture(new Texture())
-		{}
-		~_RenderTexture()
-		{
-			delete m_pTexture;
-		}
+		RenderTexture();
+		virtual ~RenderTexture();
 
-		virtual bool Init(Vector2f size) final override { return m_impl.Init(size); }
+		/// <summary>
+		/// Display the currently drawn buffer to the texture.
+		/// </summary>
+		virtual void Display() = 0;
+		
+		// RenderTarget Abstract Functions.
+		virtual void Clear(Color color) override = 0;
+		virtual void* GetNativeTarget() override = 0;
 
-		void Display() { m_impl.Display(); }
-
-		virtual Vector2f GetSize() const final override { return m_impl.GetSize(); }
-		virtual void SetSize(Vector2f size) final override { m_impl.SetSize(size); }
-
-		virtual void Clear(Color color) final override { m_impl.Clear(); }
-
-		virtual void SetCamera(Camera camera) final override { m_impl.SetCamera(camera); }
-		virtual Camera GetCamera() const final override { return m_impl.GetCamera(); }
-
-		virtual void* GetNativeTarget() final override { return m_impl.GetNativeTarget(); }
-
-		void* GetNativeTexture() { return m_impl.GetNativeTexture(); }
+		/// <summary>
+		/// Return a pointer to the texture of this RenderTarget
+		/// </summary>
+		/// <returns></returns>
+		virtual const void* GetNativeTexture() const = 0;
 	};
 
 };

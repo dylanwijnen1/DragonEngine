@@ -5,12 +5,20 @@
 
 namespace dragon
 {
-	sf::Vector2u SfmlGraphics::getSize() const
+	bool SfmlGraphics::Init(Window* pWindow, Vector2f size)
 	{
-		return sf::Vector2u((sf::Uint32)m_size.x, (sf::Uint32)m_size.y);
+		bool result = Graphics::Init(pWindow, size);
+		sf::RenderTarget::initialize();
+		return result;
 	}
 
-	void SfmlGraphics::SetCamera(Camera camera)
+	sf::Vector2u SfmlGraphics::getSize() const
+	{
+		Vector2f size = GetSize();
+		return sf::Vector2u((sf::Uint32)size.x, (sf::Uint32)size.y);
+	}
+
+	void SfmlGraphics::OnCameraChanged(Camera camera)
 	{
 		sf::View view = getDefaultView();
 
@@ -19,29 +27,6 @@ namespace dragon
 		view.setViewport(sf::Convert(camera.m_viewport));
 
 		setView(view);
-	}
-
-	Camera SfmlGraphics::GetCamera() const
-	{
-		const sf::View& view = getView();
-
-		Camera camera;
-		camera.m_position = sf::Convert(view.getCenter());
-		camera.m_size = sf::Convert(view.getSize());
-		camera.m_viewport = sf::Convert(view.getViewport());
-
-		return camera;
-	}
-
-	void SfmlGraphics::Display()
-	{
-		m_pWindow->SwapBuffers();
-	}
-
-	bool SfmlGraphics::Init(Vector2f size)
-	{
-		sf::RenderTarget::initialize();
-		return true;
 	}
 
 }

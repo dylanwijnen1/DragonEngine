@@ -1,32 +1,51 @@
 #pragma once
 
-#include <Dragon/Graphics/Camera.h>
+#include <Dragon/Graphics/RenderTexture.h>
 
 #include <Platform/SFML/SfmlHelpers.h>
 
-#include <SFML/Graphics/RenderTexture.hpp>
+
+
+namespace sf
+{
+	class RenderTexture;
+}
 
 namespace dragon
 {
 
-	class SfmlRenderTexture : public sf::RenderTexture
+	class SfmlRenderTexture final : public RenderTexture
 	{
+		sf::RenderTexture* m_pTarget;
+
 	public:
-		bool Init(Vector2f size) {  }
 
-		void Display() { display(); }
+		SfmlRenderTexture() 
+			: m_pTarget(nullptr) 
+		{}
 
-		Vector2f GetSize() const;
-		void SetSize(Vector2f size);
+		~SfmlRenderTexture();
 
-		void Clear(Color color) { clear(sf::Convert(color)); }
+		// Move ok, Copying is bad...
+		SfmlRenderTexture(const SfmlRenderTexture&) = delete;
+		SfmlRenderTexture(SfmlRenderTexture&&) = default;
+		SfmlRenderTexture& operator=(const SfmlRenderTexture&) = delete;
+		SfmlRenderTexture& operator=(SfmlRenderTexture&&) = default;
 
-		void SetCamera(Camera camera);
-		Camera GetCamera() const;
+		// Inherited from RenderTexture and RenderTarget
+		bool Init(Vector2f size) final override;
 
-		sf::RenderTarget* GetNativeTarget() { return this; }
+		void Display() final override;
+		void Clear(Color color) final override;
 
-		sf::Texture* GetNativeTexture();
+		void* GetNativeTarget() final override { return m_pTarget; }
+		const void* GetNativeTexture() const final override;
+
+	protected:
+
+		// Inherited from RenderTexture and RenderTarget
+		void OnCameraChanged(Camera camera) final override;
+		void OnSizeChanged(Vector2f size) final override;
 	};
 
 }

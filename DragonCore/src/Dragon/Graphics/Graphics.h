@@ -1,65 +1,31 @@
 #pragma once
 
 #include <Dragon/Graphics/RenderTarget.h>
-#include <Dragon/Application/Window/Window.h>
 
 namespace dragon
 {
+	class Window;
 
-	template<typename Impl>
-	class _Graphics : public RenderTarget
+	class Graphics : public RenderTarget
 	{
-		Impl m_impl;
+		Window* m_pWindow;
 
 	public:
 
-		_Graphics() = default;
-		_Graphics(Window* pWindow)
-			: m_impl(pWindow)
-		{}
+		Graphics() : m_pWindow(nullptr) {}
+		Graphics(Window* pWindow) : m_pWindow(pWindow) {}
+		virtual ~Graphics() {}
 
-		~_Graphics() = default;
+		virtual bool Init(Window* pWindow, Vector2f size);
 
-		bool Init(Window* pWindow, Vector2f size)
-		{
-			if (!pWindow)
-				return false;
+		void Display();
 
-			SetWindow(pWindow);
+		// Abstract RenderTarget Functions.
+		virtual void Clear(Color color) override = 0;
+		virtual void* GetNativeTarget() override = 0;
 
-			return Init(size);
-		}
-
-		void Display() { m_impl.Display(); }
-
-		virtual Vector2f GetSize() const final override	{ return m_impl.GetSize(); }
-
-		virtual void SetSize(Vector2f size) final override { m_impl.SetSize(size); }
-
-		virtual void Clear(Color color) final override { m_impl.Clear(color); }
-
-		virtual void SetCamera(Camera camera) final override { m_impl.SetCamera(camera); }
-
-		virtual Camera GetCamera() const final override { return m_impl.GetCamera(); }
-
-		virtual void* GetNativeTarget() final override { return m_impl.GetNativeTarget(); }
-
-	private:
-
-		// Hide Inherited Member Init() from RenderTarget
-		virtual bool Init(Vector2f size) final override { return m_impl.Init(size); }
-
-		void SetWindow(Window* pWindow) { m_impl.SetWindow(pWindow); }
+		// Override Init() from RenderTarget and mark it final.
+		bool Init(Vector2f size) final override;
 	};
 
 }
-
-#if DRAGON_RENDERSKIN == DRAGON_RENDERSKIN_SFML
-	
-#include <Platform/SFML/Graphics/SfmlGraphics.h>
-//namespace dragon
-//{
-//	using Graphics = _Graphics<SfmlGraphics>;
-//}
-
-#endif
