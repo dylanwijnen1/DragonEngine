@@ -1,4 +1,3 @@
-include "../dragoncore.lua"
 
 --- Sets the PROJECT_NAME local variable.
 newoption 
@@ -8,99 +7,32 @@ newoption
     description = "The name of the project"
 }
 
---- Sets the PROJECT_LOCATION local variable.
-newoption 
-{
-    trigger     = "projectlocation",
-    description = "The name of the project"
-}
-
 local PROJECT_NAME = _OPTIONS["projectname"] or "NewProject"
-local outputdir = "%{cfg.buildcfg}_%{cfg.architecture}/%{prj.name}"
-local DRAGON_ENGINE_PATH = path.join(path.getabsolute("../"))
 
--- TODO
-local PROJECT_LOCATION = _OPTIONS["projectlocation"] or DRAGON_ENGINE_PATH .. "/../Projects/"
-
-
+-- TODO: If projectlocation was given as option, figure out the path to the engine.
+local ENGINE_LOC = "../../"
 
 printf("Generating project: %s", PROJECT_NAME)
-printf("Generating project at: %s", PROJECT_LOCATION)
-printf("[DEBUG] DRAGON_ENGINE_PATH: %s", DRAGON_ENGINE_PATH)
 
-workspace(PROJECT_NAME)
-    location (PROJECT_LOCATION .. PROJECT_NAME)
+---@param text string | The text to replace tokens in.
+function replace_tokens(text)
+    text = text:gsub("_PRJ_NAME_", PROJECT_NAME)
+    text = text:gsub("_ENGINE_LOCATION_", ENGINE_LOC)
+    return text
+end
 
-    startproject(PROJECT_NAME)
+function readfile(filename)
+    local f = assert(io.open(filename, "rb"))
+    local content = f:read("*all")
+    f:close()
+    return content
+end
 
-    configurations
-    {
-        "Debug",
-        "Release",
-    }
+matches = os.matchfiles("ProjectTemplateFiles/**.*")
+for key, match in pairs(matches) do
+    newFilename = replace_tokens(match):gsub("ProjectTemplateFiles/", "../projects/" .. PROJECT_NAME .. "_Game/")
+    content = readfile(match)
+    content = replace_tokens(content)
 
-    platforms
-    {
-        "x64",
-        "x86"
-    }
-
-externalproject "DragonCore"
-    location "%{DRAGON_ENGINE_PATH}/../DragonCore"
-    uuid "49A360B0-355B-A2FD-9E62-7B598A393DEE"
-    kind "StaticLib"
-    language "C++"
-
-project (PROJECT_NAME)
-    location (PROJECT_NAME)
-
-    kind "ConsoleApp"
-    language "C++"
-
-    targetdir("bin/" .. outputdir)
-    objdir("temp/" .. outputdir)
-
-    cppdialect "C++17"
-    systemversion "latest"
-
-    files 
-    {
-        "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.cpp",
-        -- "%{prj.name}/scripts/**.py"
-    }
-
-    -- This allows for <Dragon/...> includes.
-    includedirs "%{prj.name}/src"
-
-    filter "platforms:x64"
-        architecture "x64"
-
-    filter "platforms:x86"
-        architecture "x86"
-
-    filter "configurations:Debug"
-        defines "DRAGON_DEBUG"
-        symbols "full"
-        runtime "Debug"
-
-    filter "configurations:Release"
-        defines "DRAGON_RELEASE"
-        optimize "On"
-        runtime "Release"
-
-    -- Reset filters
-    filter {}
-
-    include_dragondependencies()
-    link_dragondependencies()
-
-    includedirs
-    {
-        "%{DRAGON_ENGINE_PATH}/../DragonCore/src"
-    }
-
-    links
-    {
-        "DragonCore"
-    }
+    io.writefile(newFilename, content);
+end
