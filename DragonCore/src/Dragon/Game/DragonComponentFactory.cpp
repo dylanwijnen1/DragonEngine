@@ -15,15 +15,15 @@ namespace dragon
 	{
 		Component* pComponent = nullptr;
 
+#if defined(ENGINE_COMPONENTS)
 		// Engine level components
 		switch (id)
 		{
-#if defined(ENGINE_COMPONENTS)
 		ENGINE_COMPONENTS
-#endif
 		default:
 			pComponent = nullptr;
 		}
+#endif
 
 		// Game level components
 		pComponent = m_pGameFactory->CreateComponent();
