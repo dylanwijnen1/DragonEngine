@@ -171,6 +171,9 @@ local function sfml_includes(basedir)
 		{
 			sfmldir .. [[extlibs/libs-msvc/x86/]],
 		}
+	
+	-- Reset Filter
+	filter {}
 
     defines "SFML_STATIC"
 end
