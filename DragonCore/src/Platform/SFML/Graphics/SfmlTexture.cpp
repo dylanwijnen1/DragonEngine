@@ -7,7 +7,7 @@ namespace dragon
 
 	bool SfmlTexture::LoadFromFile(const char* filename)
 	{
-		sf::Texture* m_pTexture = new sf::Texture();
+		m_pTexture = new sf::Texture();
 
 		if (!m_pTexture->loadFromFile(filename))
 		{
@@ -20,7 +20,7 @@ namespace dragon
 
 	bool SfmlTexture::LoadFromMemory(const dragon::Byte* pData, size_t size)
 	{
-		sf::Texture* m_pTexture = new sf::Texture();
+		m_pTexture = new sf::Texture();
 
 		if (!m_pTexture->loadFromMemory((void*)pData, size))
 		{

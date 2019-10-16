@@ -51,6 +51,11 @@ namespace dragon
 			}
 		}
 
+		float RandomUniform()
+		{
+			return ToFloat((uint32_t)(Next()));
+		}
+
 		/// Gets the current seed.
 		XorState GetSeed() const
 		{

@@ -16,15 +16,21 @@ namespace dragon
 
 	public:
 
-		SfmlTexture() = default;
+		SfmlTexture() 
+			: m_pTexture(nullptr)
+		{}
+
 		~SfmlTexture() = default;
 
 		// Wrap the texture into the implementation.
-		SfmlTexture(sf::Texture* pTexture) : m_pTexture(pTexture) {}
+		SfmlTexture(sf::Texture* pTexture) 
+			: m_pTexture(pTexture) 
+		{}
 
 		bool LoadFromFile(const char* filename);
 		bool LoadFromMemory(const dragon::Byte* pData, size_t size);
 
+		bool IsValid() const { return m_pTexture != nullptr; }
 		void Destroy();
 
 		Vector2f GetSize() const;

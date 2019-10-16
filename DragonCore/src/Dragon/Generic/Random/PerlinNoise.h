@@ -28,9 +28,9 @@ namespace dragon
 		float Noise(float x, float y)
 		{
 			// Determine grid cell coordinates
-			int x0 = std::floorf(x);
+			int x0 = (int)std::floorf(x);
 			int x1 = x0 + 1;
-			int y0 = std::floorf(y);
+			int y0 = (int)std::floorf(y);
 			int y1 = y0 + 1;
 
 			// Determine interpolation weights

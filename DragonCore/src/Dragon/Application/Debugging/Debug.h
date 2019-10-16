@@ -9,6 +9,7 @@
 #include <mutex>
 #include <iosfwd>
 
+// TODO: Instead of enabling trace we should add trace functionality.
 #if DRAGON_ENABLE_TRACE
 	#define TRACE_FMT(fmt) __FILE__ "(" STRINGIFY(__LINE__) "): in function \"%s\":" fmt "\n\n"
 

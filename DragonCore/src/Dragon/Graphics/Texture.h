@@ -38,6 +38,11 @@ namespace dragon
 		bool LoadFromMemory(const Byte* pData, size_t size) { return m_impl.LoadFromMemory(pData, size); }
 
 		/// <summary>
+		/// Check if the texture is valid.
+		/// </summary>
+		bool IsValid() const { return m_impl.IsValid(); }
+
+		/// <summary>
 		/// Destroy the texture.
 		/// </summary>
 		void Destroy() { m_impl.Destroy(); }
@@ -59,5 +64,9 @@ namespace dragon
 #if DRAGON_RENDERSKIN == DRAGON_RENDERSKIN_SFML
 
 #include <Platform/SFML/Graphics/SfmlTexture.h>
+namespace dragon
+{
+	using Texture = _Texture<SfmlTexture>;
+}
 
 #endif

@@ -23,6 +23,12 @@ namespace dragon
 		Vector2f m_position;
 		Vector2f m_size;
 		RectF m_viewport;
+
+		RectF GetViewBounds() const
+		{
+			Vector2f topLeft = m_position - (m_size / 2.0f);
+			return { topLeft, m_size };
+		}
 	};
 
 }

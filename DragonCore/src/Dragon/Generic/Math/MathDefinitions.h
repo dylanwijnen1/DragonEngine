@@ -11,6 +11,7 @@ namespace dragon
 
 	using RectF = mathfu::Rect<float>;
 	using Rect = mathfu::Rect<int>;
+	using RectU = mathfu::Rect<unsigned int>;
 
 	template<typename Type>
 	using _Rect = mathfu::Rect<Type>;
@@ -22,6 +23,10 @@ namespace dragon
 	using Vector2 = mathfu::Vector<int, 2>;
 	using Vector3 = mathfu::Vector<int, 3>;
 	using Vector4 = mathfu::Vector<int, 4>;
+
+	using Vector2u = mathfu::Vector<unsigned int, 2>;
+	using Vector3u = mathfu::Vector<unsigned int, 3>;
+	using Vector4u = mathfu::Vector<unsigned int, 4>;
 
 	template<typename Type, int Amount = 2>
 	using _Vector = mathfu::Vector<Type, Amount>;

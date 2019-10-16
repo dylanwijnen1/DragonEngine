@@ -46,7 +46,7 @@ namespace dragon
 		/// Get the current seed "state" of the randomizer.
 		/// </summary>
 		/// <returns>SeedState of the engine.</returns>
-		typename RandImpl::_SeedType GetSeed() const
+		typename RandImpl::SeedType GetSeed() const
 		{
 			return impl.GetSeed();
 		}

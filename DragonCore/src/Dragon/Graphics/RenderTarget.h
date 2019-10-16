@@ -44,6 +44,7 @@ namespace dragon
 
 		virtual Camera GetCamera() const { return m_camera; }
 		void SetCamera(Camera camera) { m_camera = camera; OnCameraChanged(camera); }
+		Camera GetDefaultCamera() const { return { m_size / 2.f, m_size, { 0.f, 0.f, 1.f, 1.f } }; }
 
 		/// <summary>
 		/// Return the native skin implementation target.
