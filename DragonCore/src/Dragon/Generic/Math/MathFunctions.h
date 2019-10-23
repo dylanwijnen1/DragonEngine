@@ -14,7 +14,6 @@ namespace dragon
 		constexpr float Infinity = std::numeric_limits<float>::infinity();
 		constexpr float NegativeInfinity = -std::numeric_limits<float>::infinity();
 
-
 		// Precise method, which guarantees v = v1 when t = 1.
 		template<class Type>
 		constexpr inline Type Lerp(Type start, Type end, Type perc) 
@@ -58,6 +57,16 @@ namespace dragon
 		inline float Ceil(float in)
 		{
 			return std::ceilf(in);
+		}
+
+		inline constexpr float DegToRad(float deg)
+		{
+			return deg * (PI_F / 180.f);
+		}
+
+		inline constexpr float RadToDeg(float rad)
+		{
+			return rad * (180.f / PI_F);
 		}
 	}
 }

@@ -2,9 +2,11 @@
 
 #include <stdint.h>
 
+#include <Dragon/Generic/Math.h>
+
 namespace dragon
 {
-	class Color
+	struct Color
 	{
 	public:
 		constexpr Color()
@@ -22,7 +24,12 @@ namespace dragon
 			: Color(r, g, b, 1.0f)
 		{}
 
-		constexpr Color FromHex(uint32_t hex)
+		//constexpr void FromHex(uint32_t hex) 
+		//{
+		//	
+		//}
+
+		static constexpr Color FromHex(uint32_t hex)
 		{
 			Color color;
 			color.r = ((hex >> 16) & 0xFF) / 255.0f;
@@ -32,6 +39,64 @@ namespace dragon
 			return color;
 		}
 
+		/// <summary>
+		/// Conversion from: https://www.rapidtables.com/convert/color/hsv-to-rgb.html
+		/// TODO: When fmodf and fabsf are made constexpr make this function constexpr.
+		/// </summary>
+		/// <param name="hue">[0.f, 360.f]</param>
+		/// <param name="sat">[0.0f, 1.0f]</param>
+		/// <param name="val">[0.0f, 1.0f]</param>
+		/// <returns></returns>
+		static Color FromHSV(float hue, float sat, float val)
+		{
+			Color color;
+
+			float c = val * sat;
+			float hh = hue / 60.f;
+			float hueMod = std::fmodf(hh, 2.0f);
+			float x = c * (1.0f - std::fabsf(hueMod - 1.0f));
+			float m = val - c;
+
+			if (hh >= 0.f && hh < 1.f)
+			{
+				color.r = c;
+				color.g = x;
+			}
+			else if (hh >= 1.f && hh < 2.f)
+			{
+				color.r = x;
+				color.g = c;
+			}
+			else if (hh >= 2.f && hh < 3.f)
+			{
+				color.g = c;
+				color.b = x;
+			}
+			else if (hh >= 3.f && hh < 4.f)
+			{
+				color.g = x;
+				color.b = c;
+			}
+			else if (hh >= 4.f && hh < 5.f)
+			{
+				color.r = x;
+				color.b = c;
+			}
+			else
+			{
+				color.r = c;
+				color.b = x;
+			}
+
+			m = val - c;
+			color.r += m;
+			color.g += m;
+			color.b += m;
+
+			return color;
+		}
+
+		// Properties
 		float r;
 		float g;
 		float b;
