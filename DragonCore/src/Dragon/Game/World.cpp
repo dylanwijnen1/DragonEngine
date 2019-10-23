@@ -5,7 +5,6 @@
 
 namespace dragon
 {
-
 	void World::Update(float dt)
 	{
 		for (auto [id, system] : m_systems)
@@ -21,5 +20,4 @@ namespace dragon
 			//system->Render(*this, target); // Internally calls World->Each<Components...>(target, entity, comps);
 		}
 	}
-
 }

@@ -59,7 +59,8 @@ namespace dragon
 	{
 		const Entity m_kInvalidEntity = 0;
 
-		eastl::vector<Entity> m_entities;
+		using Entities = eastl::vector<Entity>;
+		Entities m_entities;
 
 		using SystemID = size_t;
 		using ComponentHash = uint64_t;
@@ -114,6 +115,13 @@ namespace dragon
 
 		// Check if entity exists in the world.
 		bool EntityExists(Entity id);
+
+		template<typename... Components>
+		Entities GetEntityView() const
+		{
+			// TODO: Do actual implementation.
+			return m_entities;
+		}
 
 #pragma endregion
 
