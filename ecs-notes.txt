@@ -1,0 +1,18 @@
+# ECS Features
+
+- World
+    * Every world knows about all components and all systems.
+    * Disable/Enable of Systems, Entities and Components.
+
+    - Scriptable access to functions.
+
+- Components
+    * Register to `ComponentFactory`
+
+    - Scriptable Components
+
+- Systems
+    - Scriptable Systems
+
+- Debugging Tools, ImGui Profiler
+- Scripting
