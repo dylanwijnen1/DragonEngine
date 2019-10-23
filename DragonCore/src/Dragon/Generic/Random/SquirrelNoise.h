@@ -1,5 +1,7 @@
 #pragma once
 
+#include <EASTL/numeric_limits.h>
+
 namespace dragon
 {
 
@@ -44,7 +46,7 @@ namespace dragon
 
 		static constexpr float Get1DNoiseUniform(int x, unsigned int seedOverride) noexcept
 		{
-			return (float)Get1DNoise(x, seedOverride) / (float)std::numeric_limits<unsigned int>::max();
+			return (float)Get1DNoise(x, seedOverride) / (float)eastl::numeric_limits<unsigned int>::max();
 		}
 
 		/// <summary>
@@ -69,7 +71,7 @@ namespace dragon
 
 		static constexpr float Get2DNoiseUniform(int x, int y, unsigned int seedOverride) noexcept
 		{
-			return (float)Get2DNoise(x, y, seedOverride) / (float)std::numeric_limits<unsigned int>::max();
+			return (float)Get2DNoise(x, y, seedOverride) / (float)eastl::numeric_limits<unsigned int>::max();
 		}
 
 		/// <summary>
@@ -97,7 +99,7 @@ namespace dragon
 
 		static constexpr float Get3DNoiseUniform(int x, int y, int z, unsigned int seedOverride) noexcept
 		{
-			return 2.f * ((float)Get3DNoise(x, y, z, seedOverride) / (float)std::numeric_limits<unsigned int>::max()) - 1.0f;
+			return 2.f * ((float)Get3DNoise(x, y, z, seedOverride) / (float)eastl::numeric_limits<unsigned int>::max()) - 1.0f;
 		}
 
 		/// <summary>

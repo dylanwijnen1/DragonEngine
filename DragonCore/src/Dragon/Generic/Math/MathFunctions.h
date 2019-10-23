@@ -67,6 +67,15 @@ namespace dragon
 		inline constexpr float RadToDeg(float rad)
 		{
 			return rad * (180.f / PI_F);
+		/// <summary>
+		/// Curve the value of x to be closer to 0.f or 1.f, Expects x to be in range of [0.f, 1.f]
+		/// </summary>
+		/// <param name="x">Value between range of [0.f, 1.f]</param>
+		/// <returns></returns>
+		constexpr inline float SmootherStep(float x)
+		{
+			x = Clamp(x, 0.f, 1.f);
+			return x * x * x * (x * (x * 6 - 15) + 10);
 		}
 	}
 }
