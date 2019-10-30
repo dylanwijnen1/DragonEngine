@@ -33,7 +33,7 @@ namespace dragon
 
 	public:
 		WindowsSystem() : m_outHandle(nullptr) {}
-		~WindowsSystem() { delete m_outHandle; m_outHandle = nullptr; }
+		~WindowsSystem() { m_outHandle = nullptr; }
 
 		virtual const char * GetSystemName() const override { return "Windows"; };
 		

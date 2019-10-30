@@ -6,6 +6,7 @@
 // Services
 #include <Dragon/Application/System/DragonSystem.h>
 #include <Dragon/Application/Window/Window.h>
+#include <Dragon/Application/Window/WindowEvents.h>
 #include <Dragon/Graphics/Graphics.h>
 
 #define APP_DIE(SERVICE, PSERVICE, ...) if(!PSERVICE->Init(__VA_ARGS__)) { DERR("["##SERVICE##"] could not be initialized, Exiting..."); return false; }
@@ -18,6 +19,8 @@ namespace dragon
 
 	Application::~Application()
 	{
+		m_pWindow->Close();
+
 		delete m_pSystem;
 		delete m_pWindow;
 
@@ -59,7 +62,6 @@ namespace dragon
 	void Application::Shutdown()
 	{
 		DLOG("[DragonApplication] Application is shutting down.");
-		m_pWindow->Close();
 		m_running = false;
 	}
 
@@ -154,6 +156,9 @@ namespace dragon
 			Layer* pLayer = *it;
 			pLayer->OnEvent(ev);
 		}
+
+		// Listen for QuitEvent
+		ev.Dispatch<WindowClosed>([this](WindowClosed& ev) { this->Shutdown(); });
 	}
 
 	void Application::PushLayer(Layer* pLayer)

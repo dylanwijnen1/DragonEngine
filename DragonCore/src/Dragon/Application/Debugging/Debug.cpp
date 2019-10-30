@@ -16,15 +16,19 @@ namespace dragon
 
 	Debug::~Debug()
 	{
-		m_pFile->close();
-		delete m_pFile;
+		if (m_pFile)
+		{
+			m_pFile->close();
+			delete m_pFile;
+		}
 	}
 
 	bool Debug::Init()
 	{
-		m_channelMap.try_emplace("Error", Channel { kStandardOutputs, Colors::Red });
-		m_channelMap.try_emplace("Warning", Channel { kStandardOutputs, Colors::Yellow });
-		m_channelMap.try_emplace("Info", Channel { kStandardOutputs, Colors::Green });
+		// TODO: Can't use emplace_back because it doesn't handle passing in a literal string. Waiting for EASTL to fix this bug. https://github.com/electronicarts/EASTL/issues/269
+		m_channelMap.insert_or_assign("Error", Channel { kStandardOutputs, Colors::Red });
+		m_channelMap.insert_or_assign("Warning", Channel { kStandardOutputs, Colors::Yellow });
+		m_channelMap.insert_or_assign("Info", Channel { kStandardOutputs, Colors::Green });
 
 		m_pDebugger = &std::cout;
 		//m_pFile = new std::ofstream(, ) // Create a new file with the current timestamp.
