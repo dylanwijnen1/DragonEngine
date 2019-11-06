@@ -26,7 +26,7 @@ namespace dragon
 	private:
 
 		using Connections = eastl::unordered_set<Handle>;
-		using AdjacencyList = eastl::unordered_map<uint64_t, Connections>;
+		using AdjacencyList = eastl::unordered_map<size_t, Connections>;
 		AdjacencyList m_adjacencyList;
 
 		using Vertices = eastl::vector<Vertex>;
@@ -38,12 +38,18 @@ namespace dragon
 
 		DirectedGraph() = default;
 
-		DirectedGraph(std::initializer_list<std::pair<Data, Connections>> data)
+		DirectedGraph(eastl::vector<Data>&& datas, eastl::vector<Connections>&& edges)
 		{
-			for (auto pair : data)
+			// Add the data and create their id's
+			for (auto data : datas)
 			{
-				auto newId = Emplace(pair.first);
-				m_adjacencyList[newId.GetId()] = std::move(pair.second);
+				Emplace(data);
+			}
+
+			// Set the connections using the given id's
+			for (size_t i = 0; i < edges.size(); ++i)
+			{
+				m_adjacencyList[i] = eastl::move(edges[i]);
 			}
 		}
 
@@ -56,7 +62,7 @@ namespace dragon
 
 		void Erase(Handle handle)
 		{
-			uint64_t index = handle.GetId();
+			size_t index = handle.GetId();
 
 			// Add to free list
 			m_freeList.emplace_back(handle);
@@ -81,19 +87,21 @@ namespace dragon
 		{
 			Handle handle = NextId();
 
-			uint64_t index = handle.GetId();
+			size_t index = handle.GetId();
 			if (index >= m_vertices.size())
 			{
 				// New ID
-				m_adjacencyList[index]
+				m_adjacencyList.emplace(index, Connections());
 				m_vertices.emplace_back(Data{ eastl::forward<Args>(args)... }, handle);
 			}
 			else
 			{
 				// Recycled ID, Move assign.
-				m_vertices[index] = { { args... }, handle };
 				m_adjacencyList[index].clear();
+				m_vertices[index] = { { args... }, handle };
 			}
+
+			// Create's the adjacency list if it doesn't exist yet. Clears no matter what. Probably not the best way but simplest.
 
 			return handle;
 		}
@@ -117,19 +125,22 @@ namespace dragon
 		}
 
 		const Vertices& GetVertices() const { return m_vertices; }
-
 		size_t VertexCount() const { return m_vertices.size(); }
 
 		const Connections& GetAdjacentNodes(Handle handle) const
 		{
 			uint64_t index = handle.GetId();
 			auto result = m_adjacencyList.find(index);
+
+			assert(result != m_adjacencyList.end());
+
 			if (result != m_adjacencyList.end())
 			{
 				return result->second;
 			}
 
-			return Connections(); // Empty
+			// TODO: Probably use different accessor. Returning local temp variable is really bad.
+			return Connections(); // Empty, This is bad. since we're returning a reference.
 		}
 
 		const Vertex& operator[](Handle handle) const
@@ -149,16 +160,18 @@ namespace dragon
 			// Calculate incoming nodes.
 			Connections inList;
 
-			for (auto& connections : m_adjacencyList)
+			for (auto& pair : m_adjacencyList)
 			{
-				auto result = m_adjacencyList.find(replaceIndex);
-				if (result != m_adjacencyList.end())
+				auto& connections = pair.second;
+
+				auto result = connections.find(replaceIndex);
+				if (result != connections.end())
 				{
 					// Add the connection to our in-list
-					inList.emplace(result->first);
+					inList.emplace(*result);
 
 					// Remove the connection from the adjacency set of this node.
-					connections.second.erase(replaceIndex);
+					connections.erase(replaceIndex);
 				}
 			}
 
@@ -172,7 +185,7 @@ namespace dragon
 			Dereference(nodeToReplace);
 
 			// Clone the entire sub graph into our graph and map their old id's to the new id's
-			eastl::unordered_map<uint64_t, uint64_t> nodeMap;
+			eastl::unordered_map<size_t, size_t> nodeMap;
 
 			// Clone nodes
 			for (const auto& vertex : sub.m_vertices)
@@ -186,8 +199,8 @@ namespace dragon
 			{
 				for (Handle handle : connections.second)
 				{
-					uint64_t newFrom = nodeMap[connections.first];
-					uint64_t newTo = nodeMap[handle.GetId()];
+					Handle newFrom = nodeMap[connections.first];
+					Handle newTo = nodeMap[handle.GetId()];
 					AddEdge(newFrom, newTo);
 				}
 			}

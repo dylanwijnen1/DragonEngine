@@ -18,10 +18,19 @@ namespace dragon
 
 		size_t GetId() const { return (size_t)(m_handle & kIdFlag); }
 
-		uint64_t GetVersion() const { return (uint64_t)(m_handle >> 32); }
+		uint32_t GetVersion() const { return (uint32_t)(m_handle >> 32); }
+		void SetVersion(uint32_t version) 
+		{
+			m_handle &= kIdFlag; // Clear Version
+			m_handle |= ((uint64_t)version << 32); // Set Version 
+		}
 
 		// TODO: Technically against GAP Standards. But don't wanna make a .cpp just for this line.
-		uint64_t Increment() { m_handle &= kIdFlag; m_handle |= (GetVersion() + 1 << 32); return (uint64_t)m_handle; }
+		void Increment() 
+		{ 
+			uint32_t version = GetVersion();
+			SetVersion(++version);
+		}
 
 		bool IsValid() const { return GetVersion() != 0; }
 
