@@ -9,34 +9,33 @@
 #include <mutex>
 #include <iosfwd>
 
-// TODO: Instead of enabling trace we should add trace functionality.
-#if DRAGON_ENABLE_TRACE
-	#define TRACE_FMT(fmt) __FILE__ "(" STRINGIFY(__LINE__) "): in function \"%s\":" fmt "\n\n"
+// Debug Helpers
+#define DDEBUG(CHANNEL, fmt, ...) dragon::Debug::GetInstance().WriteChannel(CHANNEL, fmt, __VA_ARGS__)
+#define DERR(fmt, ...) DDEBUG("Error", fmt, __VA_ARGS__)
+#define DWARN(fmt, ...) DDEBUG("Warning", fmt, __VA_ARGS__)
+#define DLOG(fmt, ...) DDEBUG("Info", fmt, __VA_ARGS__)
 
-	#define DDEBUG(CHANNEL, fmt, ...) dragon::Debug::GetInstance().WriteChannel(CHANNEL, TRACE_FMT(fmt), __FUNCTION__, __VA_ARGS__)
-	#define DERR(fmt, ...) DDEBUG("Error", fmt, __VA_ARGS__)
-	#define DWARN(fmt, ...) DDEBUG("Warning", fmt, __VA_ARGS__)
-	#define DLOG(fmt, ...) DDEBUG("Info", fmt, __VA_ARGS__)
-#else
-	#define DDEBUG(CHANNEL, fmt, ...) dragon::Debug::GetInstance().WriteChannel(CHANNEL, fmt, __VA_ARGS__)
-	#define DERR(fmt, ...) DDEBUG("Error", fmt, __VA_ARGS__)
-	#define DWARN(fmt, ...) DDEBUG("Warning", fmt, __VA_ARGS__)
-	#define DLOG(fmt, ...) DDEBUG("Info", fmt, __VA_ARGS__)
-#endif
+// Trace Helpers
+#define TRACE_FMT(fmt) __FILE__ "(" STRINGIFY(__LINE__) "): in function \"%s\":" fmt "\n\n"
+
+#define DDEBUG_TRACE(CHANNEL, fmt, ...) dragon::Debug::GetInstance().WriteChannel(CHANNEL, TRACE_FMT(fmt), __FUNCTION__, __VA_ARGS__)
+#define DERR_TRACE(fmt, ...) DDEBUG_TRACE("Error", fmt, __VA_ARGS__)
+#define DWARN_TRACE(fmt, ...) DDEBUG_TRACE("Warning", fmt, __VA_ARGS__)
+#define DLOG_TRACE(fmt, ...) DDEBUG_TRACE("Info", fmt, __VA_ARGS__)
 
 namespace dragon
 {
 	enum struct DebugOutput : uint8_t
 	{
-		None			= 0,
-		File			= 1 << 0,		// File output
-		Debugger		= 1 << 1,		// Debugger console (std::cout)
-		Console			= 1 << 2,		// In Game Console
-		All				= File | Debugger | Console,
+		None = 0,
+		File = 1 << 0,		// File output
+		Debugger = 1 << 1,		// Debugger console (std::cout)
+		Console = 1 << 2,		// In Game Console
+		All = File | Debugger | Console,
 	};
 	ENUM_FLAG(DebugOutput)
 
-	class Debug
+		class Debug
 	{
 		struct Channel
 		{
@@ -82,7 +81,7 @@ namespace dragon
 		bool Init();
 
 		template<typename... Args>
-		void EmplaceChannel(Args&&... args);
+		void EmplaceChannel(Args&& ... args);
 
 		void CreateChannel(const char* name, Color color = Colors::White);
 		void CreateChannel(const char* name, DebugOutput outputs, Color color = Colors::White);
@@ -93,7 +92,7 @@ namespace dragon
 		void WriteChannel(const char* channel, const char* fmt, ...);
 
 		void SetSystem(DragonSystem* pSystem) { m_pSystem = pSystem; }
-	
+
 	private:
 		Debug()
 			: m_pConsole(nullptr)
@@ -108,4 +107,5 @@ namespace dragon
 	{
 		m_channelMap.emplace(std::forward(args));
 	}
-}
+
+};

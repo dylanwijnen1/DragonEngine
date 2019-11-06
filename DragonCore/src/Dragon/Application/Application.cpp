@@ -56,7 +56,11 @@ namespace dragon
 		m_pGraphics = m_pWindow->CreateGraphics();
 		APP_DIE("Graphics", m_pGraphics, m_pWindow, (Vector2f)m_pWindow->GetSize());
 
-		return OnInit();
+		bool result = OnInit();
+		
+		DLOG("[DragonApplication] Application has finished initialization.");
+
+		return result;
 	}
 
 	void Application::Shutdown()

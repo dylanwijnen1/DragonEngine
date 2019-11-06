@@ -12,6 +12,7 @@
 
 class TestLayer : public dragon::Layer
 {
+	
 
 public:
 	TestLayer() : dragon::Layer("TestLayer") {}
@@ -48,5 +49,5 @@ TEST_CASE("Testing Initialization", "[DragonEngine][Application]")
 {
 	TestApp app;
 	REQUIRE(app.Init());
-	app.Run();
+	app.Shutdown();
 }

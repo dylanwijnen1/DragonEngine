@@ -19,7 +19,13 @@ namespace dragon
 
 		_Random() = default;
 		_Random(std::nullptr_t) {}
+
 		_Random(typename RandImpl::SeedType seed)
+		{
+			impl.Seed(seed);
+		}
+
+		_Random(unsigned int seed)
 		{
 			impl.Seed(seed);
 		}
