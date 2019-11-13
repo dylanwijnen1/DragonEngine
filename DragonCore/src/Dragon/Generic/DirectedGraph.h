@@ -20,7 +20,7 @@ namespace dragon
 			Data m_data;
 			Handle m_handle;
 			Vertex(const Data& data, Handle handle) : m_data(data), m_handle(handle) {}
-			Vertex(Data&& data, Handle handle) : m_data(data), m_handle(handle) {}
+			Vertex(Data&& data, Handle handle) : m_data(std::move(data)), m_handle(handle) {}
 		};
 
 	private:
@@ -54,7 +54,7 @@ namespace dragon
 		}
 
 		// Note: Connections will still exist.
-		void Dereference(Handle handle)
+		void ReuseVertex(Handle handle)
 		{
 			// Add to free list
 			m_freeList.emplace_back(handle);
@@ -127,20 +127,18 @@ namespace dragon
 		const Vertices& GetVertices() const { return m_vertices; }
 		size_t VertexCount() const { return m_vertices.size(); }
 
-		const Connections& GetAdjacentNodes(Handle handle) const
+		const Connections* GetAdjacentNodes(Handle handle) const
 		{
 			uint64_t index = handle.GetId();
 			auto result = m_adjacencyList.find(index);
-
-			assert(result != m_adjacencyList.end());
 
 			if (result != m_adjacencyList.end())
 			{
 				return result->second;
 			}
 
-			// TODO: Probably use different accessor. Returning local temp variable is really bad.
-			return Connections(); // Empty, This is bad. since we're returning a reference.
+			assert(result != m_adjacencyList.end());
+			return nullptr;
 		}
 
 		const Vertex& operator[](Handle handle) const
@@ -181,8 +179,8 @@ namespace dragon
 			// Clear outgoing nodes
 			m_adjacencyList[replaceIndex].clear();
 
-			// Dereference the node (Don't destroy takes extra time we handle reconstruction of edges in here anyway)
-			Dereference(nodeToReplace);
+			// Reuse the node (Don't destroy takes extra time we handle reconstruction of edges in here anyway)
+			ReuseVertex(nodeToReplace);
 
 			// Clone the entire sub graph into our graph and map their old id's to the new id's
 			eastl::unordered_map<size_t, size_t> nodeMap;
