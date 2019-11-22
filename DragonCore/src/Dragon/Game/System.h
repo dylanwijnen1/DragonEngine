@@ -11,34 +11,6 @@ namespace dragon
 {
 	class RenderTarget;
 
-	template<typename T, typename... Args>
-	struct HasUpdateFunction
-	{
-		template<typename U, void(U::*)(World&, Entity, float, Args...)> struct SFINAE {};
-		template<typename U> static char Test(SFINAE<U, &U::Update>*);
-		template<typename U> static int Test(...);
-		constexpr bool value = sizeof(Test<T>(0)) == sizeof(char);
-	};
-
-	template<typename T, typename... Args>
-	struct HasFixedUpdateFunction
-	{
-		template<typename U, void(U::*)(World&, Entity, float, Args...)> struct SFINAE {};
-		template<typename U> static char Test(SFINAE<U, &U::FixedUpdate>*);
-		template<typename U> static int Test(...);
-		constexpr bool value = sizeof(Test<T>(0)) == sizeof(char);
-	};
-
-	template<typename T, typename... Args>
-	struct HasRenderFunction
-	{
-		template<typename U, void(U::*)(World&, Entity, RenderTarget&, Args...)> struct SFINAE {};
-		template<typename U> static char Test(SFINAE<U, &U::Render>*);
-		template<typename U> static int Test(...);
-		constexpr bool value = sizeof(Test<T>(0)) == sizeof(char);
-	};
-
-
 	// SystemInterface
 	class ISystem
 	{
@@ -55,44 +27,35 @@ namespace dragon
 	template<typename Impl, typename... Components>
 	class System : public ISystem
 	{
-		//static constexpr int m_kSize = sizeof...(Components);
+		static inline constexpr int m_kSize = sizeof...(Components);
 		Impl m_impl;
 
 	public:
 
 		void Update(World& world, float deltaTime) final override 
 		{
-			if constexpr (HasUpdateFunction<Impl, Components...>::value)
+			auto entities = world.GetEntityView<Components...>();
+			for (Entity entity : entities)
 			{
-				auto entities = world.GetEntityView<Components...>();
-				for (Entity entity : entities)
-				{
-					m_impl.Update(world, entity, deltaTime, world.GetComponent<Components>(entity)...);
-				}
+				m_impl.Update(world, entity, deltaTime, world.GetComponent<Components>(entity)...);
 			}
 		}
 
 		void FixedUpdate(World& world, float deltaTime) final override
 		{
-			if constexpr (HasFixedUpdateFunction<Impl, Components...>::value)
+			auto entities = world.GetEntities<Components...>();
+			for (Entity entity : entities)
 			{
-				auto entities = world.GetEntities<Components...>();
-				for (Entity entity : entities)
-				{
-					m_impl.FixedUpdate(world, entity, deltaTime, world.GetComponent<Components>(entity)...);
-				}
+				m_impl.FixedUpdate(world, entity, deltaTime, world.GetComponent<Components>(entity)...);
 			}
 		}
 
 		void Render(const World& world, RenderTarget& target) const final override 
 		{
-			if constexpr (HasRenderFunction<Impl, Components...>::value)
+			auto entities = world.GetEntities<Components...>();
+			for (Entity entity : entities)
 			{
-				auto entities = world.GetEntities<Components...>();
-				for (Entity entity : entities)
-				{
-					m_impl.Render(world, entity, target, world.GetComponent<Components>(entity)...);
-				}
+				m_impl.Render(world, entity, target, world.GetComponent<Components>(entity)...);
 			}
 		}
 	};
