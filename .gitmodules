@@ -1,21 +1,28 @@
 [submodule "dependencies/Box2D"]
 	path = dependencies/Box2D
 	url = https://github.com/erincatto/Box2D
+	ignore = dirty
 [submodule "dependencies/enet"]
 	path = dependencies/enet
 	url = https://github.com/lsalzman/enet
+	ignore = dirty
 [submodule "dependencies/imgui"]
 	path = dependencies/imgui
 	url = https://github.com/ocornut/imgui
+	ignore = dirty
 [submodule "dependencies/SFML"]
 	path = dependencies/SFML
 	url = https://github.com/SFML/SFML
+	ignore = dirty
 [submodule "dependencies/EASTL"]
 	path = dependencies/EASTL
 	url = https://github.com/electronicarts/EASTL
+	ignore = dirty
 [submodule "dependencies/mathfu"]
 	path = dependencies/mathfu
 	url = https://github.com/google/mathfu
+	ignore = dirty
 [submodule "dependencies/tmxlite"]
 	path = dependencies/tmxlite
 	url = https://github.com/fallahn/tmxlite
+	ignore = dirty
