@@ -6,20 +6,48 @@
 
 #include <Dragon/Generic/Handle.h>
 
-TEST_CASE("Testing Handles", "[DragonEngine][Generic][Handle]")
+TEMPLATE_TEST_CASE("Testing Handles", "[DragonEngine][Generic][Handle]", uint8_t, uint16_t, uint32_t, uint64_t)
 {
-	SECTION("From Integral")
+	using TestHandle = dragon::Handle<TestType>;
+
+	SECTION("Construction")
 	{
-		dragon::Handle handle = 1234;
-		REQUIRE(handle.GetId() == 1234);
+
+		SECTION("From Constructor")
+		{
+			TestHandle handle(10);
+			REQUIRE(handle.GetId() == (TestType)10);
+		}
+
+		SECTION("From Literal")
+		{
+			TestHandle handle = (TestType)15;
+			REQUIRE(handle.GetId() == (TestType)15);
+		}
 
 		SECTION("Versioning")
 		{
+			TestHandle handle = (TestType)15;
+
 			REQUIRE(handle.GetVersion() == 0);
 			handle.Increment();
 			REQUIRE(handle.GetVersion() == 1);
-			handle.Increment();
-			REQUIRE(handle.GetVersion() == 2);
+		}
+
+		SECTION("Validating")
+		{
+			TestHandle validHandle = (TestType)15;
+			TestHandle invalidHandle(TestHandle::Invalid);
+
+			REQUIRE(validHandle.IsValid());
+			REQUIRE(!invalidHandle.IsValid());
+
+			validHandle.Invalidate();
+			invalidHandle.SetVersion(0);
+			REQUIRE(invalidHandle.IsValid());
+			REQUIRE(!validHandle.IsValid());
+
 		}
 	}
+
 }

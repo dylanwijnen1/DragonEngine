@@ -4,7 +4,7 @@
 #include <mathfu/matrix.h>
 
 #include <Dragon/Generic/Serialization/InStream.h>
-#include <Dragon/Generic/Serialization/OutStream.h>
+#include <Dragon/Generic/Serialization/OutStream.h>		
 
 namespace dragon
 {
@@ -38,83 +38,116 @@ namespace dragon
 
 	template<int Rows, int Columns>
 	using Matrix = mathfu::Matrix<float, Rows, Columns>;
+
 	
 	// Float
 	template<>
-	inline void OutStream::Write(const Vector2f& vec) { Write(vec.x); Write(vec.y); }
+	inline void OutStream::Serialize(Vector2f vec) 
+	{ 
+		Serialize(vec.x);
+		Serialize(vec.y); 
+	}
 
 	template<>
-	inline Vector2f InStream::Read()
+	inline Vector2f InStream::Deserialize()
 	{
 		Vector2f vec;
-		vec.x = Read<float>();
-		vec.y = Read<float>();
+		vec.x = Deserialize<float>();
+		vec.y = Deserialize<float>();
 		return vec;
 	}
 
 	template<>
-	inline void OutStream::Write(const Vector3f& vec) { Write(vec.x); Write(vec.y); Write(vec.z); }
+	inline void OutStream::Serialize(Vector3f vec) 
+	{ 
+		Serialize(vec.x);
+		Serialize(vec.y);
+		Serialize(vec.z);
+	}
 
 	template<>
-	inline Vector3f InStream::Read()
+	inline Vector3f InStream::Deserialize()
 	{
 		Vector3f vec;
-		vec.x = Read<float>();
-		vec.y = Read<float>();
-		vec.z = Read<float>();
+		vec.x = Deserialize<float>();
+		vec.y = Deserialize<float>();
+		vec.z = Deserialize<float>();
 		return vec;
 	}
 
 	template<>
-	inline void OutStream::Write(const Vector4f& vec) { Write(vec.x); Write(vec.y); Write(vec.w); }
+	inline void OutStream::Serialize(Vector4f vec) 
+	{ 
+		Serialize(vec.x);
+		Serialize(vec.y);
+		Serialize(vec.z);
+		Serialize(vec.w);
+	}
 
 	template<>
-	inline  Vector4f InStream::Read()
+	inline  Vector4f InStream::Deserialize()
 	{
 		Vector4f vec;
-		vec.x = Read<float>();
-		vec.y = Read<float>();
-		vec.w = Read<float>();
+		vec.x = Deserialize<float>();
+		vec.y = Deserialize<float>();
+		vec.z = Deserialize<float>();
+		vec.w = Deserialize<float>();
 		return vec;
 	}
 
 	// Integral
 
 	template<>
-	inline void OutStream::Write(const Vector2& vec) { Write(vec.x); Write(vec.y); }
+	inline void OutStream::Serialize(Vector2 vec) 
+	{ 
+		Serialize(vec.x);
+		Serialize(vec.y);
+	}
 
 	template<>
-	inline Vector2 InStream::Read()
+	inline Vector2 InStream::Deserialize()
 	{
 		Vector2 vec;
-		vec.x = Read<int>();
-		vec.y = Read<int>();
+		vec.x = Deserialize<int>();
+		vec.y = Deserialize<int>();
 		return vec;
 	}
 
 	template<>
-	inline void OutStream::Write(const Vector3& vec) { Write(vec.x); Write(vec.y); Write(vec.z); }
+	inline void OutStream::Serialize(Vector3 vec) 
+	{ 
+		Serialize(vec.x);
+		Serialize(vec.y);
+		Serialize(vec.z); 
+	}
 
 	template<>
-	inline Vector3 InStream::Read()
+	inline Vector3 InStream::Deserialize()
 	{
 		Vector3 vec;
-		vec.x = Read<int>();
-		vec.y = Read<int>();
-		vec.z = Read<int>();
+		vec.x = Deserialize<int>();
+		vec.y = Deserialize<int>();
+		vec.z = Deserialize<int>();
 		return vec;
 	}
 
 	template<>
-	inline void OutStream::Write(const Vector4& vec) { Write(vec.x); Write(vec.y); Write(vec.w); }
+	inline void OutStream::Serialize(Vector4 vec) 
+	{ 
+		Serialize(vec.x);
+		Serialize(vec.y);
+		Serialize(vec.z);
+		Serialize(vec.w); 
+	}
 
 	template<>
-	inline Vector4 InStream::Read()
+	inline Vector4 InStream::Deserialize()
 	{
 		Vector4 vec;
-		vec.x = Read<int>();
-		vec.y = Read<int>();
-		vec.w = Read<int>();
+		vec.x = Deserialize<int>();
+		vec.y = Deserialize<int>();
+		vec.z = Deserialize<int>();
+		vec.w = Deserialize<int>();
 		return vec;
 	}
 

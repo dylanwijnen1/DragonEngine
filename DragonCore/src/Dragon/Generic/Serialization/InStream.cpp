@@ -1,16 +1,57 @@
 #include "InStream.h"
 
+#include <Dragon/Application/Debugging/Debug.h>
+
+#include <fstream>
+
 namespace dragon
 {
-
-	void InStream::Read(char* out, size_t len)
+	InStream::InStream(size_t count, Byte* data)
 	{
-		Read(reinterpret_cast<Byte*>(out), len);
+		// TODO: Create a InStreamBuffer
 	}
 
-	void InStream::Read(unsigned char* out, size_t len)
+	InStream::InStream(const char* fileName)
 	{
-		Read(reinterpret_cast<Byte*>(out), len);
+		std::ifstream* pFile = new std::ifstream();
+		pFile->open(fileName, std::ios::binary | std::ios::in);
+		m_pInStream = pFile;
+	}
+
+	InStream::~InStream()
+	{
+		delete m_pInStream;
+		m_pInStream = nullptr;
+	}
+
+	void InStream::Deserialize(Byte* out, size_t len)
+	{
+		if(Good())
+			m_pInStream->read(reinterpret_cast<char*>(out), len);
+	}
+
+	void InStream::Deserialize(char* out, size_t len)
+	{
+		if(Good())
+			m_pInStream->read(out, len);
+	}
+
+	void InStream::Deserialize(unsigned char* out, size_t len)
+	{
+		Deserialize(reinterpret_cast<char*>(out), len);
+	}
+
+	bool InStream::Good()
+	{
+		if (!m_pInStream->good())
+		{
+			DERR("Attempting to read past stream size.");
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 
 }

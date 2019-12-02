@@ -21,8 +21,12 @@ namespace dragon
 	{
 		m_pWindow->Close();
 
+		// Delete and unset the system from the debugger.
 		delete m_pSystem;
+		Debug::GetInstance().SetSystem(nullptr);
+
 		delete m_pWindow;
+
 
 #if DRAGON_RENDERSKIN != DRAGON_RENDERSKIN_NONE
 		delete m_pGraphics;

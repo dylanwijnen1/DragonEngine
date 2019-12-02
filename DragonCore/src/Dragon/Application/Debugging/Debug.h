@@ -23,6 +23,24 @@
 #define DWARN_TRACE(fmt, ...) DDEBUG_TRACE("Warning", fmt, __VA_ARGS__)
 #define DLOG_TRACE(fmt, ...) DDEBUG_TRACE("Info", fmt, __VA_ARGS__)
 
+// TODO:
+// Make channels typed rather than stringified. Pretty much what ue4 does. and what we do with components any way.
+// DECLARE_CHANNEL(Channel, FLAGS)
+// DECLARE_CHANNEL_COLORED(Channel, Color, FLAGS)
+//
+// Declaring a channel can be constexpr, Accessing channels can be through "string"_hash, integral or type. (See Component implementation).
+
+//template<typename Name>
+//struct Channel
+//{
+//	struct ChannelData
+//	{
+//		constexpr const char* m_pChannelname = TEMPLATE_NAME
+//	};
+//
+//	static ChannelData s_data; // Hold an instance to its data. (Color etc.)
+//};
+
 namespace dragon
 {
 	enum struct DebugOutput : uint8_t
@@ -35,7 +53,7 @@ namespace dragon
 	};
 	ENUM_FLAG(DebugOutput)
 
-		class Debug
+	class Debug
 	{
 		struct Channel
 		{

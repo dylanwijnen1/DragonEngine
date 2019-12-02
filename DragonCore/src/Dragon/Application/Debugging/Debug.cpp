@@ -21,6 +21,13 @@ namespace dragon
 			m_pFile->close();
 			delete m_pFile;
 		}
+
+		m_channelMap.clear();
+
+		m_pFile = nullptr;
+		m_pDebugger = nullptr;
+		m_pConsole = nullptr;
+		m_pSystem = nullptr;
 	}
 
 	bool Debug::Init()

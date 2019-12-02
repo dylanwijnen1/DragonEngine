@@ -3,7 +3,7 @@
 #include <EASTL/type_traits.h>
 #include <type_traits>
 
-#include <Dragon/Game/World.h>
+#include <Dragon/Game/EntityManager.h>
 
 #include <type_traits>
 
@@ -14,14 +14,15 @@ namespace dragon
 	// SystemInterface
 	class ISystem
 	{
+	public:
 		// Required Functionality
-		virtual void Update(World& world, float deltaTime) = 0;
+		virtual void Update(EntityManager& manager, float deltaTime) = 0;
 
 		// Non Required Functionality
-		virtual void FixedUpdate(World& world, float deltaTime) = 0;
+		virtual void FixedUpdate(EntityManager& manager, float deltaTime) = 0;
 
 		// Render Functions Only Render. Update can take care of building 
-		virtual void Render(const World& world, RenderTarget& target) const = 0;
+		virtual void Render(EntityManager& manager, RenderTarget& target) = 0;
 	};
 
 	template<typename Impl, typename... Components>
@@ -32,45 +33,56 @@ namespace dragon
 
 	public:
 
-		void Update(World& world, float deltaTime) final override 
+		using View = EntityView<Components...>;
+
+		void Update(EntityManager& manager, float deltaTime) final override 
 		{
-			auto entities = world.GetEntityView<Components...>();
+			auto entities = manager.GetEntities<Components...>();
 			for (Entity entity : entities)
 			{
-				m_impl.Update(world, entity, deltaTime, world.GetComponent<Components>(entity)...);
+				if constexpr (m_kSize > 0)
+				{
+					m_impl.Update(manager, entity, manager.GetEntityView<Components...>(entity), deltaTime);
+				}
+				else
+				{
+					m_impl.Update(manager, entity, deltaTime);
+				}
+
 			}
 		}
 
-		void FixedUpdate(World& world, float deltaTime) final override
+		void FixedUpdate(EntityManager& manager, float deltaTime) final override
 		{
-			auto entities = world.GetEntities<Components...>();
+			auto entities = manager.GetEntities<Components...>();
 			for (Entity entity : entities)
 			{
-				m_impl.FixedUpdate(world, entity, deltaTime, world.GetComponent<Components>(entity)...);
+				if constexpr (m_kSize > 0)
+				{
+					m_impl.FixedUpdate(manager, entity, manager.GetEntityView<Components...>(entity), deltaTime);
+				}
+				else
+				{
+					m_impl.FixedUpdate(manager, entity, deltaTime);
+				}
 			}
 		}
 
-		void Render(const World& world, RenderTarget& target) const final override 
+		void Render(EntityManager& manager, RenderTarget& target) final override 
 		{
-			auto entities = world.GetEntities<Components...>();
+			auto entities = manager.GetEntities<Components...>();
 			for (Entity entity : entities)
 			{
-				m_impl.Render(world, entity, target, world.GetComponent<Components>(entity)...);
+				if constexpr (m_kSize > 0)
+				{
+					m_impl.Render(manager, entity, manager.GetEntityView<Components...>(entity), target);
+				}
+				else
+				{
+					m_impl.Render(manager, entity, target);
+				}
 			}
 		}
-	};
-
-	class FooSystem : public System<FooSystem, int>
-	{
-	public:
-		void Update(World& world, Entity entity, float t, int i) 
-		{}
-
-		void FixedUpdate(World& world, Entity entity, float dt, int i)
-		{}
-
-		void Render(const World& world, Entity entity, RenderTarget& target, int i)
-		{}
 	};
 
 }

@@ -13,26 +13,28 @@ namespace dragon
 	template<typename Data>
 	class DirectedGraph
 	{
+		using HandleType = Handle<uint64_t>;
+
 	public:
 		struct Vertex
 		{
 		public:
 			Data m_data;
-			Handle m_handle;
-			Vertex(const Data& data, Handle handle) : m_data(data), m_handle(handle) {}
-			Vertex(Data&& data, Handle handle) : m_data(std::move(data)), m_handle(handle) {}
+			HandleType m_handle;
+			Vertex(const Data& data, HandleType handle) : m_data(data), m_handle(handle) {}
+			Vertex(Data&& data, HandleType handle) : m_data(std::move(data)), m_handle(handle) {}
 		};
 
 	private:
 
-		using Connections = eastl::unordered_set<Handle>;
+		using Connections = eastl::unordered_set<HandleType>;
 		using AdjacencyList = eastl::unordered_map<size_t, Connections>;
 		AdjacencyList m_adjacencyList;
 
 		using Vertices = eastl::vector<Vertex>;
 		Vertices m_vertices;
 
-		eastl::vector<Handle> m_freeList;
+		eastl::vector<HandleType> m_freeList;
 
 	public:
 
@@ -54,13 +56,13 @@ namespace dragon
 		}
 
 		// Note: Connections will still exist.
-		void ReuseVertex(Handle handle)
+		void ReuseVertex(HandleType handle)
 		{
 			// Add to free list
 			m_freeList.emplace_back(handle);
 		}
 
-		void Erase(Handle handle)
+		void Erase(HandleType handle)
 		{
 			size_t index = handle.GetId();
 
@@ -77,17 +79,17 @@ namespace dragon
 			}
 		}
 
-		Handle Add(const Data& data)
+		HandleType Add(const Data& data)
 		{
 			return Emplace(data);
 		}
 
 		template<typename... Args>
-		Handle Emplace(Args&& ... args)
+		HandleType Emplace(Args&& ... args)
 		{
-			Handle handle = NextId();
+			HandleType handle = NextId();
 
-			size_t index = handle.GetId();
+			size_t index = (size_t)handle.GetId();
 			if (index >= m_vertices.size())
 			{
 				// New ID
@@ -106,7 +108,7 @@ namespace dragon
 			return handle;
 		}
 
-		void AddEdge(Handle from, Handle to)
+		void AddEdge(HandleType from, HandleType to)
 		{
 			auto result = m_adjacencyList.find(from.GetId());
 			if (result != m_adjacencyList.end())
@@ -127,7 +129,7 @@ namespace dragon
 		const Vertices& GetVertices() const { return m_vertices; }
 		size_t VertexCount() const { return m_vertices.size(); }
 
-		const Connections* GetAdjacentNodes(Handle handle) const
+		const Connections* GetAdjacentNodes(HandleType handle) const
 		{
 			uint64_t index = handle.GetId();
 			auto result = m_adjacencyList.find(index);
@@ -141,17 +143,17 @@ namespace dragon
 			return nullptr;
 		}
 
-		const Vertex& operator[](Handle handle) const
+		const Vertex& operator[](HandleType handle) const
 		{
-			return m_vertices[handle.GetId()];
+			return m_vertices[(size_t)handle.GetId()];
 		}
 
-		Vertex& operator[](Handle handle)
+		Vertex& operator[](HandleType handle)
 		{
-			return m_vertices[handle.GetId()];
+			return m_vertices[(size_t)handle.GetId()];
 		}
 
-		void Splice(Handle nodeToReplace, const DirectedGraph& sub, Handle entrance, Handle exit)
+		void Splice(HandleType nodeToReplace, const DirectedGraph& sub, HandleType entrance, HandleType exit)
 		{
 			uint64_t replaceIndex = nodeToReplace.GetId();
 
@@ -188,26 +190,26 @@ namespace dragon
 			// Clone nodes
 			for (const auto& vertex : sub.m_vertices)
 			{
-				Handle newHandle = Add(vertex.m_data);
+				HandleType newHandle = Add(vertex.m_data);
 				nodeMap.emplace(vertex.m_handle.GetId(), newHandle.GetId());
 			}
 
 			// Clone edges
 			for (const auto& connections : sub.m_adjacencyList)
 			{
-				for (Handle handle : connections.second)
+				for (HandleType handle : connections.second)
 				{
-					Handle newFrom = nodeMap[connections.first];
-					Handle newTo = nodeMap[handle.GetId()];
+					HandleType newFrom = nodeMap[connections.first];
+					HandleType newTo = nodeMap[handle.GetId()];
 					AddEdge(newFrom, newTo);
 				}
 			}
 
 			// Link the incoming and outgoing nodes.
-			for (Handle handle : inList)
+			for (HandleType handle : inList)
 				AddEdge(handle, nodeMap[entrance.GetId()]);
 
-			for (Handle handle : outList)
+			for (HandleType handle : outList)
 				AddEdge(nodeMap[exit.GetId()], handle);
 		}
 
@@ -219,9 +221,9 @@ namespace dragon
 
 	private:
 
-		Handle NextId()
+		HandleType NextId()
 		{
-			Handle handle = 0; // Invalid handle.
+			HandleType handle = 0; // Invalid handle.
 
 			// See if we have any IDs on the free list.
 			if (m_freeList.size() > 0)

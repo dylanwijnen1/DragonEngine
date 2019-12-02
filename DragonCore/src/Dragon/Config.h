@@ -26,10 +26,6 @@
 
 namespace dragon
 {
-	using Entity = uint32_t;
+	using EntitySize = uint32_t;
 	using Byte = std::byte;
-
-	// TODO: Possibly forward declare the RENDERSKIN specific Rendering classes with aliases.
-	//		 This could confuse users with intellisense giving more options. A factory method on the class would mitigage this problem.
-	//		 RenderTexture::Create(...); Texture::Create(...); Sprite::Create(...);
 }

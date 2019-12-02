@@ -3,61 +3,76 @@
 #include <stdint.h>
 
 #include <EASTL/functional.h>
+#include <EASTL/type_traits.h>
+
+#include <Dragon/Generic/Serialization/InStream.h>
+#include <Dragon/Generic/Serialization/OutStream.h>
 
 namespace dragon
 {
 
+	template<typename SizeType>
 	struct Handle
 	{
-		inline constexpr static uint64_t kIdFlag = 0x000000FFFFFFFF;
+		static_assert(eastl::is_unsigned_v<SizeType>, "Handle size-type must be unsigned.");
 
-		uint64_t m_handle;
+		constexpr static SizeType kMax = eastl::numeric_limits<SizeType>::max();
 
-	public:
+		constexpr static size_t kHalfSize = sizeof(SizeType) * 4;
+		constexpr static SizeType kClearIdFlag = kMax >> kHalfSize;
+		constexpr static SizeType kInvalidVersionFlag = kClearIdFlag;
 
-		Handle() : m_handle(0) {}
-		Handle(uint64_t id) : m_handle(id) {}
+		inline constexpr static SizeType Invalid = kMax;
 
-		size_t GetId() const { return (size_t)(m_handle & kIdFlag); }
+		SizeType m_handle;
 
-		uint32_t GetVersion() const { return (uint32_t)(m_handle >> 32); }
-		
-		// Note: Technically against GAP Standards. But don't wanna make a .cpp just for this line.
-		void SetVersion(uint32_t version) 
+		constexpr Handle() : m_handle(0) { }
+		constexpr Handle(SizeType id) : m_handle(id) {}
+
+		constexpr void SetId(SizeType id)
 		{
-			m_handle &= kIdFlag; // Clear Version
-			m_handle |= ((uint64_t)version << 32); // Set Version 
+			SizeType version = GetVersion();
+			this->m_handle = id;
+			SetVersion(version);
 		}
 
-		// Note: See SetVersion.
-		void Increment() 
+		constexpr SizeType GetId() const { return (SizeType)(m_handle & kClearIdFlag); }
+
+		constexpr void SetVersion(SizeType version)
+		{
+			m_handle &= kClearIdFlag; // Clear Version
+			m_handle |= ((SizeType)version << kHalfSize); // Set Version 
+		}
+
+		constexpr SizeType GetVersion() const { return (SizeType)(m_handle >> kHalfSize); }
+		
+		constexpr void Increment()
 		{ 
-			uint32_t version = GetVersion();
+			SizeType version = GetVersion();
 			SetVersion(++version);
 		}
 
-		bool IsValid() const { return GetVersion() != 0; }
-		void Invalidate() { SetVersion(0); }
+		constexpr bool IsValid() const { return GetVersion() != kInvalidVersionFlag; }
+		constexpr void Invalidate() { SetVersion(kInvalidVersionFlag); }
 
-		operator bool() const { return GetVersion() != 0; }
+		constexpr operator bool() const { return IsValid(); }
 
-		// Note: This is supposed to work instead of constructing the templated hash struct. But it doesn't.
-		operator size_t() const { return GetId(); }
-
-		bool operator==(const Handle& other) const { return m_handle == other.m_handle; }
-		bool operator!=(const Handle& other) const { return !(*this == other); }
+		constexpr bool operator==(const Handle& other) const { return m_handle == other.m_handle; }
+		constexpr bool operator!=(const Handle& other) const { return !(*this == other); }
 	};
+
 
 }
 
 // Custom specialization of hash.
 namespace eastl
 {
-	template<> struct hash<dragon::Handle>
+	template<typename SizeType>
+	struct hash<dragon::Handle<SizeType>>
 	{
-		size_t operator()(dragon::Handle const& self) const noexcept
+		size_t operator()(const dragon::Handle<SizeType>& self) const noexcept
 		{
-			return self.GetId();
+			return (size_t)self.GetId();
 		}
 	};
 }

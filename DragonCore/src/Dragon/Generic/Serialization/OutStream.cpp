@@ -1,67 +1,61 @@
 #include "OutStream.h"
 
+#include <Dragon/Application/Debugging/Debug.h>
+
+#include <fstream>
+
 namespace dragon
 {
-
-	void OutStream::Write(const char* data, size_t len)
+	OutStream::OutStream(size_t count, Byte* data)
 	{
-		Write(reinterpret_cast<const std::byte*>(data), len);
 	}
 
-	void OutStream::Write(const unsigned char* data, size_t len)
+	OutStream::OutStream(const char* fileName)
 	{
-		Write(reinterpret_cast<const std::byte*>(data), len);
+		std::ofstream* pFile = new std::ofstream();
+		pFile->open(fileName, std::ios::binary | std::ios::out);
+		m_pOutStream = pFile;
 	}
 
-	void OutStream::Write(const eastl::string& text)
+	OutStream::~OutStream()
 	{
-		Write(text.length());
-		Write(reinterpret_cast<const std::byte*>(text.data()));
+		delete m_pOutStream;
 	}
 
-	void OutStream::Write(char character)
+	void OutStream::Serialize(const Byte* data, size_t len)
 	{
-		Write(reinterpret_cast<const std::byte*>(&character), sizeof(char));
+		if(Good())
+			m_pOutStream->write(reinterpret_cast<const char*>(data), len);
 	}
 
-	void OutStream::Write(short num)
+	void OutStream::Serialize(const char* data, size_t len)
 	{
-		Write(reinterpret_cast<const std::byte*>(&num), sizeof(short));
+		if(Good())
+			m_pOutStream->write(data, len);
 	}
 
-	void OutStream::Write(int num)
+	void OutStream::Serialize(const unsigned char* data, size_t len)
 	{
-		Write(reinterpret_cast<const std::byte*>(&num), sizeof(int));
+		Serialize(reinterpret_cast<const Byte*>(data), len);
 	}
 
-	void OutStream::Write(long long num)
+	void OutStream::Serialize(const eastl::string& text)
 	{
-		Write(reinterpret_cast<const std::byte*>(&num), sizeof(long long));
+		Serialize(text.length());
+		Serialize(reinterpret_cast<const Byte*>(text.data()));
 	}
 
-	void OutStream::Write(unsigned short num)
+	bool OutStream::Good() const
 	{
-		Write(reinterpret_cast<const std::byte*>(&num), sizeof(unsigned long long));
-	}
-
-	void OutStream::Write(unsigned int num)
-	{
-		Write(reinterpret_cast<const std::byte*>(&num), sizeof(unsigned int));
-	}
-
-	void OutStream::Write(unsigned long long num)
-	{
-		Write(reinterpret_cast<const std::byte*>(&num), sizeof(unsigned long long));
-	}
-
-	void OutStream::Write(float num)
-	{
-		Write(reinterpret_cast<const std::byte*>(&num), sizeof(float));
-	}
-
-	void OutStream::Write(double num)
-	{
-		Write(reinterpret_cast<const std::byte*>(&num), sizeof(double));
+		if (m_pOutStream->good())
+		{
+			return true;
+		}
+		else
+		{
+			DERR("Attempting to write to bad output stream.");
+			return false;
+		}
 	}
 
 }

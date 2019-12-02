@@ -50,4 +50,7 @@ TEST_CASE("Testing Initialization", "[DragonEngine][Application]")
 	TestApp app;
 	REQUIRE(app.Init());
 	app.Shutdown();
+
+	// Need to deinitialize logging before running any other tests or we run into problems.
+	dragon::Debug::GetInstance().SetSystem(nullptr);
 }
