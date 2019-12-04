@@ -33,7 +33,8 @@ namespace dragon
 
 	public:
 
-		using View = EntityView<Components...>;
+		//using View = EntityView<Components...>;
+		using View = int;
 
 		void Update(EntityManager& manager, float deltaTime) final override 
 		{

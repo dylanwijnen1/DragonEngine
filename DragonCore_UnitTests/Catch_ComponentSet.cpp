@@ -39,6 +39,7 @@ namespace dragon
 TEST_CASE("Testing Component Sets", "[DragonEngine][Game][Components]")
 {
 	dragon::ComponentSet<TransformComponent> components;
+	using Entity = dragon::ComponentSet<TransformComponent>::Entity;
 
 	SECTION("Reserving")
 	{
@@ -47,7 +48,7 @@ TEST_CASE("Testing Component Sets", "[DragonEngine][Game][Components]")
 
 	SECTION("Add/Find/Remove")
 	{
-		dragon::Entity entity(0);
+		Entity entity(0);
 
 		// Add and find.
 		{

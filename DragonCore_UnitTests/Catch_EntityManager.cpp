@@ -18,7 +18,7 @@ struct TransformComponent
 	dragon::Vector2f m_position;
 };
 
-TEST_CASE("Testing Component Sets", "[DragonEngine][Game][Components]")
+TEST_CASE("Testing Entity Manager", "[DragonEngine][Game][EntityManager]")
 {
 
 }

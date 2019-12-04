@@ -49,8 +49,8 @@ namespace dragon
 
 		virtual Entities::iterator begin() = 0;
 		virtual Entities::iterator end() = 0;
-		virtual Entities::iterator cbegin() = 0;
-		virtual Entities::iterator cend() = 0;
+		virtual Entities::const_iterator cbegin() = 0;
+		virtual Entities::const_iterator cend() = 0;
 
 		// Create
 		virtual void Clone(Entity original, Entity clone) = 0;
@@ -75,10 +75,10 @@ namespace dragon
 
 	public:
 
-		auto begin() final override { return m_entities.begin(); }
-		auto end() final override { return m_entities.end(); }
-		auto cbegin() final override { return m_entities.cbegin(); }
-		auto cend() final override { return m_entities.cend(); }
+		Entities::iterator begin() final override { return m_entities.begin(); }
+		Entities::iterator end() final override { return m_entities.end(); }
+		Entities::const_iterator cbegin() final override { return m_entities.cbegin(); }
+		Entities::const_iterator cend() final override { return m_entities.cend(); }
 
 		ComponentSet()
 			: m_size(0)
