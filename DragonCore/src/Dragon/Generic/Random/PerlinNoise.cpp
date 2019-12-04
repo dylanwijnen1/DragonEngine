@@ -44,6 +44,37 @@ namespace dragon
 		return Noise(x, y, m_seed);
 	}
 
+	float PerlinNoise::AverageNoise(float x, float y, float range, size_t octaves, float persistance, unsigned int seedOverride)
+	{
+		if (octaves <= 0)
+			return 0.f;
+
+		float noise = 0.f;
+		float currentAmp = 1.f;
+		float totalAmp = 0.f;
+
+		for (size_t i = octaves; i > 0; --i)
+		{
+			totalAmp += currentAmp;
+
+			float localNoise = Noise(x, y, SquirrelNoise::Get1DNoise(i, seedOverride));
+			noise += localNoise * currentAmp;
+
+			currentAmp *= persistance;
+			range *= 2;
+		}
+
+		noise /= totalAmp;
+
+		return noise;
+	}
+
+	float PerlinNoise::AverageNoise(float x, float y, float range, size_t octaves, float persistance)
+	{
+		return AverageNoise(x, y, range, octaves, persistance, m_seed);
+	}
+
+
 	float PerlinNoise::DotProductGradient(int ix, int iy, float x, float y, unsigned int seed)
 	{
 		// Distance between points.

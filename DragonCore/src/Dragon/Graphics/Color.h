@@ -24,9 +24,20 @@ namespace dragon
 			: Color(r, g, b, 1.0f)
 		{}
 
-		//constexpr void FromHex(uint32_t hex) 
+		///// <summary>
+		///// Lerp between two colors.
+		///// </summary>
+		///// <param name="left">Beginning color</param>
+		///// <param name="right">Ending color</param>
+		///// <param name="weight">Percentage/Weight between the two colors.</param>
+		///// <returns>The lerped color.</returns>
+		//static constexpr Color Lerp(Color left, Color right, float weight)
 		//{
-		//	
+		//	Color lerpedColor;
+		//	lerpedColor.r = dragon::math::Lerp(left.r, right.r, weight);
+		//	lerpedColor.g = dragon::math::Lerp(left.g, right.g, weight);
+		//	lerpedColor.b = dragon::math::Lerp(left.b, right.b, weight);
+		//	lerpedColor.a = dragon::math::Lerp(left.a, right.a, weight);
 		//}
 
 		static constexpr Color FromHex(uint32_t hex)

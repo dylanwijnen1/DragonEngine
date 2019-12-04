@@ -1,9 +1,10 @@
 #pragma once
 
+#include <Dragon/Config.h>
+
 #include <Dragon/Generic/Math.h>
 
 #include <Dragon/Graphics/Renderable.h>
-
 #include <Dragon/Graphics/Texture.h>
 
 #include <EASTL/vector.h>
@@ -11,7 +12,7 @@
 namespace dragon
 {
 	using TileID = unsigned int;
-	constexpr TileID kInvalidTile = 0;
+	constexpr TileID kInvalidTile = eastl::numeric_limits<TileID>::max();
 
 	/// <summary>
 	/// Wrapper for the actual tiles.
@@ -24,7 +25,7 @@ namespace dragon
 		TileLayer() = default;
 
 		TileLayer(Vector2u size)
-			: m_tiles((size_t)(size.x * size.y), kInvalidTile)
+			: m_tiles((size_t)size.x * size.y, kInvalidTile)
 		{}
 
 		~TileLayer() = default;
@@ -46,7 +47,10 @@ namespace dragon
 	/// 
 	/// Notes: A Tilemap will always have one layer.
 	/// </summary>
-	class Tilemap : public Renderable
+	class Tilemap 
+		: public Renderable
+		// If the TileDataType is set, Extend from _TileDataMap
+		//, eastl::conditional_t<eastl::is_same_v<TileData, std::nullptr_t>, internal::_NullTileDataMap, internal::_TileDataMap<TileData>>
 	{
 		Vector2u m_size;
 		Vector2f m_tileSize;
@@ -67,7 +71,6 @@ namespace dragon
 		Tilemap()
 			: m_pTileRenderer(nullptr)
 		{}
-		~Tilemap() = default;
 
 		// Copying is very slow.
 		Tilemap(const Tilemap&) = delete;
@@ -77,29 +80,36 @@ namespace dragon
 		Tilemap(Tilemap&&) = default;
 		Tilemap& operator=(Tilemap&&) = default;
 
-
-
 		/// <summary>
-		/// A Tilemap must be initialized in order to work.
+		/// A Tilemap must be initialized.
 		/// </summary>
 		/// <param name="size"></param>
 		/// <param name="tileSize"></param>
 		/// <returns></returns>
-		bool Init(Vector2u size, Vector2f tileSize);
+		virtual bool Init(Vector2u size, Vector2f tileSize);
+
 		bool LoadTileset(eastl::string path);
+
+		// When handling multi tilesets. Return the texture associated with the tileid.
+		//Texture GetTileTexture(TileID id);
+
+		const Texture* GetTileSet() const { return &m_tileSet; }
+
+		// TODO: Ability to load multiple tilesets.
 
 #pragma region Layer
 
 		void AddLayer() { m_layers.emplace_back(m_size); }
+
 		bool RemoveLayer(size_t index);
+
 		size_t LayerCount() const { return m_layers.size(); }
 
-		
 		/// <summary>
 		/// Fills the layer with a specific tile.
 		/// </summary>
 		/// <param name="id"></param>
-		void FillLayer(TileID id) { FillLayer(0, id); }
+		void FillLayer(TileID id) { FillLayer(kInvalidTile, id); }
 		void FillLayer(size_t layerIndex, TileID id);
 
 #pragma endregion
@@ -108,14 +118,17 @@ namespace dragon
 		Vector2f GetTileSize() const { return m_tileSize; }
 
 		// TODO: Possible need to swap layers for layer ordering at runtime.
-		//void SwapLayers(size_t from, size_t to);
+		void SwapLayers(size_t from, size_t to)
+		{
+			eastl::swap(m_layers[from], m_layers[to]);
+		}
 
 		// Inherited via Renderable
 		virtual void Render(RenderTarget& target) override;
 
 #pragma region Utils
 
-		size_t IndexFromPosition(unsigned int x, unsigned int y) const { return (y * m_size.x) + x; }
+		size_t IndexFromPosition(unsigned int x, unsigned int y) const { return ((size_t)y * m_size.x) + x; }
 		Vector2u PositionFromIndex(size_t index) const;
 
 		Vector2u WorldToMapCoordinates(Vector2f worldCoords) const;
@@ -136,9 +149,9 @@ namespace dragon
 		/// <param name="y">Y-Coordinate</param>
 		bool WithinBounds(unsigned int x, unsigned int y) const;
 		bool WithinBounds(Vector2u pos) const { WithinBounds(pos.x, pos.y); }
+		bool WithinBounds(size_t index) const { return (size_t)m_size.x * m_size.y; }
 
 #pragma endregion
-
 
 #pragma region Tile Manipulation
 
@@ -183,13 +196,49 @@ namespace dragon
 
 #pragma endregion
 
-		// When handling multi tilesets. Return the texture associated with the tileid.
-		//Texture GetTileTexture(TileID id);
-
-		const Texture* GetTileSet() const { return &m_tileSet; }
-
 	private:
 		TilemapRenderer* GetTileRendererImpl() const;
+	};
+
+
+	template<typename TileData>
+	class DataTilemap : public Tilemap
+	{
+		using TileDataVector = eastl::vector<TileData*>;
+		TileDataVector m_tileData;
+
+	public:
+
+		virtual bool Init(Vector2u size, Vector2f tileSize) final override
+		{
+			m_tileData.resize((size_t)size.x * size.y, nullptr);
+			return Tilemap::Init(size, tileSize);
+		}
+
+		const TileData& GetTileDataAtIndex(size_t tileIndex) const
+		{
+			assert(WithinBounds(tileIndex));
+			return *m_tileData[tileIndex];
+		}
+
+		const TileData& GetTileData(unsigned int x, unsigned int y) const
+		{
+			return GetTileDataAtIndex(IndexFromPosition(x, y));
+		}
+
+		TileData& GetTileDataAtIndex(size_t tileIndex)
+		{
+			assert(WithinBounds(tileIndex));
+			return *m_tileData[tileIndex];
+		}
+
+		TileData& GetTileData(unsigned int x, unsigned int y)
+		{
+			return GetTileDataAtIndex(IndexFromPosition(x, y));
+		}
+
+		TileData* GetTileDataSafe(unsigned int x, unsigned int y) const { return GetTileDataSafeAtIndex(IndexFromPosition(x, y)); }
+		TileData* GetTileDataSafeAtIndex(size_t tileIndex) const { return m_tileData[tileIndex]; }
 	};
 
 }

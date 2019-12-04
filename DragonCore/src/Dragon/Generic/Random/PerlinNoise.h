@@ -26,9 +26,11 @@ namespace dragon
 		static float NormalizedNoise(float x, float y, unsigned int seedOverride);
 		float NormalizedNoise(float x, float y) const;
 
-		// Compute Perlin noise at coordinates x, y 
 		static float Noise(float x, float y, unsigned int seed);
 		float Noise(float x, float y) const;
+
+		static float AverageNoise(float x, float y, float range, size_t octaves, float persistance, unsigned int seedOverride);
+		float AverageNoise(float x, float y, float range, size_t octaves, float persistance);
 
 	private:
 
