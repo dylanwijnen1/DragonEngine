@@ -12,6 +12,47 @@ namespace dragon
 		return result;
 	}
 
+	void SfmlGraphics::DrawRect(RectF rect, Color color)
+	{
+		sf::RectangleShape shape(sf::Convert(rect.size));
+		shape.setPosition(sf::Convert(rect.pos));
+		shape.setFillColor(sf::Convert(color));
+		draw(shape);
+	}
+
+	void SfmlGraphics::DrawFillRect(RectF rect, Color color, Color outlineColor, float outlineSize)
+	{
+		sf::RectangleShape shape(sf::Convert(rect.size));
+		shape.setPosition(sf::Convert(rect.pos));
+
+		shape.setFillColor(sf::Convert(color));
+
+		shape.setOutlineColor(sf::Convert(outlineColor));
+		shape.setOutlineThickness(outlineSize);
+
+		draw(shape);
+	}
+
+	void SfmlGraphics::DrawCircle(Vector2f pos, float radius, Color color)
+	{
+		sf::CircleShape shape(radius);
+		shape.setPosition(sf::Convert(pos));
+		shape.setFillColor(sf::Convert(color));
+		draw(shape);
+	}
+
+	void SfmlGraphics::DrawFillCircle(Vector2f pos, float radius, Color color, Color outlineColor, float outlineSize)
+	{
+		sf::CircleShape shape(radius);
+		shape.setPosition(sf::Convert(pos));
+		shape.setFillColor(sf::Convert(color));
+
+		shape.setOutlineColor(sf::Convert(outlineColor));
+		shape.setOutlineThickness(outlineSize);
+
+		draw(shape);
+	}
+
 	sf::Vector2u SfmlGraphics::getSize() const
 	{
 		Vector2f size = GetSize();

@@ -44,7 +44,7 @@ namespace dragon
 		return Noise(x, y, m_seed);
 	}
 
-	float PerlinNoise::AverageNoise(float x, float y, float range, size_t octaves, float persistance, unsigned int seedOverride)
+	float PerlinNoise::AverageNoise(float x, float y, float range, int octaves, float persistance, unsigned int seedOverride)
 	{
 		if (octaves <= 0)
 			return 0.f;
@@ -53,11 +53,11 @@ namespace dragon
 		float currentAmp = 1.f;
 		float totalAmp = 0.f;
 
-		for (size_t i = octaves; i > 0; --i)
+		for (int i = octaves; i > 0; --i)
 		{
 			totalAmp += currentAmp;
 
-			float localNoise = Noise(x, y, SquirrelNoise::Get1DNoise(i, seedOverride));
+			float localNoise = NormalizedNoise(x * range, y * range, SquirrelNoise::Get1DNoise(i, seedOverride));
 			noise += localNoise * currentAmp;
 
 			currentAmp *= persistance;
@@ -69,7 +69,7 @@ namespace dragon
 		return noise;
 	}
 
-	float PerlinNoise::AverageNoise(float x, float y, float range, size_t octaves, float persistance)
+	float PerlinNoise::AverageNoise(float x, float y, float range, int octaves, float persistance)
 	{
 		return AverageNoise(x, y, range, octaves, persistance, m_seed);
 	}

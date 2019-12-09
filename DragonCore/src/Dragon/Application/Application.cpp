@@ -107,7 +107,7 @@ namespace dragon
 			// Breakpoint was set or we're running slow.
 			if (deltaTime > 1.0)
 			{
-				DWARN("[DragonApplication] Application is running slow. Frame took: %d seconds.", deltaTime);
+				DWARN("[DragonApplication] Application is running slow. Frame took: %lf seconds.", deltaTime);
 				deltaTime = m_fixedStep;
 			}
 

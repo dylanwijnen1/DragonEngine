@@ -29,8 +29,8 @@ namespace dragon
 		static float Noise(float x, float y, unsigned int seed);
 		float Noise(float x, float y) const;
 
-		static float AverageNoise(float x, float y, float range, size_t octaves, float persistance, unsigned int seedOverride);
-		float AverageNoise(float x, float y, float range, size_t octaves, float persistance);
+		static float AverageNoise(float x, float y, float range, int octaves, float persistance, unsigned int seedOverride);
+		float AverageNoise(float x, float y, float range, int octaves, float persistance);
 
 	private:
 

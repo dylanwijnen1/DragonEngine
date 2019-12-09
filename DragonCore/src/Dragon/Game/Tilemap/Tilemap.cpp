@@ -100,12 +100,12 @@ namespace dragon
 	Vector2u Tilemap::WorldToMapCoordinates(Vector2f worldCoords) const
 	{
 		Vector2f coords = worldCoords / m_tileSize;
-		coords.x = dragon::math::Clamp(coords.x, 0.f, (float)m_size.x);
-		coords.y = dragon::math::Clamp(coords.y, 0.f, (float)m_size.y);
+		coords.x = dragon::math::Clamp(coords.x, 0.f, (float)m_size.x - 1);
+		coords.y = dragon::math::Clamp(coords.y, 0.f, (float)m_size.y - 1);
 		return 
 		{ 
-			(unsigned int)dragon::math::RoundToNearest(coords.x),
-			(unsigned int)dragon::math::RoundToNearest(coords.y)
+			(unsigned int)dragon::math::Floor(coords.x),
+			(unsigned int)dragon::math::Floor(coords.y)
 		};
 	}
 

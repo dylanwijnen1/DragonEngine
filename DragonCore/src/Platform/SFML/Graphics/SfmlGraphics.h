@@ -25,6 +25,13 @@ namespace dragon
 
 		void* GetNativeTarget() final override { return this; }
 
+		// Convenience Methods, Mainly used for debugging
+		virtual void DrawRect(RectF rect, Color color);
+		virtual void DrawFillRect(RectF rect, Color color, Color outlineColor, float outlineSize);
+
+		virtual void DrawCircle(Vector2f pos, float radius, Color color);
+		virtual void DrawFillCircle(Vector2f pos, float radius, Color color, Color outlineColor, float outlineSize);
+
 	protected:
 		sf::Vector2u getSize() const final override;
 

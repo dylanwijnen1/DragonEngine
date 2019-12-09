@@ -200,25 +200,25 @@ namespace dragon
 		TilemapRenderer* GetTileRendererImpl() const;
 	};
 
-
+	// TODO: Make a version to set storage as optional. (Pointer data)
 	template<typename TileData>
 	class DataTilemap : public Tilemap
 	{
-		using TileDataVector = eastl::vector<TileData*>;
+		using TileDataVector = eastl::vector<TileData>;
 		TileDataVector m_tileData;
 
 	public:
 
 		virtual bool Init(Vector2u size, Vector2f tileSize) final override
 		{
-			m_tileData.resize((size_t)size.x * size.y, nullptr);
+			m_tileData.resize((size_t)size.x * size.y);
 			return Tilemap::Init(size, tileSize);
 		}
 
 		const TileData& GetTileDataAtIndex(size_t tileIndex) const
 		{
 			assert(WithinBounds(tileIndex));
-			return *m_tileData[tileIndex];
+			return m_tileData[tileIndex];
 		}
 
 		const TileData& GetTileData(unsigned int x, unsigned int y) const
@@ -229,7 +229,7 @@ namespace dragon
 		TileData& GetTileDataAtIndex(size_t tileIndex)
 		{
 			assert(WithinBounds(tileIndex));
-			return *m_tileData[tileIndex];
+			return m_tileData[tileIndex];
 		}
 
 		TileData& GetTileData(unsigned int x, unsigned int y)
@@ -237,8 +237,6 @@ namespace dragon
 			return GetTileDataAtIndex(IndexFromPosition(x, y));
 		}
 
-		TileData* GetTileDataSafe(unsigned int x, unsigned int y) const { return GetTileDataSafeAtIndex(IndexFromPosition(x, y)); }
-		TileData* GetTileDataSafeAtIndex(size_t tileIndex) const { return m_tileData[tileIndex]; }
 	};
 
 }

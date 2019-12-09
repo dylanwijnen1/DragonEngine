@@ -59,6 +59,11 @@ namespace dragon
 			return std::ceilf(in);
 		}
 
+		inline float Floor(float in)
+		{
+			return std::floorf(in);
+		}
+
 		inline constexpr float DegToRad(float deg)
 		{
 			return deg * (PI_F / 180.f);
