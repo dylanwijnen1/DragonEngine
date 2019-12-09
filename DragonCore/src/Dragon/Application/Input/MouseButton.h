@@ -1,9 +1,14 @@
 #pragma once
 
+#include <EASTL/numeric_limits.h>
+
 enum struct MouseButton : unsigned char
 {
-	Unknown = 0,
-	Left,
+	Unknown = 255,
+	Left = 0,
 	Middle,
-	Right
+	Right,
+
+	// Must always be last.
+	kCount
 };

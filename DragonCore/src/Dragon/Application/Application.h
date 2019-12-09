@@ -7,6 +7,9 @@
 
 #include <EASTL/stack.h>
 
+#include <Dragon/Application/Devices/Keyboard.h>
+#include <Dragon/Application/Devices/Mouse.h>
+
 /// \namespace dragon
 namespace dragon
 {
@@ -47,6 +50,7 @@ namespace dragon
 
 		using Clock = std::chrono::high_resolution_clock;
 		using TimePoint = std::chrono::time_point<Clock, Clock::duration>;
+
 		using Duration = std::chrono::duration<double>;
 
 		/// \}

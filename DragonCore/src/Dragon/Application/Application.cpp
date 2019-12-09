@@ -86,6 +86,10 @@ namespace dragon
 		{
 			m_pWindow->ProcessEvents();
 
+			// Update devices.
+			Keyboard::GetInstance().Update();
+			Mouse::GetInstance().Update();
+
 			// Fixed Update
 			fixedAccumulator += deltaTime;
 			if (fixedAccumulator > m_fixedStep)
@@ -160,6 +164,10 @@ namespace dragon
 			Layer* pLayer = *it;
 			pLayer->OnEvent(ev);
 		}
+
+		// Device Events
+		Keyboard::GetInstance().OnEvent(ev);
+		Mouse::GetInstance().OnEvent(ev);
 
 		// Listen for QuitEvent
 		ev.Dispatch<WindowClosed>([this](WindowClosed& ev) { this->Shutdown(); });

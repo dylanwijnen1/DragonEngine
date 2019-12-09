@@ -1,6 +1,8 @@
 #pragma once
 
 #include <EASTL/string.h>
+#include <EASTL/utility.h>
+#include <EASTL/tuple.h>
 
 namespace dragon
 {
