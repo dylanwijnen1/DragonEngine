@@ -57,7 +57,7 @@ namespace dragon
 		{
 			totalAmp += currentAmp;
 
-			float localNoise = NormalizedNoise(x * range, y * range, SquirrelNoise::Get1DNoise(i, seedOverride));
+			float localNoise = Noise(x * range, y * range, SquirrelNoise::Get1DNoise(i, seedOverride));
 			noise += localNoise * currentAmp;
 
 			currentAmp *= persistance;
@@ -66,7 +66,7 @@ namespace dragon
 
 		noise /= totalAmp;
 
-		return noise;
+		return dragon::math::Normalize(noise, -.707f, .707f);
 	}
 
 	float PerlinNoise::AverageNoise(float x, float y, float range, int octaves, float persistance)

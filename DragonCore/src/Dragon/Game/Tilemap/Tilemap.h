@@ -128,6 +128,8 @@ namespace dragon
 
 #pragma region Utils
 
+		size_t GetTileCount() const { return (size_t)m_size.x * (size_t)m_size.y; }
+
 		int IndexFromPosition(int x, int y) const { return (y * (int)m_size.x) + x; }
 		Vector2 PositionFromIndex(int index) const;
 
