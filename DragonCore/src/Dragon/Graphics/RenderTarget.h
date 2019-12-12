@@ -52,6 +52,12 @@ namespace dragon
 		/// <returns></returns>
 		virtual void* GetNativeTarget() = 0;
 
+		template<typename TargetType>
+		TargetType GetNativeTarget()
+		{
+			return static_cast<TargetType>(GetNativeTarget());
+		}
+
 		// Drawing Entities
 		void Draw(Renderable& renderable);
 

@@ -128,28 +128,26 @@ namespace dragon
 
 #pragma region Utils
 
-		size_t IndexFromPosition(unsigned int x, unsigned int y) const { return ((size_t)y * m_size.x) + x; }
-		Vector2u PositionFromIndex(size_t index) const;
+		int IndexFromPosition(int x, int y) const { return (y * (int)m_size.x) + x; }
+		Vector2 PositionFromIndex(int index) const;
 
-		Vector2u WorldToMapCoordinates(Vector2f worldCoords) const;
-		Vector2f MapToWorldCoordinates(Vector2u mapCoords) const;
+		Vector2 WorldToMapCoordinates(Vector2f worldCoords) const;
+		Vector2f MapToWorldCoordinates(Vector2 mapCoords) const;
 
 		/// <summary>
-		/// Anything outside of the bounds will be ignored.
-		/// E.g : If worldBounds can view outside of the bounds of the tilemap we ignore these values.
 		/// </summary>
 		/// <param name="worldBounds"></param>
 		/// <returns></returns>
-		RectU WorldToMapBounds(RectF worldBounds) const;
+		Rect WorldToMapBounds(RectF worldBounds) const;
 
 		/// <summary>
 		/// Determine wether or not the given position is within bounds of the map.
 		/// </summary>
 		/// <param name="x">X-Coordinate</param>
 		/// <param name="y">Y-Coordinate</param>
-		bool WithinBounds(unsigned int x, unsigned int y) const;
-		bool WithinBounds(Vector2u pos) const { WithinBounds(pos.x, pos.y); }
-		bool WithinBounds(size_t index) const { return (size_t)m_size.x * m_size.y; }
+		bool WithinBounds(int x, int y) const;
+		bool WithinBounds(Vector2 pos) const { WithinBounds(pos.x, pos.y); }
+		bool WithinBounds(size_t index) const { return index < ((size_t)m_size.x * (size_t)m_size.y); }
 
 #pragma endregion
 

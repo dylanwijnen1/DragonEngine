@@ -83,41 +83,40 @@ namespace dragon
 		}
 	}
 
-	Vector2u Tilemap::PositionFromIndex(size_t index) const
+	Vector2 Tilemap::PositionFromIndex(int index) const
 	{
-		Vector2u pos;
-		unsigned int i = (unsigned int)index;
-		pos.x = i % m_size.x;
-		pos.y = i / m_size.y;
+		Vector2 pos;
+		pos.x = index % m_size.x;
+		pos.y = index / m_size.y;
 		return pos;
 	}
 
-	bool Tilemap::WithinBounds(unsigned int x, unsigned int y) const
+	bool Tilemap::WithinBounds(int x, int y) const
 	{
 		return !(x < 0 || x > m_size.x - 1 || y < 0 || y > m_size.y - 1);
 	}
 
-	Vector2u Tilemap::WorldToMapCoordinates(Vector2f worldCoords) const
+	Vector2 Tilemap::WorldToMapCoordinates(Vector2f worldCoords) const
 	{
 		Vector2f coords = worldCoords / m_tileSize;
 		coords.x = dragon::math::Clamp(coords.x, 0.f, (float)m_size.x - 1);
 		coords.y = dragon::math::Clamp(coords.y, 0.f, (float)m_size.y - 1);
 		return 
 		{ 
-			(unsigned int)dragon::math::Floor(coords.x),
-			(unsigned int)dragon::math::Floor(coords.y)
+			(int)dragon::math::Floor(coords.x),
+			(int)dragon::math::Floor(coords.y)
 		};
 	}
 
-	Vector2f Tilemap::MapToWorldCoordinates(Vector2u mapCoords) const
+	Vector2f Tilemap::MapToWorldCoordinates(Vector2 mapCoords) const
 	{
 		return static_cast<Vector2f>(mapCoords) * m_tileSize;
 	}
 
-	RectU Tilemap::WorldToMapBounds(RectF worldBounds) const
+	Rect Tilemap::WorldToMapBounds(RectF worldBounds) const
 	{
-		Vector2u pos = WorldToMapCoordinates(worldBounds.pos);
-		Vector2u size = WorldToMapCoordinates(worldBounds.size);
+		Vector2 pos = WorldToMapCoordinates(worldBounds.pos);
+		Vector2 size = WorldToMapCoordinates(worldBounds.size);
 		return { pos, size };
 	}
 
