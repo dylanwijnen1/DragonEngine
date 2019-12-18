@@ -5,6 +5,12 @@
 namespace dragon
 {
 
+	SfmlTexture::~SfmlTexture()
+	{
+		delete m_pTexture;
+		m_pTexture = nullptr;
+	}
+
 	bool SfmlTexture::LoadFromFile(const char* filename)
 	{
 		m_pTexture = new sf::Texture();

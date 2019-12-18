@@ -98,11 +98,14 @@ namespace dragon
 			Vector2u mapSize = tilemap.GetSize();
 			Vector2f tileSize = tilemap.GetTileSize();
 
-			const Texture* pTileSet = tilemap.GetTileSet();
-			Vector2f texSize = pTileSet->GetSize();
+			const Texture* pTileset = tilemap.GetTileset();
+			Vector2f texSize = pTileset->GetSize();
+			Vector2u tilesetTileSize = tilemap.GetTilesetTileSize();
+
+			Vector2f tiling = { (texSize.x / (float)tilesetTileSize.x), (texSize.y / (float)tilesetTileSize.y) };
 
 			Color color = Colors::White;
-			if (!pTileSet->IsValid())
+			if (!pTileset->IsValid())
 			{
 				color = Colors::Magenta;
 			}
@@ -110,14 +113,14 @@ namespace dragon
 			// Create a vertex array.
 			sf::VertexArray vertices;
 			vertices.setPrimitiveType(sf::Quads);
-			vertices.resize(mapSize.x * mapSize.y * 4);
+			vertices.resize((size_t)mapSize.x * mapSize.y * 4);
 
 			// Render the tiles we are currently able to see.
 			for (unsigned int x = 0; x < mapSize.x; ++x)
 			{
 				for (unsigned int y = 0; y < mapSize.y; ++y)
 				{
-					sf::Vertex* quad = &vertices[tilemap.IndexFromPosition(x, y) * 4];
+					sf::Vertex* quad = &vertices[(size_t)tilemap.IndexFromPosition(x, y) * 4];
 
 					// define its 4 corners
 					quad[0].position = sf::Vector2f(x * tileSize.x, y * tileSize.y);
@@ -128,16 +131,17 @@ namespace dragon
 					// Texturing
 
 					// find its position in the tileset texture
-					if (pTileSet->IsValid())
+					if (pTileset->IsValid())
 					{
 						const TileID tileId = layer.m_tiles[tilemap.IndexFromPosition(x, y)];
-						const int tu = tileId % (int)texSize.x;
-						const int tv = tileId / (int)texSize.x;
 
-						quad[0].texCoords = sf::Vector2f((float)tu, (float)tv);
-						quad[1].texCoords = sf::Vector2f((float)(tu + tv), (float)tv);
-						quad[2].texCoords = sf::Vector2f((float)(tu + tv), (float)(tv + tv));
-						quad[3].texCoords = sf::Vector2f((float)tu, (float)(tv + tv));
+						const int tu = (tileId % (int)tiling.x);
+						const int tv = (tileId / (int)tiling.x);
+
+						quad[0].texCoords = sf::Vector2f(tu * tilesetTileSize.x, tv * tilesetTileSize.y);
+						quad[1].texCoords = sf::Vector2f((tu + 1) * tilesetTileSize.x, tv * tilesetTileSize.y);
+						quad[2].texCoords = sf::Vector2f((tu + 1) * tilesetTileSize.x, (tv + 1) * tilesetTileSize.y);
+						quad[3].texCoords = sf::Vector2f(tu * tilesetTileSize.x, (tv + 1) * tilesetTileSize.y);
 					}
 
 					// Coloring. Mainly to detect missing textures.
@@ -148,7 +152,7 @@ namespace dragon
 				}
 			}
 
-			sf::Texture* pTexture = static_cast<sf::Texture*>(pTileSet->GetNativeTexture());
+			sf::Texture* pTexture = static_cast<sf::Texture*>(pTileset->GetNativeTexture());
 			pTarget->draw(vertices, pTexture);
 		}
 	}

@@ -16,13 +16,25 @@
 namespace dragon
 {
 
+	Tilemap::~Tilemap()
+	{
+		delete m_pTileRenderer;
+		m_pTileRenderer = nullptr;
+	}
+
 	bool Tilemap::Init(Vector2u size, Vector2f tileSize)
+	{
+		return Init(size, tileSize, Vector2u((unsigned int)tileSize.x, (unsigned int)tileSize.y));
+	}
+
+	bool Tilemap::Init(Vector2u size, Vector2f tileSize, Vector2u tilesetTileSize)
 	{
 		// Create the first layer.
 		m_layers.emplace_back(size);
 
 		m_size = size;
 		m_tileSize = tileSize;
+		m_tilesetTileSize = tilesetTileSize;
 
 		// Get the tile renderer implementation.
 		m_pTileRenderer = GetTileRendererImpl();
@@ -34,7 +46,7 @@ namespace dragon
 
 	bool Tilemap::LoadTileset(eastl::string path)
 	{
-		return m_tileSet.LoadFromFile(path.c_str());
+		return m_tileset.LoadFromFile(path.c_str());
 	}
 
 	bool Tilemap::RemoveLayer(size_t index)
@@ -133,7 +145,7 @@ namespace dragon
 	void Tilemap::SetTileAtIndex(size_t layerIndex, size_t index, TileID id)
 	{
 		// Check if the layer exists and if the position is within bounds of the tilemap.
-		if (layerIndex < m_layers.size() && index < (size_t)(m_size.x * m_size.y))
+		if (layerIndex < m_layers.size() && index < (size_t)m_size.x * m_size.y)
 		{
 			// Set the tile.
 			m_layers[layerIndex].m_tiles[index] = id;

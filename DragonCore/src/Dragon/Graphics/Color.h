@@ -3,6 +3,7 @@
 #include <stdint.h>
 
 #include <Dragon/Generic/Math.h>
+#include <Dragon/Generic/Random.h>
 
 namespace dragon
 {

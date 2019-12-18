@@ -64,13 +64,16 @@ namespace dragon
 		/// </summary>
 		class TilemapRenderer* m_pTileRenderer;
 
-		Texture m_tileSet;
+		Texture m_tileset;
+		Vector2u m_tilesetTileSize;
 
 	public:
 
 		Tilemap()
 			: m_pTileRenderer(nullptr)
 		{}
+
+		virtual ~Tilemap();
 
 		// Copying is very slow.
 		Tilemap(const Tilemap&) = delete;
@@ -88,12 +91,14 @@ namespace dragon
 		/// <returns></returns>
 		virtual bool Init(Vector2u size, Vector2f tileSize);
 
+		virtual bool Init(Vector2u size, Vector2f tileSize, Vector2u tilesetTileSize);
+
 		bool LoadTileset(eastl::string path);
 
 		// When handling multi tilesets. Return the texture associated with the tileid.
 		//Texture GetTileTexture(TileID id);
 
-		const Texture* GetTileSet() const { return &m_tileSet; }
+		const Texture* GetTileset() const { return &m_tileset; }
 
 		// TODO: Ability to load multiple tilesets.
 
@@ -116,6 +121,7 @@ namespace dragon
 
 		Vector2u GetSize() const { return m_size; }
 		Vector2f GetTileSize() const { return m_tileSize; }
+		Vector2u GetTilesetTileSize() const { return m_tilesetTileSize; }
 
 		// TODO: Possible need to swap layers for layer ordering at runtime.
 		void SwapLayers(size_t from, size_t to)
@@ -131,6 +137,7 @@ namespace dragon
 		size_t GetTileCount() const { return (size_t)m_size.x * (size_t)m_size.y; }
 
 		int IndexFromPosition(int x, int y) const { return (y * (int)m_size.x) + x; }
+		int IndexFromPosition(Vector2 pos) const { return IndexFromPosition(pos.x, pos.y); }
 		Vector2 PositionFromIndex(int index) const;
 
 		Vector2 WorldToMapCoordinates(Vector2f worldCoords) const;
@@ -211,8 +218,13 @@ namespace dragon
 
 		virtual bool Init(Vector2u size, Vector2f tileSize) final override
 		{
-			m_tileData.resize((size_t)size.x * size.y);
 			return Tilemap::Init(size, tileSize);
+		}
+
+		virtual bool Init(Vector2u size, Vector2f tileSize, Vector2u tilesetTileSize) final override
+		{
+			m_tileData.resize((size_t)size.x * size.y);
+			return Tilemap::Init(size, tileSize, tilesetTileSize);
 		}
 
 		const TileData& GetTileDataAtIndex(size_t tileIndex) const

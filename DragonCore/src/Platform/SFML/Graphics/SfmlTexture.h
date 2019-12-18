@@ -20,7 +20,7 @@ namespace dragon
 			: m_pTexture(nullptr)
 		{}
 
-		~SfmlTexture() = default;
+		~SfmlTexture();
 
 		// Wrap the texture into the implementation.
 		SfmlTexture(sf::Texture* pTexture) 

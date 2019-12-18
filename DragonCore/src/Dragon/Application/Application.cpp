@@ -24,6 +24,15 @@ namespace dragon
 		delete m_pSystem;
 		delete m_pWindow;
 
+		// Delete Layers
+		while (!m_layers.empty())
+		{
+			Layer* pLayer = m_layers.top();
+			delete pLayer;
+
+			m_layers.pop();
+		}
+
 #if DRAGON_RENDERSKIN != DRAGON_RENDERSKIN_NONE
 		delete m_pGraphics;
 		//delete m_pAudio;
