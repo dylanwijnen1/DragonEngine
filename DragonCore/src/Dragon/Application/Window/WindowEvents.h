@@ -54,6 +54,9 @@ namespace dragon
 		bool m_ctrl;
 		bool m_alt;
 
+		// TODO: IsNumeric() 0-9
+		// TODO: GetNumber() 0-9
+
 		EVENT_TYPE(KeyPressed)
 	};
 

@@ -138,10 +138,10 @@ namespace dragon
 						const int tu = (tileId % (int)tiling.x);
 						const int tv = (tileId / (int)tiling.x);
 
-						quad[0].texCoords = sf::Vector2f(tu * tilesetTileSize.x, tv * tilesetTileSize.y);
-						quad[1].texCoords = sf::Vector2f((tu + 1) * tilesetTileSize.x, tv * tilesetTileSize.y);
-						quad[2].texCoords = sf::Vector2f((tu + 1) * tilesetTileSize.x, (tv + 1) * tilesetTileSize.y);
-						quad[3].texCoords = sf::Vector2f(tu * tilesetTileSize.x, (tv + 1) * tilesetTileSize.y);
+						quad[0].texCoords = sf::Vector2f((float)(tu * tilesetTileSize.x), (float)(tv * tilesetTileSize.y));
+						quad[1].texCoords = sf::Vector2f((float)((tu + 1) * tilesetTileSize.x), (float)(tv * tilesetTileSize.y));
+						quad[2].texCoords = sf::Vector2f((float)((tu + 1) * tilesetTileSize.x), (float)((tv + 1) * tilesetTileSize.y));
+						quad[3].texCoords = sf::Vector2f((float)(tu * tilesetTileSize.x), (float)((tv + 1) * tilesetTileSize.y));
 					}
 
 					// Coloring. Mainly to detect missing textures.

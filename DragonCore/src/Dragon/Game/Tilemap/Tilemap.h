@@ -12,7 +12,12 @@
 namespace dragon
 {
 	using TileID = unsigned int;
+
+	// TODO: Move into the tilemap class or name this g_kInvalidTile
 	constexpr TileID kInvalidTile = eastl::numeric_limits<TileID>::max();
+
+	// TODO:	Create a Colored Tilemap, VertexBuffer (Implementation specific immediatly transforms Engine Vector into Render Specific)
+	//			This should allow us to draw tilemaps without render specific code.
 
 	/// <summary>
 	/// Wrapper for the actual tiles.
@@ -155,7 +160,7 @@ namespace dragon
 		/// <param name="x">X-Coordinate</param>
 		/// <param name="y">Y-Coordinate</param>
 		bool WithinBounds(int x, int y) const;
-		bool WithinBounds(Vector2 pos) const { WithinBounds(pos.x, pos.y); }
+		bool WithinBounds(Vector2 pos) const { return WithinBounds(pos.x, pos.y); }
 		bool WithinBounds(size_t index) const { return index < ((size_t)m_size.x * (size_t)m_size.y); }
 
 #pragma endregion

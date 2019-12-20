@@ -105,7 +105,7 @@ namespace dragon
 
 	bool Tilemap::WithinBounds(int x, int y) const
 	{
-		return !(x < 0 || x > m_size.x - 1 || y < 0 || y > m_size.y - 1);
+		return !(x < 0 || x > (int)m_size.x - 1 || y < 0 || y > (int)m_size.y - 1);
 	}
 
 	Vector2 Tilemap::WorldToMapCoordinates(Vector2f worldCoords) const
