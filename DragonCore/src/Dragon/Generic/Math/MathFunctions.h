@@ -6,13 +6,13 @@ namespace dragon
 {
 	namespace math
 	{
-		constexpr long double PI_ACCURATE = 3.141592653589793238L;
-		constexpr double PI = 3.141592653589793;
-		constexpr float PI_F = 3.1415927f;
+		static constexpr long double kPiAccurate = 3.141592653589793238L;
+		static constexpr double kPi = 3.141592653589793;
+		static constexpr float kPi = 3.1415927f;
 
 		// TODO: EASTL does not have a constexpr numeric_limits as of yet. Replace when available.
-		constexpr float Infinity = std::numeric_limits<float>::infinity();
-		constexpr float NegativeInfinity = -std::numeric_limits<float>::infinity();
+		static constexpr float kInfinity = std::numeric_limits<float>::infinity();
+		static constexpr float kNegativeInfinity = -std::numeric_limits<float>::infinity();
 
 		// Precise method, which guarantees v = v1 when t = 1.
 		template<class Type>
@@ -66,12 +66,12 @@ namespace dragon
 
 		inline constexpr float DegToRad(float deg)
 		{
-			return deg * (PI_F / 180.f);
+			return deg * (kPi / 180.f);
 		}
 
 		inline constexpr float RadToDeg(float rad)
 		{
-			return rad * (180.f / PI_F);
+			return rad * (180.f / kPi);
 		}
 
 		inline float Sin(float in)
@@ -85,14 +85,13 @@ namespace dragon
 		}
 
 		/// <summary>
-		/// Curve the value of x to be closer to 0.f or 1.f, Expects x to be in range of [0.f, 1.f]
+		/// Apply a smoother step on the value.
 		/// </summary>
-		/// <param name="x">Value between range of [0.f, 1.f]</param>
-		/// <returns></returns>
+		/// <param name="x">The value to apply the smoother step to.</param>
+		/// <returns>Smoothened value.</returns>
 		constexpr inline float SmootherStep(float x)
 		{
-			x = Clamp(x, 0.f, 1.f);
-			return x * x * x * (x * (x * 6 - 15) + 10);
+			return x * x * x * (x * (x * 6.0f - 15.0f) + 10.0f);
 		}
 	}
 }

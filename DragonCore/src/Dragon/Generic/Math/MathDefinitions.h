@@ -1,8 +1,5 @@
 #pragma once
 
-#include <mathfu/rect.h>
-#include <mathfu/matrix.h>
-
 #include <Dragon/Generic/Serialization/InStream.h>
 #include <Dragon/Generic/Serialization/OutStream.h>
 
