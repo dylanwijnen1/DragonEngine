@@ -18,11 +18,11 @@
 	path = dependencies/EASTL
 	url = https://github.com/electronicarts/EASTL
 	ignore = dirty
-[submodule "dependencies/mathfu"]
-	path = dependencies/mathfu
-	url = https://github.com/google/mathfu
-	ignore = dirty
 [submodule "dependencies/tmxlite"]
 	path = dependencies/tmxlite
 	url = https://github.com/fallahn/tmxlite
+	ignore = dirty
+[submodule "dependencies/glm"]
+	path = dependencies/glm
+	url = https://github.com/g-truc/glm.git
 	ignore = dirty
