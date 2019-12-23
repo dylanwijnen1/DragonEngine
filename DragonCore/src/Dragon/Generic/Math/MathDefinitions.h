@@ -2,39 +2,68 @@
 
 #include <Dragon/Generic/Serialization/InStream.h>
 #include <Dragon/Generic/Serialization/OutStream.h>
+#include <glm/glm.hpp>
 
 namespace dragon
 {
+	/// <summary>
+	/// x, y, width, height
+	/// </summary>
+	using RectF = glm::vec4;
 
-	using RectF = mathfu::Rect<float>;
-	using Rect = mathfu::Rect<int>;
-	using RectU = mathfu::Rect<unsigned int>;
+	/// <summary>
+	/// x, y, width, height
+	/// </summary>
+	using Rect = glm::ivec4;
 
+	/// <summary>
+	/// x, y, width, height
+	/// </summary>
+	using RectU = glm::uvec4;
+
+	/// <summary>
+	/// x, y, width, height
+	/// </summary>
 	template<typename Type>
-	using _Rect = mathfu::Rect<Type>;
+	using _Rect = glm::vec<4, Type>;
 
-	using Vector2f = mathfu::Vector<float, 2>;
-	using Vector3f = mathfu::Vector<float, 3>;
-	using Vector4f = mathfu::Vector<float, 4>;
+	/// <summary>
+	/// x1, y1, x2, y2
+	/// </summary>
+	using BoundsF = glm::vec4;
 
-	using Vector2 = mathfu::Vector<int, 2>;
-	using Vector3 = mathfu::Vector<int, 3>;
-	using Vector4 = mathfu::Vector<int, 4>;
+	/// <summary>
+	/// x1, y1, x2, y2
+	/// </summary>
+	using Bounds = glm::ivec4;
 
-	using Vector2u = mathfu::Vector<unsigned int, 2>;
-	using Vector3u = mathfu::Vector<unsigned int, 3>;
-	using Vector4u = mathfu::Vector<unsigned int, 4>;
+	/// <summary>
+	/// x1, y1, x2, y2
+	/// </summary>
+	using BoundsU = glm::uvec4;
+
+	using Vector2f = glm::vec2;
+	using Vector3f = glm::vec3;
+	using Vector4f = glm::vec4;
+
+	using Vector2 = glm::ivec2;
+	using Vector3 = glm::ivec3;
+	using Vector4 = glm::ivec4;
+
+	using Vector2u = glm::uvec2;
+	using Vector3u = glm::uvec3;
+	using Vector4u = glm::uvec4;
 
 	template<typename Type, int Amount = 2>
-	using _Vector = mathfu::Vector<Type, Amount>;
+	using _Vector = glm::vec<Amount, Type>;
 
-	using Matrix3 = mathfu::Matrix<float, 3, 3>;
-	using Matrix4 = mathfu::Matrix<float, 4, 4>;
+	using Matrix3 = glm::mat3;
+	using Matrix4 = glm::mat4;
 
-	using Transform = mathfu::AffineTransform;
+	template<typename Type, int Rows, int Columns>
+	using Matrix = glm::mat<Columns, Rows, Type>;
 
-	template<int Rows, int Columns>
-	using Matrix = mathfu::Matrix<float, Rows, Columns>;
+	using Quaternion = glm::quat;
 	
 	// Float
 	template<>

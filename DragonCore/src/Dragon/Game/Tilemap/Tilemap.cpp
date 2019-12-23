@@ -127,8 +127,8 @@ namespace dragon
 
 	Rect Tilemap::WorldToMapBounds(RectF worldBounds) const
 	{
-		Vector2 pos = WorldToMapCoordinates(worldBounds.pos);
-		Vector2 size = WorldToMapCoordinates(worldBounds.size);
+		Vector2 pos = WorldToMapCoordinates({ worldBounds.x, worldBounds.y });
+		Vector2 size = WorldToMapCoordinates({ worldBounds.z, worldBounds.w });
 		return { pos, size };
 	}
 

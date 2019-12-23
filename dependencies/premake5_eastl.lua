@@ -1,23 +1,29 @@
+local dependencies = require "dependency-injector"
+
 include "../tools/dragoncore-utils.lua"
 
-local function eastl_project(basedir)
-    local eastldir = basedir .. "EASTL/";
+local eastl =
+{
+    location = "EASTL"
+};
+
+function eastl.project(rootdir)
 
     project "EASTL"
-        location (eastldir .."Build/")
+        location (rootdir .."Build/")
         kind "StaticLib"
 
         dragon_project_defaults()
 
         files
         {
-            eastldir .. [[source/**.cpp]],
+            rootdir .. [[source/**.cpp]],
         }
 
         includedirs
         {
-            eastldir .. [[include]],
-            eastldir .. [[test/packages/EABase/include/Common]]
+            rootdir .. [[include]],
+            rootdir .. [[test/packages/EABase/include/Common]]
         }
 
         defines 
@@ -29,18 +35,17 @@ local function eastl_project(basedir)
 
 end
 
-local function eastl_includes(basedir)
-    local eastldir = basedir .. "EASTL/";
+function eastl.include(rootdir)
 
     includedirs
     {
-        eastldir .. [[include]],
-        eastldir .. [[test/packages/EABase/include/Common]]
+        rootdir .. [[include]],
+        rootdir .. [[test/packages/EABase/include/Common]]
     }
 
     files 
     {
-        eastldir .. "doc/EASTL.natvis"
+        rootdir .. "doc/EASTL.natvis"
     }
 
     defines
@@ -51,7 +56,7 @@ local function eastl_includes(basedir)
     }
 end
 
-local function eastl_link(dragonlibdir)
+function eastl.link(rootdir, dragonlibdir)
     links 
     {
         "EASTL"
@@ -63,4 +68,4 @@ local function eastl_link(dragonlibdir)
     }
 end
 
-add_dependency_project("EASTL", eastl_project, eastl_includes, eastl_link)
+dependencies.add("EASTL", eastl);

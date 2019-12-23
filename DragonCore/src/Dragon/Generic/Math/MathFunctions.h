@@ -6,8 +6,8 @@ namespace dragon
 {
 	namespace math
 	{
-		static constexpr long double kPiAccurate = 3.141592653589793238L;
-		static constexpr double kPi = 3.141592653589793;
+		static constexpr long double kPiVeryAccurate = 3.141592653589793238L;
+		static constexpr double kPiAccurate = 3.141592653589793;
 		static constexpr float kPi = 3.1415927f;
 
 		// TODO: EASTL does not have a constexpr numeric_limits as of yet. Replace when available.

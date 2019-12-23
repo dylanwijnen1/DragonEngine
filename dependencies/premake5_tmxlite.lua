@@ -1,10 +1,16 @@
+local dependencies = require "dependency-injector"
+
 include "../tools/dragoncore-utils.lua"
 
-local function tmxlite_project(basedir)
-    local tmxlitedir = basedir .. "tmxlite/";
+local tmxlite = 
+{
+    location = "tmxlite"
+};
+
+function tmxlite.project(rootdir)
 
     project "tmxlite"
-        location (tmxlitedir .."Build/")
+        location (rootdir .."Build/")
         kind "StaticLib"
 
         characterset("ASCII")
@@ -13,12 +19,12 @@ local function tmxlite_project(basedir)
         
         files 
         { 
-            tmxlitedir .. "tmxlite/src/**.*",
+            rootdir .. "tmxlite/src/**.*",
         }
 
         excludes { "**.txt" }
 
-        includedirs { tmxlitedir .. "tmxlite/include/" }
+        includedirs { rootdir .. "tmxlite/include/" }
         
         defines
         {
@@ -29,13 +35,11 @@ local function tmxlite_project(basedir)
 
 end
 
-local function tmxlite_includes(basedir)
-    local tmxlitedir = basedir .. "tmxlite/";
-
-    includedirs { tmxlitedir .. "tmxlite/include/" }
+function tmxlite.include(rootdir)
+    includedirs { rootdir .. "tmxlite/include/" }
 end
 
-local function tmxlite_link(dragonlibdir)
+function tmxlite.link(rootdir, dragonlibdir)
     links 
     {
         "tmxlite"
@@ -44,4 +48,4 @@ local function tmxlite_link(dragonlibdir)
     libdirs { dragonlibdir .. "tmxlite" }
 end
 
-add_dependency_project("tmxlite", tmxlite_project, tmxlite_includes, tmxlite_link)
+dependencies.add("tiled", tmxlite)

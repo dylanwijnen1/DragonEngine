@@ -1,15 +1,20 @@
+local dependencies = require "dependency-injector"
+
 include "../tools/dragoncore-utils.lua"
 
-local function sfml_project(basedir)
-    local sfmldir = basedir .. "SFML/";
+local sfml = 
+{
+	location = "SFML"
+};
 
+function sfml.project(rootdir)
 	-- sfml-graphics
 	-- sfml-audio
 	-- sfml-system
 	-- sfml-window
 
 	project "sfml-system"
-		location (sfmldir .. "Build/")
+		location (rootdir .. "Build/")
 		kind "StaticLib"
 
 		dragon_project_defaults()
@@ -25,20 +30,20 @@ local function sfml_project(basedir)
 
 		files
 		{
-			sfmldir .. [[src/SFML/System/*.hpp]],
-			sfmldir .. [[src/SFML/System/*.cpp]],
-			sfmldir .. [[src/SFML/System/Win32/*.cpp]],
-			sfmldir .. [[src/SFML/System/Win32/*.hpp]]
+			rootdir .. [[src/SFML/System/*.hpp]],
+			rootdir .. [[src/SFML/System/*.cpp]],
+			rootdir .. [[src/SFML/System/Win32/*.cpp]],
+			rootdir .. [[src/SFML/System/Win32/*.hpp]]
 		}
 
 		includedirs
 		{
-			sfmldir .. [[include/]],
-			sfmldir .. [[src/]],
+			rootdir .. [[include/]],
+			rootdir .. [[src/]],
 		}
 		
 	project "sfml-audio"
-		location (sfmldir .. "Build/")
+		location (rootdir .. "Build/")
 		kind "StaticLib"
 
 		dragon_project_defaults()
@@ -56,16 +61,16 @@ local function sfml_project(basedir)
 
 		files
 		{
-			sfmldir .. [[src/SFML/Audio/*.*]],
-			sfmldir .. [[src/SFML/Audio/**.hpp]]
+			rootdir .. [[src/SFML/Audio/*.*]],
+			rootdir .. [[src/SFML/Audio/**.hpp]]
 		}
 
 		includedirs
 		{
-			sfmldir .. [[include/]],
-			sfmldir .. [[src/]],
-			sfmldir .. [[extlibs/headers/]],
-			sfmldir .. [[extlibs/headers/AL/]]
+			rootdir .. [[include/]],
+			rootdir .. [[src/]],
+			rootdir .. [[extlibs/headers/]],
+			rootdir .. [[extlibs/headers/AL/]]
 		}
 
 		links
@@ -74,7 +79,7 @@ local function sfml_project(basedir)
 		}
 	
 	project "sfml-window"
-		location (sfmldir .. "Build/")
+		location (rootdir .. "Build/")
 		kind "StaticLib"
 
 		dragon_project_defaults()
@@ -88,26 +93,26 @@ local function sfml_project(basedir)
 
 		files
 		{
-			sfmldir .. [[src/SFML/Window/Win32/**.cpp]],
-			sfmldir .. [[src/SFML/Window/Win32/**.hpp]],
-			sfmldir .. [[src/SFML/Window/*.hpp]],
-			sfmldir .. [[src/SFML/Window/*.cpp]]
+			rootdir .. [[src/SFML/Window/Win32/**.cpp]],
+			rootdir .. [[src/SFML/Window/Win32/**.hpp]],
+			rootdir .. [[src/SFML/Window/*.hpp]],
+			rootdir .. [[src/SFML/Window/*.cpp]]
 		}
 
 		excludes 
 		{
-			sfmldir .. "src/SFML/Window/EGLCheck.cpp",
-			sfmldir .. "src/SFML/Window/EGLCheck.hpp",
-			sfmldir .. "src/SFML/Window/EglContext.cpp",
-			sfmldir .. "src/SFML/Window/EglContext.hpp"
+			rootdir .. "src/SFML/Window/EGLCheck.cpp",
+			rootdir .. "src/SFML/Window/EGLCheck.hpp",
+			rootdir .. "src/SFML/Window/EglContext.cpp",
+			rootdir .. "src/SFML/Window/EglContext.hpp"
 		}
 
 		includedirs
 		{
-			sfmldir .. [[include/]],
-			sfmldir .. [[src/]],
-			sfmldir .. [[extlibs/headers/stb_image/]],
-			sfmldir .. [[extlibs/headers/freetype2/]],
+			rootdir .. [[include/]],
+			rootdir .. [[src/]],
+			rootdir .. [[extlibs/headers/stb_image/]],
+			rootdir .. [[extlibs/headers/freetype2/]],
 		}
 			
 		filter {}
@@ -118,7 +123,7 @@ local function sfml_project(basedir)
 		}	
 	
     project "sfml-graphics"
-        location (sfmldir .. "Build/")
+        location (rootdir .. "Build/")
         kind "StaticLib"
 
         dragon_project_defaults()
@@ -132,16 +137,16 @@ local function sfml_project(basedir)
 
         files
         {
-            sfmldir .. [[src/SFML/Graphics/**.cpp]],
-			sfmldir .. [[src/SFML/Graphics/**.hpp]]
+            rootdir .. [[src/SFML/Graphics/**.cpp]],
+			rootdir .. [[src/SFML/Graphics/**.hpp]]
         }
 
         includedirs
         {
-            sfmldir .. [[include/]],
-			sfmldir .. [[src/]],
-			sfmldir .. [[extlibs/headers/stb_image/]],
-			sfmldir .. [[extlibs/headers/freetype2/]]
+            rootdir .. [[include/]],
+			rootdir .. [[src/]],
+			rootdir .. [[extlibs/headers/stb_image/]],
+			rootdir .. [[extlibs/headers/freetype2/]]
         }
 		
 		links
@@ -150,26 +155,25 @@ local function sfml_project(basedir)
 			"sfml-system"
 		}
 
+	filter {}
 end
 
-local function sfml_includes(basedir)
-    local sfmldir = basedir .. "SFML/";
-
+function sfml.include(rootdir)
     includedirs
     {
-		sfmldir .. [[include/]],
+		rootdir .. [[include/]],
 	}
 
 	filter "architecture:x64"
 		libdirs
 		{
-			sfmldir .. [[extlibs/libs-msvc/x64/]],
+			rootdir .. [[extlibs/libs-msvc/x64/]],
 		}
 
 	filter "architecture:x86"
 		libdirs
 		{
-			sfmldir .. [[extlibs/libs-msvc/x86/]],
+			rootdir .. [[extlibs/libs-msvc/x86/]],
 		}
 	
 	-- Reset Filter
@@ -178,7 +182,7 @@ local function sfml_includes(basedir)
     defines "SFML_STATIC"
 end
 
-local function sfml_link(dragonlibdir)
+function sfml.link(rootdir, dragonlibdir)
     links 
     {
         "sfml-graphics",
@@ -206,4 +210,4 @@ local function sfml_link(dragonlibdir)
 	}
 end
 
-add_dependency_project("SFML", sfml_project, sfml_includes, sfml_link)
+dependencies.add("SFML", sfml)

@@ -20,7 +20,7 @@ namespace sf
 
 	// RectF
 	inline dragon::RectF Convert(sf::FloatRect rect) { return { rect.left, rect.top, rect.width, rect.height }; }
-	inline sf::FloatRect Convert(dragon::RectF rect) { return { rect.pos.x, rect.pos.y, rect.size.x, rect.size.y }; }
+	inline sf::FloatRect Convert(dragon::RectF rect) { return { rect.x, rect.y, rect.z, rect.w }; }
 
 	// Color
 	inline dragon::Color Convert(sf::Color color) 

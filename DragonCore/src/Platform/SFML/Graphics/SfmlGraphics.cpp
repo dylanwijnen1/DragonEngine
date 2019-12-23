@@ -14,16 +14,16 @@ namespace dragon
 
 	void SfmlGraphics::DrawRect(RectF rect, Color color)
 	{
-		sf::RectangleShape shape(sf::Convert(rect.size));
-		shape.setPosition(sf::Convert(rect.pos));
+		sf::RectangleShape shape(sf::Vector2f(rect.z, rect.w));
+		shape.setPosition(rect.x, rect.y);
 		shape.setFillColor(sf::Convert(color));
 		draw(shape);
 	}
 
 	void SfmlGraphics::DrawFillRect(RectF rect, Color color, Color outlineColor, float outlineSize)
 	{
-		sf::RectangleShape shape(sf::Convert(rect.size));
-		shape.setPosition(sf::Convert(rect.pos));
+		sf::RectangleShape shape(sf::Vector2f(rect.z, rect.w));
+		shape.setPosition(rect.x, rect.y);
 
 		shape.setFillColor(sf::Convert(color));
 

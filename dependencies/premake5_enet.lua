@@ -1,28 +1,31 @@
+local dependencies = require "dependency-injector"
+
 include "../tools/dragoncore-utils.lua"
 
-local function enet_project(basedir)
-    local enetdir = basedir .. "enet/";
+local enet =
+{
+    location = "enet"
+}
+
+function enet.project(rootdir)
 
     project "enet"
-        location (enetdir .."Build/")
+        location (rootdir .."Build/")
         kind "StaticLib"
 
-        
         dragon_project_defaults()
 
 		language "C"
-		files { enetdir .. "*.c" }
-		includedirs { enetdir .. "include/" }
+		files { rootdir .. "*.c" }
+		includedirs { rootdir .. "include/" }
 
 end
 
-local function enet_includes(basedir)
-    local enetdir = basedir .. "enet/";
-
-    includedirs { enetdir .. "include/" }
+function enet.include(rootdir)
+    includedirs { rootdir .. "include/" }
 end
 
-local function enet_link(dragonlibdir)
+function enet.link(rootdir, dragonlibdir)
     links 
     {
         "enet"
@@ -34,4 +37,4 @@ local function enet_link(dragonlibdir)
     }
 end
 
-add_dependency_project("enet", enet_project, enet_includes, enet_link)
+dependencies.add("enet", enet);

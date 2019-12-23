@@ -1,15 +1,35 @@
-printf("[DragonEngine] Building Project Files")
-include "tools/dragoncore.lua"
+local dependencies = require "dependency-injector"
 
-local outputdir = "%{cfg.buildcfg}_%{cfg.architecture}/%{prj.name}"
+printf("[DragonEngine] Creating DragonEngine Project")
 
+-- Includes
+include "tools/dragoncore-utils.lua"
+include "dependencies.lua"
+
+--- -------------------------------
+--- Dragon Dependencies
+--- -------------------------------
+-- workspace "DragonDependencies"
+
+--     startproject "BuildAll"
+    
+--     project "BuildAll"
+--         kind "Utility"
+
+--         -- Setup build rules for all projects
+
+
+--- -------------------------------
+--- Dragon Engine
+--- -------------------------------
 workspace "DragonEngine"
 
     startproject "DragonCore_UnitTests"
 
     dragon_workspace_defaults()
 
-dragon_create_dependency_projects("dependencies/")
+-- Setup dependency projects in solution.
+dependencies.generateProjects()
 
 project "DragonCore"
 
@@ -28,21 +48,8 @@ project "DragonCore"
     -- This allows for <Dragon/...> includes.
     includedirs "%{prj.name}/src"
 
-    filter "configurations:Debug"
-        defines "DRAGON_DEBUG"
-
-    filter "configurations:Release"
-        defines "DRAGON_RELEASE"
-
-    filter "configurations:Distribution"
-        defines "DRAGON_DIST"
-        
-    -- Reset filters
-    filter {}
-
-
-    -- Links and Includes the dependency projects.
-    dragon_add_dependencies("dependencies/")
+    dependencies.linkAll()
+    dependencies.includeAll()
 
 -- Generate UnitTests project
 project "DragonCore_UnitTests"
@@ -52,24 +59,24 @@ project "DragonCore_UnitTests"
     location "DragonCore_UnitTests"
     kind "ConsoleApp"
 
+    -- Add Catch and DragonCore Source Files.
     includedirs 
     {
         "%{prj.name}/thirdparty/catch2/include",
         "DragonCore/src"
     }
 
+    -- Add Test Files.
     files 
     {
         "%{prj.name}/*.h",
         "%{prj.name}/*.cpp"
     }
 
-    -- Link the Library
+    -- Link the DragonCore Library
     links
     {
         "DragonCore"
     }
-
-    dragon_include_dependencies("dependencies/")
 
     

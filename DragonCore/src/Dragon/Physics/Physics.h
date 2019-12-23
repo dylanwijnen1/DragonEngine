@@ -39,18 +39,18 @@ namespace b2
 	inline b2AABB Convert(RectF rect)
 	{
 		b2AABB aabb;
-		aabb.lowerBound.x = rect.pos.x;
-		aabb.lowerBound.y = rect.pos.y;
-		aabb.upperBound.x = rect.pos.x + rect.size.x;
-		aabb.upperBound.y = rect.pos.y + rect.size.y;
+		aabb.lowerBound.x = rect.x;
+		aabb.lowerBound.y = rect.y;
+		aabb.upperBound.x = rect.x + rect.z;
+		aabb.upperBound.y = rect.y + rect.w;
 		return aabb;
 	}
 
 	inline b2AABB Convert(Vector2f min, Vector2f max)
 	{
 		b2AABB aabb;
-		aabb.lowerBound = b2::Convert(Vector2f::Min(min, max));
-		aabb.upperBound = b2::Convert(Vector2f::Max(min, max));
+		aabb.lowerBound = b2::Convert(dragon::math::Min(min, max));
+		aabb.upperBound = b2::Convert(dragon::math::Max(min, max));
 		return aabb;
 	}
 

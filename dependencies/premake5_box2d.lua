@@ -1,26 +1,29 @@
+local dependencies = require "dependency-injector"
+
 include "../tools/dragoncore-utils.lua"
 
-local function box2d_project(basedir)
-    local box2d_dir = basedir .. "Box2D/";
+local box2d = 
+{
+    location = "Box2D"
+};
 
+function box2d.project(rootdir)
     project "Box2D"
-        location (box2d_dir .."Build/")
+        location (rootdir .. "Build/")
         kind "StaticLib"
 
         dragon_project_defaults()
 
-        files { box2d_dir .. [[Box2D/**]] }
-        includedirs { box2d_dir }
+        files { rootdir .. [[Box2D/**]] }
+        includedirs { rootdir }
 
 end
 
-local function box2d_includes(basedir)
-    local box2d_dir = basedir .. "Box2D/";
-
-    includedirs { box2d_dir }
+function box2d.include(rootdir)
+    includedirs { rootdir }
 end
 
-local function box2d_link(dragonlibdir)
+function box2d.link(rootdir, dragonlibdir)
     links 
     {
         "Box2D"
@@ -32,4 +35,4 @@ local function box2d_link(dragonlibdir)
     }
 end
 
-add_dependency_project("Box2D", box2d_project, box2d_includes, box2d_link)
+dependencies.add("Box2D", box2d)
