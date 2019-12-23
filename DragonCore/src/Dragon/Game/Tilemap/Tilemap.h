@@ -148,6 +148,7 @@ namespace dragon
 		Vector2 WorldToMapCoordinates(Vector2f worldCoords) const;
 		Vector2f MapToWorldCoordinates(Vector2 mapCoords) const;
 
+		// TODO: Change Rects to bounds.
 		/// <summary>
 		/// </summary>
 		/// <param name="worldBounds"></param>

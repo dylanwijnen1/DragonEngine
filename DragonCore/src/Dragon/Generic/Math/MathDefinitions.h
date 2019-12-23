@@ -2,45 +2,11 @@
 
 #include <Dragon/Generic/Serialization/InStream.h>
 #include <Dragon/Generic/Serialization/OutStream.h>
+
 #include <glm/glm.hpp>
 
 namespace dragon
 {
-	/// <summary>
-	/// x, y, width, height
-	/// </summary>
-	using RectF = glm::vec4;
-
-	/// <summary>
-	/// x, y, width, height
-	/// </summary>
-	using Rect = glm::ivec4;
-
-	/// <summary>
-	/// x, y, width, height
-	/// </summary>
-	using RectU = glm::uvec4;
-
-	/// <summary>
-	/// x, y, width, height
-	/// </summary>
-	template<typename Type>
-	using _Rect = glm::vec<4, Type>;
-
-	/// <summary>
-	/// x1, y1, x2, y2
-	/// </summary>
-	using BoundsF = glm::vec4;
-
-	/// <summary>
-	/// x1, y1, x2, y2
-	/// </summary>
-	using Bounds = glm::ivec4;
-
-	/// <summary>
-	/// x1, y1, x2, y2
-	/// </summary>
-	using BoundsU = glm::uvec4;
 
 	using Vector2f = glm::vec2;
 	using Vector3f = glm::vec3;
@@ -54,13 +20,13 @@ namespace dragon
 	using Vector3u = glm::uvec3;
 	using Vector4u = glm::uvec4;
 
-	template<typename Type, int Amount = 2>
+	template<typename Type, size_t Amount>
 	using _Vector = glm::vec<Amount, Type>;
 
 	using Matrix3 = glm::mat3;
 	using Matrix4 = glm::mat4;
 
-	template<typename Type, int Rows, int Columns>
+	template<typename Type, size_t Rows, size_t Columns>
 	using Matrix = glm::mat<Columns, Rows, Type>;
 
 	using Quaternion = glm::quat;

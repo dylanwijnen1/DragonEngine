@@ -14,7 +14,7 @@ namespace dragon
 
 	void SfmlGraphics::DrawRect(RectF rect, Color color)
 	{
-		sf::RectangleShape shape(sf::Vector2f(rect.z, rect.w));
+		sf::RectangleShape shape(sf::Vector2f(rect.width, rect.height));
 		shape.setPosition(rect.x, rect.y);
 		shape.setFillColor(sf::Convert(color));
 		draw(shape);
@@ -22,7 +22,7 @@ namespace dragon
 
 	void SfmlGraphics::DrawFillRect(RectF rect, Color color, Color outlineColor, float outlineSize)
 	{
-		sf::RectangleShape shape(sf::Vector2f(rect.z, rect.w));
+		sf::RectangleShape shape(sf::Vector2f(rect.width, rect.height));
 		shape.setPosition(rect.x, rect.y);
 
 		shape.setFillColor(sf::Convert(color));
