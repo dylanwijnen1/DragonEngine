@@ -1,7 +1,6 @@
 #include "Mouse.h"
 
 #include <Dragon/Application/Application.h>
-#include <chrono>
 
 void dragon::Mouse::OnEvent(ApplicationEvent& ev)
 {
@@ -11,10 +10,20 @@ void dragon::Mouse::OnEvent(ApplicationEvent& ev)
 	ev.Dispatch<MouseScrolled>(this, &Mouse::HandleMouseScroll);
 }
 
+bool dragon::Mouse::GetUp(MouseButton button) const
+{
+	return m_oldState[(size_t)button] && !m_currentState[(size_t)button];
+}
+
+bool dragon::Mouse::GetDown(MouseButton button) const
+{
+	return !m_oldState[(size_t)button] && m_currentState[(size_t)button];
+}
+
 float dragon::Mouse::GetTimeSinceLast(MouseButton button) const
 {
-	float delta = (float)std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - m_lastPressedTime[(size_t)button]).count();
-	return delta;
+	double time = Duration(PreciseClock::now() - m_lastPressedTime[(size_t)button]).count();
+	return (float)time;
 }
 
 void dragon::Mouse::Update()
@@ -25,7 +34,7 @@ void dragon::Mouse::Update()
 void dragon::Mouse::HandleMouseDown(MouseButtonPressed& ev)
 {
 	m_currentState[(size_t)ev.m_button] = true;
-	m_lastPressedTime[(size_t)ev.m_button] = std::chrono::high_resolution_clock::now();
+	m_lastPressedTime[(size_t)ev.m_button] = PreciseClock::now();
 }
 
 void dragon::Mouse::HandleMouseUp(MouseButtonReleased& ev)

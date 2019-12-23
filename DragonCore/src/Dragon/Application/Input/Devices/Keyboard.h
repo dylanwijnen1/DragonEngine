@@ -14,12 +14,14 @@ namespace dragon
 
 	class Keyboard
 	{
+		using Duration = std::chrono::duration<double>;
+		using PreciseClock = std::chrono::high_resolution_clock;
+
 		using KeyStates = eastl::array<bool, (size_t)Key::kCount>;
 		KeyStates m_oldState;
 		KeyStates m_currentState;
 
-		using TimePoint = std::chrono::high_resolution_clock::time_point;
-
+		using TimePoint = PreciseClock::time_point;
 		using KeyTimeData = eastl::array<TimePoint, (size_t)Key::kCount>;
 		KeyTimeData m_lastPressedTime;
 
@@ -39,9 +41,13 @@ namespace dragon
 
 		void OnEvent(ApplicationEvent& ev);
 
-		bool GetUp(Key key) const { return !m_oldState[(size_t)key] && m_currentState[(size_t)key]; }
-		bool GetDown(Key key) const { return m_oldState[(size_t)key] && m_currentState[(size_t)key]; }
-		bool Get(Key key) const { return m_currentState[(size_t)key]; }
+		bool GetUp(Key key) const;
+		bool GetDown(Key key) const;
+
+		bool Get(Key key) const 
+		{ 
+			return m_currentState[(size_t)key]; 
+		}
 
 		float GetTimeSinceLast(Key key) const;
 

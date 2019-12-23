@@ -84,11 +84,12 @@ namespace dragon
 
 		while(m_running)
 		{
-			m_pWindow->ProcessEvents();
-
 			// Update devices.
 			Keyboard::GetInstance().Update();
 			Mouse::GetInstance().Update();
+
+			// Process Events
+			m_pWindow->ProcessEvents();
 
 			// Fixed Update
 			fixedAccumulator += deltaTime;

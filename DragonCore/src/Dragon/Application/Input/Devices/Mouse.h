@@ -14,6 +14,9 @@ namespace dragon
 
 	class Mouse
 	{
+		using Duration = std::chrono::duration<double>;
+		using PreciseClock = std::chrono::high_resolution_clock;
+
 		Vector2f m_mousePosition;
 		Vector2f m_wheelPosition;
 		float m_wheelDelta;
@@ -22,8 +25,7 @@ namespace dragon
 		MouseStates m_oldState;
 		MouseStates m_currentState;
 
-		using TimePoint = std::chrono::high_resolution_clock::time_point;
-
+		using TimePoint = PreciseClock::time_point;
 		using MouseTimeData = eastl::array<TimePoint, (size_t)MouseButton::kCount>;
 		MouseTimeData m_lastPressedTime;
 
@@ -46,8 +48,8 @@ namespace dragon
 
 		void OnEvent(ApplicationEvent& ev);
 
-		bool GetUp(MouseButton button) const { return !m_oldState[(size_t)button] && m_currentState[(size_t)button]; }
-		bool GetDown(MouseButton button) const { return m_oldState[(size_t)button] && m_currentState[(size_t)button]; }
+		bool GetUp(MouseButton button) const;
+		bool GetDown(MouseButton button) const;
 		bool Get(MouseButton button) const { return m_currentState[(size_t)button]; }
 
 		float GetTimeSinceLast(MouseButton button) const;
