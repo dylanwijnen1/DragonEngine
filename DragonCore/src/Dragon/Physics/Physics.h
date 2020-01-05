@@ -2,15 +2,6 @@
 
 #include <Dragon/Graphics/Color.h>
 
-//#include <Dragon/Physics/Components/...>
-#include <Dragon/Physics/Components/RigidBody.h>
-#include <Dragon/Physics/Components/Collider.h>
-#include <Dragon/Physics/Components/BoxCollider.h>
-#include <Dragon/Physics/Components/CircleCollider.h>
-#include <Dragon/Physics/Components/PolygonCollider.h>
-
-#include <Dragon/Generic/Math.h>
-
 // Helper methods
 #include <Box2D/Common/b2Math.h>
 #include <Box2D/Common/b2Draw.h>

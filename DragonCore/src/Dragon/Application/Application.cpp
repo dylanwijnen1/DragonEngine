@@ -9,6 +9,9 @@
 #include <Dragon/Application/Window/WindowEvents.h>
 #include <Dragon/Graphics/Graphics.h>
 
+// Debugging
+#include <Dragon/Debug.h>
+
 #define APP_DIE(SERVICE, PSERVICE, ...) if(!PSERVICE->Init(__VA_ARGS__)) { DERR("["##SERVICE##"] could not be initialized, Exiting..."); return false; }
 #define APP_CONTINUE(SERVICE, PSERVICE, ...) if(!PSERVICE->Init(__VA_ARGS__)) { DWARN("["##SERVICE##"] could not be intialized. Acting like nothing happened..."); }
 

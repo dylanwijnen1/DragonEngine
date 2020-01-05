@@ -1,9 +1,8 @@
 #pragma once
 
-#include <Dragon/Application/Debugging/Debug.h>
-#include <Dragon/Generic/Math.h>
-
 #include <stdint.h>
+#include <cstddef>
+
 
 #define DRAGON_RENDERSKIN_NONE 0
 #define DRAGON_RENDERSKIN_SFML 1
@@ -11,7 +10,7 @@
 // TODO: Should be defined by premake
 #define DRAGON_RENDERSKIN DRAGON_RENDERSKIN_SFML
 #ifndef DRAGON_RENDERSKIN
-	#define DRAGON_RENDERSKIN DRAGON_RENDERSKIN_NONE
+#define DRAGON_RENDERSKIN DRAGON_RENDERSKIN_NONE
 #endif
 
 #define DRAGON_APP_NAME "DragonApplication"
@@ -32,4 +31,4 @@ namespace dragon
 	// TODO: Possibly forward declare the RENDERSKIN specific Rendering classes with aliases.
 	//		 This could confuse users with intellisense giving more options. A factory method on the class would mitigage this problem.
 	//		 RenderTexture::Create(...); Texture::Create(...); Sprite::Create(...);
-}
+};

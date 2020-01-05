@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Dragon/Config.h>
+#include <Dragon/Debug.h>
 
 #include <Dragon/Generic/Math.h>
 
@@ -8,6 +9,7 @@
 #include <Dragon/Graphics/Texture.h>
 
 #include <EASTL/vector.h>
+#include <EASTL/string.h>
 
 namespace dragon
 {

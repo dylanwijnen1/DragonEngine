@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Dragon/Graphics/RenderTarget.h>
-#include <EASTL/string.h>
 
 namespace dragon
 {
@@ -9,14 +8,12 @@ namespace dragon
 
 	class Layer
 	{
-		eastl::string m_layerName; // Mainly for debugging purposes.
-
 	public:
-		Layer() = delete;
-		Layer(const char* name) : m_layerName(name) {}
+
+		Layer() = default;
 		virtual ~Layer() = default;
 
-		// Layers should not be copied.
+		// Layers should not be copied or moved.
 		Layer(const Layer&) = delete;
 		Layer(Layer&&) = delete;
 		Layer& operator=(const Layer&) = delete;
@@ -28,6 +25,9 @@ namespace dragon
 		virtual void Update(float dt) = 0;
 		virtual void FixedUpdate(float dt) = 0;
 		virtual void Render(RenderTarget& target) = 0;
+
+		virtual void BeginFrame() {}
+		virtual void EndFrame() {}
 
 		virtual void OnEvent(ApplicationEvent& ev) {};
 	};

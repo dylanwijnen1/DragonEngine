@@ -1,14 +1,23 @@
 #pragma once
 
-#include <EASTL/string.h>
+#include <Dragon/Config.h>
+
+#include <EASTL/type_traits.h>
 
 namespace dragon
 {
 
+	template<typename Type>
+	struct StreamWriter
+	{
+		void Write(class OutStream& out, Type val)
+		{
+			static_assert(false, "Write has not been specialized for the given type. " __FILE__ ", Line: " STRINGIFY(__LINE__));
+		}
+	};
+
 	class OutStream
 	{
-		using Byte = std::byte;
-
 	public:
 
 		// Raw Data
@@ -16,25 +25,20 @@ namespace dragon
 		virtual void Write(const char* data, size_t len);
 		virtual void Write(const unsigned char* data, size_t len);
 
-		// Character/String
-		void Write(const eastl::string& text);
-		void Write(char character);
-
-		// Numbers
-		void Write(short num);
-		void Write(int num);
-		void Write(long long num);
-
-		void Write(unsigned short num);
-		void Write(unsigned int num);
-		void Write(unsigned long long num);
-
-		// Floating point types
-		void Write(float num);
-		void Write(double num);
-
 		template<typename Type>
-		void Write(const Type& val) { static_assert(__FILE__ ": Write<>(const Type& val) has not been overloaded for the given type."); }
+		void Write(Type val) 
+		{
+			// If the given type is numeric, write raw bytes.
+			if constexpr (eastl::is_arithmetic_v<Type> || eastl::is_enum_v<Type>)
+			{
+				Write(reinterpret_cast<const Byte*>(&val), sizeof(Type));
+			}
+			else
+			{
+				// Write the data to the output stream.
+				StreamWriter<Type>().Write(*this, val);
+			}
+		}
 	};
 
 }

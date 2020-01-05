@@ -1,7 +1,7 @@
 #include "Tilemap.h"
 
 #include <Dragon/Config.h>
-#include <Dragon/Application/Debugging/Debug.h>
+#include <Dragon/Debug.h>
 
 // Determine the TilemapRenderer Implementation
 

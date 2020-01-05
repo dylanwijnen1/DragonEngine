@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Dragon/Application/Debugging/Debug.h>
+#include <Dragon/Debug.h>
 #include <Dragon/Generic/Handle.h>
 
 #include <EASTL/unordered_set.h>

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <Dragon/Config.h>
+#include <Dragon/Debug.h>
+
 
 #include <Dragon/Graphics/Color.h>
 #include <Dragon/Graphics/Camera.h>

@@ -1,6 +1,10 @@
 #pragma once
 
-#include <EASTL/numeric_limits.h>
+// TODO: Unable to find an eastl round function although a "round_to_nearest" enum exists.
+#include <limits>
+
+#include <algorithm>
+#include <cmath>
 
 namespace dragon
 {
@@ -16,44 +20,42 @@ namespace dragon
 
 		// Precise method, which guarantees v = v1 when t = 1.
 		template<class Type>
-		constexpr inline Type Lerp(Type start, Type end, Type perc) 
+		inline constexpr Type Lerp(Type start, Type end, Type perc)
 		{
 			return ((Type)1.0 - perc) * start + perc * end;
 		}
 
 		// Normalize a value.
 		template<class Type>
-		Type Normalize(Type in, Type min, Type max)
+		inline constexpr Type Normalize(Type in, Type min, Type max)
 		{
 			return (in - min) / (max - min);
 		}
 
 		// Clamp
 		template<class Type>
-		constexpr inline Type Clamp(Type value, Type min, Type max)
+		inline constexpr Type Clamp(Type value, Type min, Type max)
 		{
-			return eastl::clamp(value, min, max);
+			return std::clamp(value, min, max);
 		}
 
 		template<class Type>
-		constexpr inline Type Max(Type left, Type right)
+		inline constexpr Type Max(Type left, Type right)
 		{
-			return eastl::max(left, right);
+			return std::max(left, right);
 		}
 
 		template<class Type>
-		constexpr inline Type Min(Type left, Type right)
+		inline constexpr Type Min(Type left, Type right)
 		{
-			return eastl::min(left, right);
+			return std::min(left, right);
 		}
 
-		// TODO: Unable to find an eastl round function although a "round_to_nearest" enum exists.
 		inline float RoundToNearest(float in)
 		{
 			return std::roundf(in);
 		}
 
-		// TODO: Unable to find an eastl round function although a "round_to_nearest" enum exists.
 		inline float Ceil(float in)
 		{
 			return std::ceilf(in);
