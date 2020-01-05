@@ -1,8 +1,8 @@
-#include <Application/_PRJ_NAME_App.h>
+#include <Application/@{PRJ_NAME}@App.h>
 
 int main()
 {
-	_PRJ_NAME_App app;
+	@{PRJ_NAME}@App app;
 	if (!app.Init())
 		return 0;
 

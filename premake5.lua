@@ -1,10 +1,11 @@
 local dependencies = require "dependency-injector"
+local dragoncore = require "dragoncore"
+local utils = dragoncore.utils;
 
 printf("[DragonEngine] Creating DragonEngine Project")
 
--- Includes
-include "tools/dragoncore-utils.lua"
-include "dependencies.lua"
+-- Add dependency includes.
+include "dependencies/dependencies.lua"
 
 --- -------------------------------
 --- Dragon Dependencies
@@ -24,20 +25,20 @@ include "dependencies.lua"
 --- -------------------------------
 workspace "DragonEngine"
 
-    startproject "DragonCore_UnitTests"
+    startproject "DragonCore_Game"
 
-    dragon_workspace_defaults()
+    utils.workspace_defaults()
 
 -- Setup dependency projects in solution.
 dependencies.generateProjects()
 
 project "DragonCore"
 
-    dragon_project_defaults();
+    utils.project_defaults();
 
-    location "DragonCore"
-    characterset("ASCII")
-    kind "StaticLib"    
+    location "DragonCore";
+    characterset "ASCII";
+    kind "StaticLib";
 
     files 
     {
@@ -46,24 +47,42 @@ project "DragonCore"
     }
 
     -- This allows for <Dragon/...> includes.
-    includedirs "%{prj.name}/src"
+    includedirs "%{prj.name}/src";
 
-    dependencies.linkAll()
-    dependencies.includeAll()
+    utils._internal_init_project();
+
+project "DragonCore_Game"
+
+    utils.project_defaults();
+
+    location "DragonCore_Game";
+    kind "ConsoleApp";
+
+    files 
+    {
+        "%{prj.name}/src/**.h",
+        "%{prj.name}/src/**.cpp"
+    }
+
+    includedirs 
+    {
+        "%{prj.name}/src",
+    }
+
+    utils.init_dragon_project();
 
 -- Generate UnitTests project
 project "DragonCore_UnitTests"
 
-    dragon_project_defaults()
+    utils.project_defaults();
 
-    location "DragonCore_UnitTests"
-    kind "ConsoleApp"
+    location "DragonCore_UnitTests";
+    kind "ConsoleApp";
 
-    -- Add Catch and DragonCore Source Files.
+    -- Add Catch Source Files.
     includedirs 
     {
         "%{prj.name}/thirdparty/catch2/include",
-        "DragonCore/src"
     }
 
     -- Add Test Files.
@@ -73,10 +92,4 @@ project "DragonCore_UnitTests"
         "%{prj.name}/*.cpp"
     }
 
-    -- Link the DragonCore Library
-    links
-    {
-        "DragonCore"
-    }
-
-    
+    utils.init_dragon_project();

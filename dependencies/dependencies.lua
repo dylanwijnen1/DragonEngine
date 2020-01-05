@@ -1,13 +1,13 @@
-include "dependencies/premake5_box2d.lua"
-include "dependencies/premake5_eastl.lua"
-include "dependencies/premake5_enet.lua"
-include "dependencies/premake5_glm.lua"
-include "dependencies/premake5_imgui.lua"
-include "dependencies/premake5_tmxlite.lua"
+include "premake5_box2d.lua"
+include "premake5_eastl.lua"
+include "premake5_enet.lua"
+include "premake5_glm.lua"
+include "premake5_imgui.lua"
+include "premake5_tmxlite.lua"
 
-include "dependencies/premake5_vld.lua"
+include "premake5_vld.lua"
 
-include "dependencies/premake5_sfml.lua"
+include "premake5_sfml.lua"
 
 -- if _OPTIONS["graphics"] == nil then
 --     _OPTIONS["graphics"] = "SFML"; -- SFML is the default graphics API

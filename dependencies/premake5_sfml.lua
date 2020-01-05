@@ -1,6 +1,7 @@
 local dependencies = require "dependency-injector"
 
-include "../tools/dragoncore-utils.lua"
+local dragoncore = require "dragoncore"
+local utils = dragoncore.utils
 
 local sfml = 
 {
@@ -17,7 +18,7 @@ function sfml.project(rootdir)
 		location (rootdir .. "Build/")
 		kind "StaticLib"
 
-		dragon_project_defaults()
+		utils.project_defaults();
 		
 		defines 
 		{
@@ -46,7 +47,7 @@ function sfml.project(rootdir)
 		location (rootdir .. "Build/")
 		kind "StaticLib"
 
-		dragon_project_defaults()
+		utils.project_defaults();
 		
 		defines 
 		{
@@ -82,7 +83,7 @@ function sfml.project(rootdir)
 		location (rootdir .. "Build/")
 		kind "StaticLib"
 
-		dragon_project_defaults()
+		utils.project_defaults();
 		
 		defines 
 		{
@@ -126,7 +127,7 @@ function sfml.project(rootdir)
         location (rootdir .. "Build/")
         kind "StaticLib"
 
-        dragon_project_defaults()
+        utils.project_defaults();
 		
 		defines 
 		{
