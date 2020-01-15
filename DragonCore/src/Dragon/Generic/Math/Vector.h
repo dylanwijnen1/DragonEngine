@@ -7,6 +7,8 @@
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 
+// TODO: Serialization Functions
+
 namespace dragon
 {
 	//
@@ -58,18 +60,18 @@ namespace dragon
 		}
 	};
 
-	//template<typename Type, glm::qualifier Qualifier>
-	//struct StreamReader<glm::tvec3<Type, Qualifier>>
-	//{
-	//	glm::tvec3<Type, Qualifier> Read(InStream& in)
-	//	{
-	//		glm::tvec3<Type, Qualifier> vec;
-	//		vec.x = in.Read<Type>();
-	//		vec.y = in.Read<Type>();
-	//		vec.z = in.Read<Type>();
-	//		return vec;
-	//	}
-	//};
+	template<typename Type, glm::qualifier Qualifier>
+	struct StreamReader<glm::tvec3<Type, Qualifier>>
+	{
+		glm::tvec3<Type, Qualifier> Read(InStream& in)
+		{
+			glm::tvec3<Type, Qualifier> vec;
+			vec.x = in.Read<Type>();
+			vec.y = in.Read<Type>();
+			vec.z = in.Read<Type>();
+			return vec;
+		}
+	};
 
 	//
 	// Vector 4
@@ -91,19 +93,19 @@ namespace dragon
 		}
 	};
 
-	//template<typename Type, glm::qualifier Qualifier>
-	//struct StreamReader<glm::tvec4<Type, Qualifier>>
-	//{
-	//	glm::tvec4<Type, Qualifier> Read(InStream& in)
-	//	{
-	//		glm::tvec4<Type, Qualifier> vec;
-	//		vec.x = in.Read<Type>();
-	//		vec.y = in.Read<Type>();
-	//		vec.z = in.Read<Type>();
-	//		vec.w = in.Read<Type>();
-	//		return vec;
-	//	}
-	//};
+	template<typename Type, glm::qualifier Qualifier>
+	struct StreamReader<glm::tvec4<Type, Qualifier>>
+	{
+		glm::tvec4<Type, Qualifier> Read(InStream& in)
+		{
+			glm::tvec4<Type, Qualifier> vec;
+			vec.x = in.Read<Type>();
+			vec.y = in.Read<Type>();
+			vec.z = in.Read<Type>();
+			vec.w = in.Read<Type>();
+			return vec;
+		}
+	};
 
 	//
 	// Variable Length Vector

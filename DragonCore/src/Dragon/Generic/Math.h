@@ -2,10 +2,8 @@
 
 #include <glm/glm.hpp>
 
-<<<<<<< Updated upstream
-#include <Dragon/Generic/Math/MathDefinitions.h>
 #include <Dragon/Generic/Math/MathFunctions.h>
-=======
+
 using Quaternion = glm::quat;
 
 #include <Dragon/Generic/Math/Vector.h>
@@ -14,4 +12,3 @@ using Quaternion = glm::quat;
 #include <Dragon/Generic/Math/Bounds.h>
 
 #include <Dragon/Generic/Math/MathFunctions.h>
->>>>>>> Stashed changes

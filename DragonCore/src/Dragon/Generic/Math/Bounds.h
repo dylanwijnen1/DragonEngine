@@ -2,6 +2,8 @@
 
 #include <Dragon/Generic/Math/Vector.h>
 
+// TODO: Serialization Functions
+
 namespace dragon
 {
 	/// <summary>
