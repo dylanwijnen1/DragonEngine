@@ -1,10 +1,12 @@
 local dependencies = require "dependency-injector"
+dependencies.init();
+
 local dragoncore = require "dragoncore"
 local utils = dragoncore.utils;
 
 local ENGINE_ROOT = "@{DRAGON_ENGINE_ROOT}@";
 
-print("[@{PRJ_NAME}@] Building _PRJ_NAME_ Project Files!")
+print("[@{PRJ_NAME}@] Building @{PRJ_NAME}@ Project Files!")
 
 workspace "@{PRJ_NAME}@"
 

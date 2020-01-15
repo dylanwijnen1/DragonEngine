@@ -7,7 +7,7 @@ local DRAGON_DEPENDENCY_FOLDER = path.getabsolute("../../../dependencies")
 local DRAGON_OUT_FOLDER = path.getabsolute("../../../bin")
 
 -- Create an empty dependency table.
-m.dependencies = {};
+m._dependencies = {};
 
 --- Returns the dependency folder relative to the current executing script.
 local function dependencyFolder(dependencyRoot, dependency)
@@ -27,10 +27,10 @@ end
 --- @param dependency table | "A dependency table. @see dependency-example"
 function m.add(id, dependency)
 
-    if m.dependencies[id] == nil then
+    if m._dependencies[id] == nil then
         dependency.location = dependency.location or id;
 
-        m.dependencies[id] = dependency
+        m._dependencies[id] = dependency
         printf("Registered dependency [" .. id .. "]")
     else
         printf("Dependency with id [" .. id .. "] already registered.")
@@ -42,7 +42,7 @@ end
 function m.list()
 
     printf("Registered Dependencies: ")
-    for id, dependency in pairs(m.dependencies) do
+    for id, dependency in pairs(m._dependencies) do
         printf("\t - " .. id);
     end
 
@@ -50,7 +50,7 @@ end
 
 function m.details(id)
 
-    for id, dependency in pairs(m.dependencies) do
+    for id, dependency in pairs(m._dependencies) do
         if dependency.shortname ~= nil then
             print("\t" .. dependency.shortname);
         end
@@ -85,12 +85,12 @@ end
 --- @param id | "The dependency id the dependency has registered with."
 function m.link(id)
 
-    local dependency = m.dependencies[id];
+    local dependency = m._dependencies[id];
 
     if dependency ~= nil then
         m._linkDependency(dependency);
     else
-        printf("Could not find the dependency: " .. id .. ".");
+        printf("Could not link the dependency: " .. id .. ".");
     end
 
 end
@@ -98,7 +98,7 @@ end
 --- Links all dependencies at once.
 function m.linkAll()
 
-    for _, dependency in pairs(m.dependencies) do
+    for _, dependency in pairs(m._dependencies) do
         m._linkDependency(dependency);
     end
 
@@ -124,12 +124,12 @@ end
 --- @param id | "The dependency id the dependency has registered with."
 function m.include(id)
 
-    local dependency = m.dependencies[id];
+    local dependency = m._dependencies[id];
 
     if dependency ~= nil then
         m._includeDependency(dependency);
     else
-        printf("Could not find the dependency: " .. id .. ".");
+        printf("Could not include the dependency: " .. id .. ".");
     end
 
 end
@@ -137,7 +137,7 @@ end
 --- Includes all dependencies into the project.
 function m.includeAll()
 
-    for _, dependency in pairs(m.dependencies) do
+    for _, dependency in pairs(m._dependencies) do
         m._includeDependency(dependency)
     end
 
@@ -146,7 +146,7 @@ end
 --- Links and includes the dependency.
 function m.require(id)
 
-    local dependency = m.dependencies[id];
+    local dependency = m._dependencies[id];
 
     if dependency ~= nil then
         m._includeDependency(dependency);
@@ -160,7 +160,7 @@ end
 --- Generates the project for the dependency.
 function m.generateProjects()
 
-    for _, dependency in pairs(m.dependencies) do
+    for _, dependency in pairs(m._dependencies) do
 
         local depRoot = dependencyFolder(DRAGON_DEPENDENCY_FOLDER, dependency);
 
@@ -172,4 +172,15 @@ function m.generateProjects()
 
 end
 
+--- Load all dependencies in the dependency folder.
+function m.init()
+
+    local matches = os.matchfiles(DRAGON_DEPENDENCY_FOLDER .. "/*.lua");
+    for _, match in pairs(matches) do
+        include(match);
+    end
+
+end
+
+-- Return the module.
 return m;

@@ -1,36 +1,26 @@
 local dependencies = require "dependency-injector"
+dependencies.init();
+
 local dragoncore = require "dragoncore"
 local utils = dragoncore.utils;
 
 printf("[DragonEngine] Creating DragonEngine Project")
 
--- Add dependency includes.
-include "dependencies/dependencies.lua"
-
---- -------------------------------
---- Dragon Dependencies
---- -------------------------------
--- workspace "DragonDependencies"
-
---     startproject "BuildAll"
-    
---     project "BuildAll"
---         kind "Utility"
-
---         -- Setup build rules for all projects
-
-
---- -------------------------------
---- Dragon Engine
---- -------------------------------
 workspace "DragonEngine"
 
     startproject "DragonCore_Game"
 
     utils.workspace_defaults()
 
--- Setup dependency projects in solution.
+--- -------------------------------
+--- Dragon Dependencies
+--- -------------------------------
+
 dependencies.generateProjects()
+
+--- -------------------------------
+--- Dragon Engine
+--- -------------------------------
 
 project "DragonCore"
 
