@@ -1,6 +1,7 @@
 local dependencies = require "dependency-injector"
 
-include "../tools/dragoncore-utils.lua"
+local dragoncore = require "dragoncore"
+local utils = dragoncore.utils
 
 local imgui =
 {

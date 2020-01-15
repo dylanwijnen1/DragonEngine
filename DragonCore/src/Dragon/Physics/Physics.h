@@ -32,16 +32,15 @@ namespace b2
 		b2AABB aabb;
 		aabb.lowerBound.x = rect.x;
 		aabb.lowerBound.y = rect.y;
-		aabb.upperBound.x = rect.x + rect.z;
-		aabb.upperBound.y = rect.y + rect.w;
+		aabb.upperBound.x = rect.x + rect.width;
+		aabb.upperBound.y = rect.y + rect.height;
 		return aabb;
 	}
 
 	inline b2AABB Convert(Vector2f min, Vector2f max)
 	{
+		// TODO: Implement using new structure Bounds
 		b2AABB aabb;
-		aabb.lowerBound = b2::Convert(dragon::math::Min(min, max));
-		aabb.upperBound = b2::Convert(dragon::math::Max(min, max));
 		return aabb;
 	}
 

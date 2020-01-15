@@ -1,7 +1,5 @@
 local dependencies = require "dependency-injector"
 
-include "../tools/dragoncore-utils.lua"
-
 local vld = 
 {
     shortname = "Visual Leak Detector",

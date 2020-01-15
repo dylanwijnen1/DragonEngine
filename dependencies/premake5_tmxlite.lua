@@ -1,6 +1,7 @@
 local dependencies = require "dependency-injector"
 
-include "../tools/dragoncore-utils.lua"
+local dragoncore = require "dragoncore"
+local utils = dragoncore.utils
 
 local tmxlite = 
 {
@@ -15,7 +16,7 @@ function tmxlite.project(rootdir)
 
         characterset("ASCII")
 
-        dragon_project_defaults()
+        utils.project_defaults();
         
         files 
         { 
@@ -48,4 +49,4 @@ function tmxlite.link(rootdir, dragonlibdir)
     libdirs { dragonlibdir .. "tmxlite" }
 end
 
-dependencies.add("tiled", tmxlite)
+dependencies.add("tmxlite", tmxlite)

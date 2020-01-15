@@ -1,21 +1,21 @@
 #pragma once
 
-#include <Dragon/Application/Layer.h>
+#include <Dragon/Application/@{PRJ_NAME}@Layer.h>
 #include <Dragon/Application/Window/WindowEvents.h>
 
-class _PRJ_NAME_Layer final : public dragon::Layer
+class @{PRJ_NAME}@Layer final : public dragon::Layer
 {
 public:
-	_PRJ_NAME_Layer()
-		: dragon::Layer("_PRJ_NAME_Layer")
+	@{PRJ_NAME}@Layer()
+		: dragon::Layer("@{PRJ_NAME}@Layer")
 	{}
 
-	~_PRJ_NAME_Layer();
+	~@{PRJ_NAME}@Layer();
 
-	_PRJ_NAME_Layer(const _PRJ_NAME_Layer&) = delete;
-	_PRJ_NAME_Layer(_PRJ_NAME_Layer&&) = delete;
-	_PRJ_NAME_Layer& operator=(const _PRJ_NAME_Layer&) = delete;
-	_PRJ_NAME_Layer& operator=(_PRJ_NAME_Layer&&) = delete;
+	@{PRJ_NAME}@Layer(const @{PRJ_NAME}@Layer&) = delete;
+	@{PRJ_NAME}@Layer(@{PRJ_NAME}@Layer&&) = delete;
+	@{PRJ_NAME}@Layer& operator=(const @{PRJ_NAME}@Layer&) = delete;
+	@{PRJ_NAME}@Layer& operator=(@{PRJ_NAME}@Layer&&) = delete;
 
 	virtual void OnAttach() final override;
 	virtual void OnDetach() final override;
