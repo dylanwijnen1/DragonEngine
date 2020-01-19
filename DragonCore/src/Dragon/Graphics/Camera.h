@@ -5,10 +5,14 @@
 namespace dragon
 {
 	// TODO: Instead of using these values to create a camera on for the platform.
-	//	     This should actually be a matrix implementation so we can transform coordinates with the camera.
+	//	     This should actually be a view matrix implementation so we can transform coordinates with the camera.
 	//		 E.g : Vector2f worldPosition = Camera::ScreenToWorld(mousePosition);
-	struct Camera
+	class Camera
 	{
+		Vector2f m_position;
+		Vector2f m_size;
+		RectF m_viewport;
+
 	public:
 		Camera()
 			: Camera({ 0.f, 0.f }, { 0.f, 0.f }, { 0.f, 0.f, 1.f, 1.f })
@@ -20,9 +24,6 @@ namespace dragon
 			, m_viewport(viewport)
 		{}
 
-		Vector2f m_position;
-		Vector2f m_size;
-		RectF m_viewport;
 
 		RectF GetViewBounds() const
 		{

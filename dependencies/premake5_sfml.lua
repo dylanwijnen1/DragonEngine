@@ -180,7 +180,11 @@ function sfml.include(rootdir)
 	-- Reset Filter
 	filter {}
 
-    defines "SFML_STATIC"
+	defines 
+	{
+		"SFML_STATIC",
+		"DRAGON_RENDERSKIN=DRAGON_RENDERSKIN_SFML"
+	}
 end
 
 function sfml.link(rootdir, dragonlibdir)

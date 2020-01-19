@@ -1,12 +1,17 @@
 #pragma once
 
+#include <Dragon/Config.h>
+#include <Dragon/Graphics/RenderStates.h>
+
 namespace dragon
 {
 
 	class Renderable
 	{
-	public:
-		virtual void Render(class RenderTarget& target) = 0;
+		friend class RenderTarget;
+
+	protected:
+		virtual void Render(RenderTarget& target, RenderStates states) = 0;
 	};
 
 }

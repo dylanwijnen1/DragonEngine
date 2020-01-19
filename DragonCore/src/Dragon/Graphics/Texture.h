@@ -69,4 +69,13 @@ namespace dragon
 	using Texture = _Texture<SfmlTexture>;
 }
 
+#elif DRAGON_RENDERSKIN == DRAGON_RENDERSKIN_NONE
+
+namespace dragon
+{
+	using Texture = nullptr;
+}
+
+#else
+	#error "Unsupported Renderskin"
 #endif
