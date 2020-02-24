@@ -35,9 +35,4 @@ namespace dragon
 {
 	using Entity = uint32_t;
 	using Byte = std::byte;
-
-	FORWARD_RENDERSKIN_TYPE(Vertex);
-	FORWARD_RENDERSKIN_TYPE(VertexBuffer);
-	FORWARD_RENDERSKIN_TYPE(Texture);
-	FORWARD_RENDERSKIN_TYPE(RenderTexture);
 };

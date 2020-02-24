@@ -3,6 +3,7 @@
 #include <Dragon/Config.h>
 #include <Dragon/Debug.h>
 
+#include <Dragon/Graphics/RenderStates.h>
 
 #include <Dragon/Graphics/Color.h>
 #include <Dragon/Graphics/Camera.h>
@@ -20,6 +21,7 @@ namespace dragon
 	{
 		Vector2f m_size;
 		Camera m_camera;
+		RenderStates m_states;
 
 	public:
 		RenderTarget() = default;

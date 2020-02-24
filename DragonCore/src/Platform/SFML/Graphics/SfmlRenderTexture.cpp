@@ -8,10 +8,6 @@ namespace dragon
 	{
 		sf::View view = m_pTarget->getDefaultView();
 
-		view.setCenter(sf::Convert(camera.m_position));
-		view.setSize(sf::Convert(camera.m_size));
-		view.setViewport(sf::Convert(camera.m_viewport));
-
 		m_pTarget->setView(view);
 	}
 
