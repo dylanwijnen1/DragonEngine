@@ -16,17 +16,7 @@ class GameLayer : public dragon::Layer
 	Vector2f m_mousePosition;
 	Vector2 m_tileMousePosition;
 
-	PathPlan m_pathPlan;
 	PathingAgent m_agent;
-
-	Vector2 m_start;
-	Vector2 m_end;
-
-	using Clock = std::chrono::high_resolution_clock;
-	using TimePoint = std::chrono::time_point<Clock, Clock::duration>;
-	using Duration = std::chrono::duration<double>;
-	TimePoint m_startTime;
-	TimePoint m_endTime;
 
 public:
 	virtual void OnAttach() override;

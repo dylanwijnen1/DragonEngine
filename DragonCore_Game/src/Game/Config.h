@@ -1,3 +1,3 @@
 #pragma once
 
-constexpr int g_kTileSize = 8;
+constexpr int g_kTileSize = 16;

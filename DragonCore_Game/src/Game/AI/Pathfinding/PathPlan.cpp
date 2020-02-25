@@ -47,7 +47,6 @@ void PathPlan::Update()
 
 	if (m_openSet.empty())
 	{
-		// Failed to reach goal.
 		m_onFinished(nullptr);
 		DLOG("Finished, Expanded: %i", m_nodes.size());
 		SetStatus(PathPlanStatus::kFailed);
@@ -98,7 +97,7 @@ void PathPlan::Update()
 			{
 				pNeighbor->m_pPrevious = pCurrent;
 				pNeighbor->m_gScore = gScoreTemp;
-				pNeighbor->m_fScore = gScoreTemp + DistanceToGoal(pNeighbor); // + Hueristic
+				pNeighbor->m_fScore = gScoreTemp + std::sqrt(DistanceToGoal(pNeighbor)); // + Hueristic
 
 				AddToOpenSet(pNeighbor);
 				UpdateNodePriority(pNeighbor);

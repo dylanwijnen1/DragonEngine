@@ -45,7 +45,8 @@ public:
 
 	Vector2 GetTilePosition(size_t index) const;
 
-	Vector2 WorldToTilePosition(Vector2f position);
+	Vector2 WorldToTilePosition(Vector2f position) const;
+	Vector2f TileToWorldPosition(Vector2 tilePos) const;
 
 	void SetTile(size_t index, TileID id);
 	TileID GetTile(size_t index) const;
