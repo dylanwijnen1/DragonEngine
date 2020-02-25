@@ -8,6 +8,8 @@
 #include <Game/AI/Pathfinding/PathPlan.h>
 #include <Game/AI/Pathfinding/PathingAgent.h>
 
+#include <chrono>
+
 class GameLayer : public dragon::Layer
 {
 	Tilemap m_tilemap;
@@ -19,6 +21,12 @@ class GameLayer : public dragon::Layer
 
 	Vector2 m_start;
 	Vector2 m_end;
+
+	using Clock = std::chrono::high_resolution_clock;
+	using TimePoint = std::chrono::time_point<Clock, Clock::duration>;
+	using Duration = std::chrono::duration<double>;
+	TimePoint m_startTime;
+	TimePoint m_endTime;
 
 public:
 	virtual void OnAttach() override;

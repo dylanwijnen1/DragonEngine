@@ -1,20 +1,44 @@
 #include "PathingAgent.h"
 
 #include <Game/Config.h>
+#include <Game/AI/Pathfinding/Path.h>
 #include <SFML/Graphics.hpp>
+
+
+bool PathingAgent::Init(const Tilemap* pTilemap)
+{
+	m_pTilemap = pTilemap;
+	m_pathPlan.OnFinished([this](Path* pPath) {
+
+		if (m_pPath)
+		{
+			delete m_pPath;
+		}
+
+		m_pPath = pPath;
+	});
+
+	return true;
+}
+
+void PathingAgent::PathFindTo(Vector2 pos)
+{
+	//m_pathPlan.Init(m_location.position / g_kTileSize, )
+}
 
 void PathingAgent::Update(float dt)
 {
+	m_pathPlan.Update();
+
 	// DYLAN: sad state machine ahead.
 	PathPlanStatus status = m_pathPlan.GetStatus();
-	if (status == PathPlanStatus::kProcessing)
+	if (m_pPath != nullptr)
 	{
-		m_pathPlan.Update();
+		
 	}
-	else if (status == PathPlanStatus::kFinished)
+	else if (status == PathPlanStatus::kProcessing)
 	{
-		// Start following path.
-		m_pathPlan.ConstructPath();
+		// Continue to rotate (As if its searching.)
 	}
 	else if (status == PathPlanStatus::kFailed)
 	{
@@ -25,8 +49,10 @@ void PathingAgent::Update(float dt)
 void PathingAgent::Draw(sf::RenderTarget* pTarget)
 {
 	m_pathPlan.Draw(pTarget);
+	if (m_pPath)
+		m_pPath->Draw(pTarget);
 	
-	// DYLAN: Ugly ass drawing code ahead, Can be optimized a lot.
+	// DYLAN: Ugly drawing code ahead, Can be optimized a lot.
 
 	Vector2f pointOrigin(0.0f, -0.25f);
 

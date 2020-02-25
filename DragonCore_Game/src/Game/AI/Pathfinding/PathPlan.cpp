@@ -1,6 +1,7 @@
 #include "PathPlan.h"
 
 #include <Game/AI/Pathfinding/PathNode.h>
+#include <Game/AI/Pathfinding/Path.h>
 
 #include <Dragon/Debug.h>
 
@@ -40,11 +41,15 @@ bool PathPlan::Init(size_t start, size_t goal, const Tilemap* pTilemap)
 void PathPlan::Update()
 {
 	if (m_status != PathPlanStatus::kProcessing)
+	{
 		return;
+	}
 
 	if (m_openSet.empty())
 	{
 		// Failed to reach goal.
+		m_onFinished(nullptr);
+		DLOG("Finished, Expanded: %i", m_nodes.size());
 		SetStatus(PathPlanStatus::kFailed);
 		return;
 	}
@@ -53,8 +58,13 @@ void PathPlan::Update()
 
 	if (pCurrent->m_tileIndex == m_goalIndex)
 	{
+		Path* pPath = new Path();
+		ConstructPath(pPath);
+		m_onFinished(pPath);
+
 		DLOG("Finished, Expanded: %i", m_nodes.size());
 		SetStatus(PathPlanStatus::kFinished);
+
 		return;
 	}
 
@@ -123,6 +133,21 @@ void PathPlan::Draw(sf::RenderTarget* pTarget) const
 	}
 
 	pTarget->draw(expandedNodes);
+}
+
+void PathPlan::ConstructPath(Path* path)
+{
+	path->Clear();
+
+	// Reconstruct path.
+	PathNode* pCurrent = m_nodes[m_goalIndex];
+	while (pCurrent->m_pPrevious != nullptr)
+	{
+		path->PushWaypoint(pCurrent->m_tilePos);
+		pCurrent = pCurrent->m_pPrevious;
+	}
+
+	path->Reverse();
 }
 
 const TilePathData& PathPlan::GetTilePathData(TileID id) const

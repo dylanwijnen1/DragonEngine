@@ -16,7 +16,6 @@ namespace dragon
 	{
 		m_window.create(sf::VideoMode(static_cast<unsigned int>(width), static_cast<unsigned int>(height)), pTitle);
 		m_window.setKeyRepeatEnabled(false);
-		//m_window.setFramerateLimit(60);
 		if(m_window.isOpen())
 			return true;
 

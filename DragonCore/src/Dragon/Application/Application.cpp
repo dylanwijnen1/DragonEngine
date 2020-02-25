@@ -104,13 +104,13 @@ namespace dragon
 			{
 				fixedAccumulator -= m_fixedStep;
 				FixedUpdate((float)m_fixedStep);
+
+				// Render, AKA 60 FPS
+				Render();
 			}
 
 			// Update
 			Update((float)deltaTime);
-
-			// Render
-			Render();
 
 			// Calculate deltaTime
 			end = Clock::now();

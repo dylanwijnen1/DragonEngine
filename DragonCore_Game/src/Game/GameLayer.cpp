@@ -7,7 +7,13 @@
 void GameLayer::OnAttach()
 {
 	m_tilemap.Init("map.png", Vector2(16, 16));
-	//m_pathPlan.GetTilePathData();
+
+	m_pathPlan.OnFinished([this](Path* pPlan) 
+	{
+		m_endTime = Clock::now();
+		auto duration = Duration(m_endTime - m_startTime);
+		DLOG("Time: %lf", duration.count());
+	});
 
 	m_pathPlan.GetTilePathData(1061735679).m_isNavigable = false;
 	m_pathPlan.GetTilePathData(582044927).m_weight = 5.0f;
@@ -17,9 +23,12 @@ void GameLayer::OnAttach()
 
 void GameLayer::Update(float dt)
 {
+	auto status = m_pathPlan.GetStatus();
 	//m_pathingAgent.Update(dt);
-	if(m_pathPlan.GetStatus() == PathPlanStatus::kProcessing)
+	if (status == PathPlanStatus::kProcessing)
+	{
 		m_pathPlan.Update();
+	}
 }
 
 void GameLayer::FixedUpdate(float dt)
@@ -36,7 +45,7 @@ void GameLayer::Render(dragon::RenderTarget& target)
 	//rect.setPosition(m_tileMousePosition.x * (float)g_kTileSize, m_tileMousePosition.y * (float)g_kTileSize);
 	//pSfTarget->draw(rect);
 
-	//m_pathPlan.Draw(pSfTarget);
+	m_pathPlan.Draw(pSfTarget);
 
 	m_agent.Draw(pSfTarget);
 }
@@ -45,7 +54,6 @@ void GameLayer::OnEvent(dragon::ApplicationEvent& ev)
 {
 	ev.Dispatch<dragon::MouseButtonReleased>(this, &GameLayer::OnMouseReleasedEvent);
 	ev.Dispatch<dragon::MouseMoved>(this, &GameLayer::OnMouseMovedEvent);
-	ev.Dispatch<dragon::MouseScrolled>(this, &GameLayer::OnMouseWheelScrollEvent);
 }
 
 void GameLayer::OnMouseReleasedEvent(dragon::MouseButtonReleased& ev)
@@ -65,6 +73,7 @@ void GameLayer::OnMouseReleasedEvent(dragon::MouseButtonReleased& ev)
 	else if (ev.m_button == MouseButton::Middle)
 	{
 		m_pathPlan.Init(m_start, m_end, &m_tilemap);
+		m_startTime = Clock::now();
 	}
 }
 
@@ -74,9 +83,4 @@ void GameLayer::OnMouseMovedEvent(dragon::MouseMoved& ev)
 	m_tileMousePosition = m_tilemap.WorldToTilePosition(m_mousePosition);
 
 	m_agent.SetPosition(m_mousePosition);
-}
-
-void GameLayer::OnMouseWheelScrollEvent(dragon::MouseScrolled& ev)
-{
-	
 }

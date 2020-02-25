@@ -9,6 +9,7 @@
 #include <EASTL/priority_queue.h>
 #include <EASTL/hash_map.h>
 #include <EASTL/array.h>
+#include <EASTL/functional.h>
 
 #include <queue>
 
@@ -58,6 +59,9 @@ class PathPlan
 
 	PathPlanStatus m_status;
 
+	using FinishedEvent = eastl::function<void(class Path*)>;
+	FinishedEvent m_onFinished;
+
 public:
 
 	PathPlan()
@@ -74,19 +78,20 @@ public:
 	void Update();
 
 	PathPlanStatus GetStatus() const { return m_status; }
+	void SetStatus(PathPlanStatus status) { m_status = status; }
 
 	void Draw(sf::RenderTarget* pTarget) const;
-
-	Vector2 GetNodePosition();
-	bool Next();
 
 	// Tile Pathing Data
 	const TilePathData& GetTilePathData(TileID id) const;
 	TilePathData& GetTilePathData(TileID id);
 
+	template<typename Func>
+	void OnFinished(Func&& func) { m_onFinished = func; }
+
 private:
 
-	void SetStatus(PathPlanStatus status) { m_status = status; }
+	void ConstructPath(class Path* path);
 
 	PathNode* FindPathNode(size_t tileIndex) const;
 	PathNode* CreatePathNode(size_t tileIndex);
