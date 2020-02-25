@@ -18,12 +18,21 @@ class PathingAgent : public KinematicAgent
 	TimePoint m_startTime;
 	TimePoint m_endTime;
 
+	class WanderBehavior* m_pWanderBehavior;
+	class FollowPathBehavior* m_pFollowPathBehavior;
+	class StruggleBehavior* m_pStruggleBehavior;
+	class Behavior* m_pBehavior;
+
 public:
 
 	PathingAgent()
 		: m_pathPlan()
 		, m_pTilemap(nullptr)
 		, m_pPath(nullptr)
+		, m_pWanderBehavior(nullptr)
+		, m_pFollowPathBehavior(nullptr)
+		, m_pStruggleBehavior(nullptr)
+		, m_pBehavior(nullptr)
 	{}
 	
 	bool Init(const Tilemap* pTilemap);
@@ -31,6 +40,8 @@ public:
 	void PathFindTo(Vector2 pos);
 
 	virtual void Update(float dt) override;
+
+	void TransitionToBehavior(Behavior* pBehavior);
 
 	void Draw(sf::RenderTarget* pTarget);
 };

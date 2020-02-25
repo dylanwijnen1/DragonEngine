@@ -6,26 +6,46 @@
 
 #include <Dragon/Debug.h>
 
+#include <Game/AI/Behaviors/WanderBehavior.h>
+
 bool PathingAgent::Init(const Tilemap* pTilemap)
 {
 	m_pTilemap = pTilemap;
 
-	m_pathPlan.GetTilePathData(1061735679).m_isNavigable = false;
-	m_pathPlan.GetTilePathData(582044927).m_weight = 5.0f;
+	// Setup tile information for this agent. (This is a ground agent)
+	m_pathPlan.GetTilePathData(g_kWaterTile).m_isNavigable = false;
+	m_pathPlan.GetTilePathData(g_kBushTile).m_weight = 2.0f;
 
+	// Setup behaviors.
+	m_pWanderBehavior = new WanderBehavior(this);
+	//m_pFollowPathBehavior = new FollowPathBehavior(m_pWanderBehavior); // Transition into idle when finished.
+	//m_pStruggleBehavior = new StruggleBehavior(m_pWanderBehavior); // Transition into idle when finished.
+
+	// Setup event listener on what happens when path plan has finished processing.
 	m_pathPlan.OnFinished([this](Path* pPath) 
 	{
-		m_endTime = Clock::now();
-		auto duration = Duration(m_endTime - m_startTime);
-		DLOG("Path Found: %lf seconds.", duration.count());
-
-		if (m_pPath)
+		// Make sure we found a path.
+		if (pPath)
 		{
-			delete m_pPath;
-		}
+			m_endTime = Clock::now();
+			auto duration = Duration(m_endTime - m_startTime);
+			DLOG("Path Found: %lf seconds.", duration.count());
 
-		m_pPath = pPath;
+			if (m_pPath)
+			{
+				delete m_pPath;
+			}
+
+			m_pPath = pPath;
+			//TransitionToBehavior(m_pFollowPathBehavior);
+		}
+		else
+		{
+			//TransitionToBehavior(m_pStruggleBehavior);
+		}
 	});
+
+	TransitionToBehavior(m_pWanderBehavior);
 
 	return true;
 }
@@ -42,19 +62,26 @@ void PathingAgent::Update(float dt)
 	m_pathPlan.Update();
 
 	// DYLAN: sad state machine ahead.
-	PathPlanStatus status = m_pathPlan.GetStatus();
-	if (m_pPath != nullptr)
+	Behavior* pTransitionBehavior = m_pBehavior->Update(dt);
+	if (pTransitionBehavior != nullptr)
 	{
-		
+		TransitionToBehavior(pTransitionBehavior);
 	}
-	else if (status == PathPlanStatus::kProcessing)
+}
+
+void PathingAgent::TransitionToBehavior(Behavior* pBehavior)
+{
+	if (!pBehavior)
 	{
-		// Continue to rotate (As if its searching.)
+		DWARN_TRACE("pBehavior is nullptr.");
+		return;
 	}
-	else if (status == PathPlanStatus::kFailed)
-	{
-		// Struggle Movement.
-	}
+
+	if (m_pBehavior)
+		m_pBehavior->OnTransitionExit();
+
+	m_pBehavior = pBehavior;
+	m_pBehavior->OnTransitionEnter();
 }
 
 void PathingAgent::Draw(sf::RenderTarget* pTarget)
@@ -63,44 +90,33 @@ void PathingAgent::Draw(sf::RenderTarget* pTarget)
 
 	if (m_pPath)
 		m_pPath->Draw(pTarget);
-	
+
 	// DYLAN: Ugly drawing code ahead, Can be optimized a lot.
-	Vector2f pos = m_location.position;
-	float extents = g_kTileSize / 2.0f;
-	pos += Vector2f(extents, extents);
-	sf::Vertex vertices[] =
+
+	Vector2f tileCenter = Vector2f(g_kTileSize / 2.0f, g_kTileSize / 2.0f);
+	Vector2f centroid = m_location.position + tileCenter;
+
+	// Triangle
+	Vector2f origin(0.0f, -0.25f);
+
+	Vector2f pointRight = Vector2f(0.5f, .25f) * g_kTileSize;
+	pointRight.RotateAroundOrigin(m_location.orientation, origin);
+	pointRight += centroid;
+
+	Vector2f pointLeft = Vector2f(-0.5f, .25f) * g_kTileSize;
+	pointLeft.RotateAroundOrigin(m_location.orientation, origin);
+	pointLeft += centroid;
+
+	Vector2f pointTop = Vector2f(0.0f, -1.f) * g_kTileSize;
+	pointTop.RotateAroundOrigin(m_location.orientation, origin);
+	pointTop += centroid;
+
+	sf::Vertex vertices[]
 	{
-		sf::Vertex(sf::Vector2f(pos.x - extents, pos.y - extents), sf::Color::Blue),
-		sf::Vertex(sf::Vector2f(pos.x + extents, pos.y - extents), sf::Color::Blue),
-		sf::Vertex(sf::Vector2f(pos.x + extents, pos.y + extents), sf::Color::Blue),
-		sf::Vertex(sf::Vector2f(pos.x - extents, pos.y + extents), sf::Color::Blue),
+		sf::Vertex(sf::Vector2f(pointLeft.x, pointLeft.y), sf::Color::Red),
+		sf::Vertex(sf::Vector2f(pointRight.x, pointRight.y), sf::Color::Green),
+		sf::Vertex(sf::Vector2f(pointTop.x, pointTop.y), sf::Color::Blue)
 	};
 
-	pTarget->draw(&vertices[0], 4, sf::PrimitiveType::Quads);
-
-	sf::Vertex points[] = { sf::Vertex(sf::Vector2f(pos.x, pos.y), sf::Color::Red) };
-	pTarget->draw(&points[0], 1, sf::PrimitiveType::Points);
-
-	//Vector2f pointOrigin(0.0f, -0.25f);
-
-	//Vector2f pointRight = Vector2f(0.5f, .25f) * g_kTileSize;
-	//pointRight.RotateAroundOrigin(m_location.orientation, pointOrigin);
-	//pointRight += m_location.position;
-
-	//Vector2f pointLeft = Vector2f(-0.5f, .25f) * g_kTileSize;
-	//pointLeft.RotateAroundOrigin(m_location.orientation, pointOrigin);
-	//pointLeft += m_location.position;
-
-	//Vector2f pointTop = Vector2f(0.0f, -1.f) * g_kTileSize;
-	//pointTop.RotateAroundOrigin(m_location.orientation, pointOrigin);
-	//pointTop += m_location.position;
-
-	//sf::Vertex vertices[]
-	//{
-	//	sf::Vertex(sf::Vector2f(pointLeft.x, pointLeft.y), sf::Color::Red),
-	//	sf::Vertex(sf::Vector2f(pointRight.x, pointRight.y), sf::Color::Green),
-	//	sf::Vertex(sf::Vector2f(pointTop.x, pointTop.y), sf::Color::Blue)
-	//};
-
-	//pTarget->draw(vertices, 3, sf::PrimitiveType::Triangles);
+	pTarget->draw(vertices, 3, sf::PrimitiveType::Triangles);
 }

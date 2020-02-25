@@ -116,6 +116,8 @@ void PathPlan::Draw(sf::RenderTarget* pTarget) const
 		if (pNode->IsClosed())
 			color = sf::Color::Black;
 
+		color.a = 100;
+
 		Vector2 pos = pNode->m_tilePos * 16;
 		pos.x += 4;
 		pos.y += 4;
