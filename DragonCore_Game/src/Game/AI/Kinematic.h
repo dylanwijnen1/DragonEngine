@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Game/Vector2.h>
+#include <Dragon/Generic/Math/MathFunctions.h>
 
 class Kinematic
 {
@@ -13,6 +14,21 @@ class Kinematic
 	float m_maxAngularAcceleration;
 
 public:
+
+	Kinematic()
+		: m_velocity()
+		, m_angularVelocity()
+		, m_maxSpeed(5.0f)
+		, m_maxAcceleration(5.0f)
+		, m_maxAngularVelocity(dragon::math::DegToRad(45.f))
+		, m_maxAngularAcceleration(dragon::math::DegToRad(30.f))
+	{}
+
+	void SetVelocity(Vector2f vel) { m_velocity = vel; }
+	Vector2f GetVelocity() const { return m_velocity; }
+
+	void SetAngularVelocity(float vel) { m_angularVelocity = vel; }
+	float GetAngularVelocity() const { return m_angularVelocity; }
 
 	void SetMaxSpeed(float maxSpeed) { m_maxSpeed = maxSpeed; }
 	float GetMaxSpeed() const { return m_maxSpeed; }

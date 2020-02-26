@@ -82,8 +82,17 @@ Vector2 Tilemap::WorldToTilePosition(Vector2f position) const
 
 Vector2f Tilemap::TileToWorldPosition(Vector2 tilePos) const
 {
-	tilePos *= m_tileSize.x;
+	tilePos.x *= (float)m_tileSize.x;
+	tilePos.y *= (float)m_tileSize.y;
 	return Vector2f((float)tilePos.x, (float)tilePos.y);
+}
+
+Vector2f Tilemap::TileToWorldPositionCenter(Vector2 tilePos) const
+{
+	Vector2f center = TileToWorldPosition(tilePos);
+	center.x += (float)m_tileSize.x / 2.0f;
+	center.y += (float)m_tileSize.y / 2.0f;
+	return center;
 }
 
 void Tilemap::SetTile(size_t index, TileID id)

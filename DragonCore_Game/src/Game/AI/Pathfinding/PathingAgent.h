@@ -37,11 +37,17 @@ public:
 	
 	bool Init(const Tilemap* pTilemap);
 
-	void PathFindTo(Vector2 pos);
-
 	virtual void Update(float dt) override;
+
+	void Draw(sf::RenderTarget* pTarget);
+
+	void PathFindTo(Vector2 pos);
 
 	void TransitionToBehavior(Behavior* pBehavior);
 
-	void Draw(sf::RenderTarget* pTarget);
+	Path* GetPath() { return m_pPath; }
+	const Path* GetPath() const { return m_pPath; }
+
+	const Tilemap* GetTilemap() const { return m_pTilemap; }
+
 };

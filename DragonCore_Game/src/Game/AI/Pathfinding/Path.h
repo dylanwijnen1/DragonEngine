@@ -28,4 +28,7 @@ public:
 	void PushWaypoint(Vector2 pos);
 	void Reverse() { eastl::reverse(m_waypoints.begin(), m_waypoints.end()); }
 	void Clear() { m_waypoints.clear(); };
+
+	size_t Count() const { return m_waypoints.size(); }
+	Vector2 GetWaypointAtIndex(size_t index) const { return m_waypoints[index]; }
 };

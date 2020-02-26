@@ -36,6 +36,13 @@ public:
 
 	Self& operator+=(Self vec);
 	Self& operator-=(Self vec);
+
+	template<typename OtherType>
+	Self& operator+=(_Vector2<OtherType> vec);
+
+	template<typename OtherType>
+	Self& operator-=(_Vector2<OtherType> vec);
+
 	Self& operator*=(float scalar);
 	Self& operator/=(float scalar);
 
@@ -90,6 +97,8 @@ inline void _Vector2<Type>::RotateAroundOrigin(float angle, Self origin)
 
 	result.x = x * kCosAngle - y * kSinAngle;
 	result.y = x * kSinAngle + y * kCosAngle;
+
+	result += origin;
 
 	x = result.x;
 	y = result.y;
@@ -149,4 +158,22 @@ template<typename Type>
 inline _Vector2<Type> _Vector2<Type>::operator-(Self rhs)
 {
 	return Self{ x - rhs.x, y - rhs.y };
+}
+
+template<typename Type>
+template<typename OtherType>
+inline _Vector2<Type>& _Vector2<Type>::operator+=(_Vector2<OtherType> vec)
+{
+	x += (Type)vec.x;
+	y += (Type)vec.y;
+	return *this;
+}
+
+template<typename Type>
+template<typename OtherType>
+inline _Vector2<Type>& _Vector2<Type>::operator-=(_Vector2<OtherType> vec)
+{
+	x -= (Type)vec.x;
+	y -= (Type)vec.y;
+	return *this;
 }

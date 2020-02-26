@@ -1,34 +1,59 @@
 #pragma once
 
 #include <Game/AI/Behaviors/Behavior.h>
+#include <Dragon/Generic/Random.h>
+
+#include <Game/AI/Pathfinding/PathPlan.h>
+#include <Game/AI/Behaviors/IdleBehavior.h>
+
+class Tilemap;
 
 class WanderBehavior : public Behavior
 {
-	
-	// Random tile in x radius.
+	// Random pos in x radius.
 	Vector2 m_targetTile;
 
-	// Speed at which the agent should move around.
-	float m_speed;
+	// Distance at which the generated new tile should be made.
+	int m_distance;
+
+	// Tilemap to find a new position.
+	const Tilemap* m_pTilemap;
+
+	dragon::Random m_random;
+
+	IdleBehavior* m_pIdleBehavior;
 
 public:
 
 	WanderBehavior()
-		: WanderBehavior(nullptr, 5.0f)
+		: WanderBehavior(nullptr, nullptr, 5)
 	{}
 
-	WanderBehavior(KinematicAgent* pAgent)
-		: WanderBehavior(pAgent, 5.0f)
+	WanderBehavior(KinematicAgent* pAgent, const Tilemap* pTilemap)
+		: WanderBehavior(pAgent, pTilemap, 5)
 	{}
 
-	WanderBehavior(KinematicAgent* pAgent, float speed)
+	WanderBehavior(KinematicAgent* pAgent, const Tilemap* pTilemap, int distance)
 		: Behavior(pAgent)
+		, m_pTilemap(pTilemap)
 		, m_targetTile()
-		, m_speed(speed)
+		, m_distance(distance)
+		, m_random((unsigned int)time(nullptr))
+		, m_pIdleBehavior(new IdleBehavior())
 	{}
+
+	~WanderBehavior()
+	{
+		delete m_pIdleBehavior;
+	}
+
+	virtual Behavior* Update(float dt) override;
+	virtual void Draw(sf::RenderTarget* pTarget) override;
 
 	virtual void OnTransitionEnter() override;
 
-	virtual Behavior* Update(float dt) override;
+private:
+
+	void FindNewTarget();
 	
 };

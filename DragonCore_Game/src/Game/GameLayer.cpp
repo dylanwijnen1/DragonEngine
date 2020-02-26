@@ -7,8 +7,8 @@
 void GameLayer::OnAttach()
 {
 	m_tilemap.Init("map.png", Vector2(g_kTileSize, g_kTileSize));
-	m_agent.Init(&m_tilemap);
 	m_agent.SetPosition(m_tilemap.TileToWorldPosition(Vector2(3, 45)));
+	m_agent.Init(&m_tilemap);
 }
 
 void GameLayer::Update(float dt)

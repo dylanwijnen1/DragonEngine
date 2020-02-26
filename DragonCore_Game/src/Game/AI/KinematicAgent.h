@@ -16,6 +16,11 @@ public:
 	float GetOrientation() const { return m_location.orientation; }
 	void SetOrientation(float rot) { m_location.orientation = rot; }
 
+	Kinematic& GetKinematic() { return m_kinematic; }
+	const Kinematic& GetKinematic() const { return m_kinematic; }
+
+	Location& GetLocation() { return m_location; }
+	const Location GetLocation() const { return m_location; }
 
 	virtual void Update(float dt)
 	{

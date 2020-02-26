@@ -2,6 +2,11 @@
 
 #include <Game/AI/KinematicAgent.h>
 
+namespace sf
+{
+	class RenderTarget;
+}
+
 class Behavior
 {
 	KinematicAgent* m_pAgent;
@@ -16,9 +21,9 @@ public:
 		: m_pAgent(pAgent)
 	{}
 
-
 	// Return the behavior to transition into.
 	virtual Behavior* Update(float dt) = 0;
+	virtual void Draw(sf::RenderTarget* pTarget) {}
 
 	virtual void OnTransitionEnter() {}
 	virtual void OnTransitionExit() {}
