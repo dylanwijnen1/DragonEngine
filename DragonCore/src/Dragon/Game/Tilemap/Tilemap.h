@@ -137,7 +137,7 @@ namespace dragon
 		}
 
 		// Inherited via Renderable
-		virtual void Render(RenderTarget& target) override;
+		virtual void Render(RenderTarget& target, RenderStates states) override;
 
 #pragma region Utils
 

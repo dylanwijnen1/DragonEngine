@@ -1,20 +1,18 @@
 #pragma once
 
-#include <Dragon/Graphics/RenderTexture.h>
-
 #include <Platform/SFML/SfmlHelpers.h>
-
-
 
 namespace sf
 {
 	class RenderTexture;
+	class RenderTarget;
+	class Texture;
 }
 
 namespace dragon
 {
 
-	class SfmlRenderTexture final : public RenderTexture
+	class SfmlRenderTexture
 	{
 		sf::RenderTexture* m_pTarget;
 
@@ -29,23 +27,18 @@ namespace dragon
 		// Move ok, Copying is bad...
 		SfmlRenderTexture(const SfmlRenderTexture&) = delete;
 		SfmlRenderTexture(SfmlRenderTexture&&) = default;
+
 		SfmlRenderTexture& operator=(const SfmlRenderTexture&) = delete;
 		SfmlRenderTexture& operator=(SfmlRenderTexture&&) = default;
 
-		// Inherited from RenderTexture and RenderTarget
-		bool Init(Vector2f size) final override;
+		// Inherited from RenderTexture
+		bool Init(Vector2f size);
 
-		void Display() final override;
-		void Clear(Color color) final override;
+		void Display();
+		void Clear(Color color);
 
-		void* GetNativeTarget() final override { return m_pTarget; }
-		const void* GetNativeTexture() const final override;
-
-	protected:
-
-		// Inherited from RenderTexture and RenderTarget
-		void OnCameraChanged(Camera camera) final override;
-		void OnSizeChanged(Vector2f size) final override;
+		sf::RenderTarget* GetNativeTarget();
+		const sf::Texture* GetNativeTexture() const;
 	};
 
 }

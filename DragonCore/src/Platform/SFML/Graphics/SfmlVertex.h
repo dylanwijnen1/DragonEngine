@@ -5,7 +5,7 @@
 
 namespace dragon
 {
-	struct SfmlVertex
+	class SfmlVertex
 	{
 	private:
 		sf::Vertex m_data;

@@ -5,7 +5,9 @@
 
 
 #include <Dragon/Graphics/Color.h>
+#include <Dragon/Graphics/PrimitiveType.h>
 #include <Dragon/Graphics/Camera.h>
+
 #include <Dragon/Generic/Math.h>
 
 namespace dragon
@@ -14,39 +16,47 @@ namespace dragon
 
 	/// <summary>
 	/// Abstract class, The RenderTarget is passed to Renderables and around the Engine for rendering to the target.
-	/// The target may be a Backbuffer or a RenderTexture.
+	/// The target may be a Window or a RenderTexture.
 	/// </summary>
 	class RenderTarget
 	{
-		Vector2f m_size;
 		Camera m_camera;
 
 	public:
+
 		RenderTarget() = default;
 		~RenderTarget() = default;
 
-		// We cannot determine if a copy of the render target is slow to copy. It might be fast. So we open the interface up for these situations.
-		// This might change.
+		// We cannot determine if a copy of the render target is slow to copy this is dependent on each skin.
 		RenderTarget(const RenderTarget&) = default;
 		RenderTarget(RenderTarget&&) = default;
 		RenderTarget& operator=(const RenderTarget&) = default;
 		RenderTarget& operator=(RenderTarget&&) = default;
 
 		/// <summary>
-		/// Initialize the RenderTarget
+		/// Size of the RenderTarget
 		/// </summary>
-		/// <param name="size"></param>
 		/// <returns></returns>
-		virtual bool Init(Vector2f size);
+		virtual Vector2f GetSize() const = 0;
 
-		Vector2f GetSize() const { return m_size; }
-		void SetSize(Vector2f size) { m_size = size; OnSizeChanged(size); }
-
+		/// <summary>
+		/// Clears the RenderTarget
+		/// </summary>
+		/// <param name="color"></param>
 		virtual void Clear(Color color) = 0;
 
-		virtual Camera GetCamera() const { return m_camera; }
-		void SetCamera(Camera camera) { m_camera = camera; OnCameraChanged(camera); }
-		Camera GetDefaultCamera() const { return { m_size / 2.f, m_size, { 0.f, 0.f, 1.f, 1.f } }; }
+		/// <summary>
+		/// Draws a renderable item to the screen
+		/// </summary>
+		/// <param name="renderable"></param>
+		void Draw(Renderable& renderable);
+
+		/// <summary>
+		/// Draws Vertices to the RenderTarget 
+		/// </summary>
+		/// <param name="pVertices"></param>
+		/// <param name="vertexCount"></param>
+		virtual void Draw(Vertex* pVertices, size_t vertexCount, PrimitiveType primitiveType) = 0;
 
 		/// <summary>
 		/// Return the native skin implementation target.
@@ -54,25 +64,13 @@ namespace dragon
 		/// <returns></returns>
 		virtual void* GetNativeTarget() = 0;
 
+		/// <summary>
+		/// Immediately casts the implemented target.
+		/// </summary>
 		template<typename TargetType>
-		TargetType GetNativeTarget()
+		TargetType* GetNativeTarget()
 		{
 			return static_cast<TargetType>(GetNativeTarget());
 		}
-
-		// Drawing Entities
-		void Draw(Renderable& renderable);
-
-		// Convenience Methods, Mainly used for debugging
-		virtual void DrawRect(RectF rect, Color color) { DWARN("RenderTarget::DrawRect not available for this target."); }
-		virtual void DrawFillRect(RectF rect, Color color, Color outlineColor, float outlineSize) { DWARN("RenderTarget::DrawFillRect not available for this target."); }
-
-		virtual void DrawCircle(Vector2f pos, float radius, Color color) { DWARN("RenderTarget::DrawCircle not available for this target."); }
-		virtual void DrawFillCircle(Vector2f pos, float radius, Color color, Color outlineColor, float outlineSize) { DWARN("RenderTarget::DrawFillCircle not available for this target."); }
-
-	protected:
-
-		virtual void OnSizeChanged(Vector2f size) {}
-		virtual void OnCameraChanged(Camera camera) {}
 	};
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+
 #include <EASTL/type_traits.h>
 
 namespace dragon

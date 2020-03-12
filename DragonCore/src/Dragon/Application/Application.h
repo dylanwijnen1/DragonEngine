@@ -1,9 +1,8 @@
 #pragma once
 
 #include <Dragon/Config.h>
+#include <Dragon/Application/TimeStep.h>
 #include <Dragon/Application/FpsCounter.h>
-
-#include <chrono>
 
 #include <EASTL/stack.h>
 
@@ -12,8 +11,6 @@ namespace dragon
 {
 	class ApplicationEvent;
 	class Layer;
-
-	using namespace std::chrono_literals;
 
 	/// <summary>
 	/// The Core of the Engine
@@ -34,6 +31,16 @@ namespace dragon
 		double m_fixedStep;
 
 		/// <summary>
+		/// Targetted render time
+		/// </summary>
+		double m_renderStep;
+
+		/// <summary>
+		/// Wether or not VSync is Enabled.
+		/// </summary>
+		bool m_isVSyncEnabled;
+
+		/// <summary>
 		/// Layer stack holds pushed application layers.
 		/// </summary>
 		eastl::stack<Layer*> m_layers;
@@ -43,29 +50,31 @@ namespace dragon
 		
 		FpsCounter m_fixedCounter;
 		FpsCounter m_updateCounter;
-		FpsCounter m_drawCounter;
-
-		using Clock = std::chrono::high_resolution_clock;
-		using TimePoint = std::chrono::time_point<Clock, Clock::duration>;
-		using Duration = std::chrono::duration<double>;
+		FpsCounter m_renderCounter;
 
 		/// \}
 		
 		// Services
-		class DragonSystem* m_pSystem;
+		System* m_pSystem;
 		class AudioSystem* m_pAudioSystem;
-		class Graphics* m_pGraphics;
-		class Window* m_pWindow;
+		Window* m_pWindow;
 
 	public:
 
 		Application()
 			: m_running(false)
+			, m_isVSyncEnabled(false)
+			// Timing
 			, m_fixedStep(1.0 / 60.0)
+			, m_renderStep(1.0 / 60.0)
+			// Services
 			, m_pSystem(nullptr)
 			, m_pAudioSystem(nullptr)
-			, m_pGraphics(nullptr)
 			, m_pWindow(nullptr)
+			// Counters
+			, m_fixedCounter()
+			, m_updateCounter()
+			, m_renderCounter()
 		{}
 
 		/// <summary>
@@ -105,17 +114,20 @@ namespace dragon
 
 		size_t GetFixedRate() const { return m_fixedCounter.GetCount(); }
 		size_t GetUpdateRate() const { return m_updateCounter.GetCount(); }
-		size_t GetDrawRate() const { return m_drawCounter.GetCount();  }
+		size_t GetDrawRate() const { return m_renderCounter.GetCount();  }
+
+		void SetVerticalSync(bool sync) { m_isVSyncEnabled = sync; }
+		bool GetVerticalSync() const { return m_isVSyncEnabled; }
 
 	protected:
 		virtual bool OnInit() { return true; }
 
 	private:
-		void FixedUpdate(float dt);
+		void FixedUpdate(TimeStep dt);
 		void Render();
-		void Update(float dt);
+		void Update(TimeStep dt);
 
-		void OnEvent(ApplicationEvent& ev);
+		bool OnEvent(ApplicationEvent& ev);
 	};
 
 };

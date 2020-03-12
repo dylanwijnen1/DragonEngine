@@ -1,13 +1,11 @@
 #pragma once
 
-#include <Dragon/Application/System/DragonSystem.h>
+#include <Dragon/Config.h>
+#include <Dragon/Application/System/SystemInfo.h>
 
 namespace dragon
 {
-
-	class Window;
-
-	class WindowsSystem final : public DragonSystem
+	class WindowsSystem
 	{
 		enum struct ConsoleColor : uint8_t
 		{
@@ -33,27 +31,22 @@ namespace dragon
 
 	public:
 		WindowsSystem() : m_outHandle(nullptr) {}
+
+		WindowsSystem(const WindowsSystem&) = delete;
+		WindowsSystem(WindowsSystem&&) = delete;
+		WindowsSystem& operator=(const WindowsSystem&) = delete;
+		WindowsSystem& operator=(WindowsSystem&&) = delete;
+
 		~WindowsSystem() { m_outHandle = nullptr; }
 
-		virtual const char * GetSystemName() const override { return "Windows"; };
-		
-		virtual bool Init() override;
+		bool Init();
 
-		virtual MemoryInfo GetSystemMemory() const override;
-		virtual size_t GetAvailableDriveSpace() const override;
+		constexpr const char* GetSystemName() const { return "Windows"; };
 
-		virtual eastl::string GetUserDirectoryPath() const override;
-
-		// TODO: Possibly move to DragonSystem and use Chrono format.
-		virtual eastl::string GetTimestamp() const override;
-
-		virtual void SetConsoleColor(Color color) override;
-
-		// Inherited via ISystem
-		virtual Window* CreateSystemWindow() override;
+		MemoryInfo GetSystemMemory() const;
 
 	private:
-		ConsoleColor ColorToConsoleColor(Color color);
+		//ConsoleColor ColorToConsoleColor(Color color);
 	};
 
 };

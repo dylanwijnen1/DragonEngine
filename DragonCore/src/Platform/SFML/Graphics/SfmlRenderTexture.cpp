@@ -2,24 +2,10 @@
 
 #include <SFML/Graphics/RenderTexture.hpp>
 
+#include <Dragon/Debug.h>
+
 namespace dragon
 {
-	void SfmlRenderTexture::OnCameraChanged(Camera camera)
-	{
-		sf::View view = m_pTarget->getDefaultView();
-
-		view.setCenter(sf::Convert(camera.m_position));
-		view.setSize(sf::Convert(camera.m_size));
-		view.setViewport(sf::Convert(camera.m_viewport));
-
-		m_pTarget->setView(view);
-	}
-
-	void SfmlRenderTexture::OnSizeChanged(Vector2f size)
-	{
-		//TODO: Needs testing. This could not be possibly.
-		m_pTarget->create((unsigned int)size.x, (unsigned int)size.y);
-	}
 
 	SfmlRenderTexture::~SfmlRenderTexture()
 	{
@@ -49,9 +35,14 @@ namespace dragon
 		m_pTarget->clear(sf::Convert(color));
 	}
 
-	const void* SfmlRenderTexture::GetNativeTexture() const
+	sf::RenderTarget* SfmlRenderTexture::GetNativeTarget()
 	{
-		return &(m_pTarget->getTexture());
+		return m_pTarget;
+	}
+
+	const sf::Texture* SfmlRenderTexture::GetNativeTexture() const
+	{
+		return &m_pTarget->getTexture();
 	}
 
 }

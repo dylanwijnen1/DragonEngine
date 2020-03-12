@@ -76,8 +76,9 @@ namespace dragon
 		}
 	}
 
-	void Tilemap::Render(RenderTarget& target)
+	void Tilemap::Render(RenderTarget& target, RenderStates states)
 	{
+		// TODO: Remove TileRendererImpl in favor of new rendering system.
 		// We do not have a tile renderer. This could be expected. This depends if a renderskin was selected or not.
 #if DRAGON_RENDERSKIN != DRAGON_RENDERSKIN_NONE
 		if (!m_pTileRenderer)

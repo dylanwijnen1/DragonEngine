@@ -7,7 +7,7 @@
 namespace dragon
 {
 	template<typename VertexImpl>
-	struct _Vertex
+	class _Vertex
 	{
 	private:
 		VertexImpl m_impl;

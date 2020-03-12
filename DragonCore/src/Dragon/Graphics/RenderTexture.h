@@ -6,17 +6,20 @@
 namespace dragon
 {
 
-	class RenderTexture : public RenderTarget
+	template<typename RenderTextureImpl>
+	class RenderTexture final : public RenderTarget
 	{
+		RenderTextureImpl m_impl;
+
 	public:
 
 		RenderTexture();
-		virtual ~RenderTexture();
+		virtual ~RenderTexture() 
 
 		/// <summary>
-		/// Display the currently drawn buffer to the texture.
+		/// Update texture with current buffer.
 		/// </summary>
-		virtual void Display() = 0;
+		virtual void Display() override { m_impl.Display(); }
 		
 		// RenderTarget Abstract Functions.
 		virtual void Clear(Color color) override = 0;

@@ -1,13 +1,13 @@
 #pragma once
 
 #include <Dragon/Graphics/Vertex.h>
-#include <Dragon/Graphics/Drawable.h>
+#include <Dragon/Graphics/Renderable.h>
 #include <Dragon/Graphics/PrimitiveType.h>
 #include <EASTL/vector.h>
 
 namespace dragon
 {
-	class VertexArray : public Drawable
+	class VertexArray : public Renderable
 	{
 		eastl::vector<Vertex> m_vertices;
 		PrimitiveType m_type;
@@ -42,7 +42,7 @@ namespace dragon
 		Vertex& operator[](size_t index) { return m_vertices[index]; }
 		const Vertex& operator[](size_t index) const { return m_vertices[index]; }
 
-		// Inherited via Drawable
+		// Inherited via Renderable
 		virtual void Render(RenderTarget& target, RenderStates states) override;
 	};
 }

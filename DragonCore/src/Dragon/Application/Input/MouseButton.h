@@ -1,9 +1,12 @@
 #pragma once
 
-enum struct MouseButton : unsigned char
+namespace dragon
 {
-	Unknown = 0,
-	Left,
-	Middle,
-	Right
-};
+	enum struct MouseButton : unsigned char
+	{
+		Unknown = 0,
+		Left,
+		Middle,
+		Right
+	};
+}

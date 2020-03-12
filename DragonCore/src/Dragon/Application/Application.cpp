@@ -1,13 +1,14 @@
 #include "Application.h"
 
 #include <Dragon/Application/Layer.h>
+#include <Dragon/Application/System/System.h>
 #include <Dragon/Application/ApplicationEvent.h>
 
+#include <Dragon/Generic/Events/GlobalEvents.h>
+
 // Services
-#include <Dragon/Application/System/DragonSystem.h>
 #include <Dragon/Application/Window/Window.h>
 #include <Dragon/Application/Window/WindowEvents.h>
-#include <Dragon/Graphics/Graphics.h>
 
 // Debugging
 #include <Dragon/Debug.h>
@@ -37,98 +38,114 @@ namespace dragon
 		}
 
 #if DRAGON_RENDERSKIN != DRAGON_RENDERSKIN_NONE
-		delete m_pGraphics;
 		//delete m_pAudio;
 #endif
 	}
 
 	bool Application::Init()
 	{
-		if(!Debug::GetInstance().Init())
-			DWARN("[DragonDebug] could not be intialized. Acting like nothing happened...");
-
 		// System Service
-		m_pSystem = DragonSystem::Create();
-		APP_DIE("DragonSystem", m_pSystem);
-		Debug::GetInstance().SetSystem(m_pSystem);
+		m_pSystem = new System();
+		APP_DIE("System", m_pSystem);
+		//m_pSystem->GetMemoryInfo();
 
 		// Load Application Settings
 		// APP_CONTINUE("DragonSettings", DragonSettings::GetInstance());
 
 		// Window Service
-		m_pWindow = m_pSystem->CreateSystemWindow();
+		m_pWindow = new Window();
 		APP_DIE("Window", m_pWindow, DRAGON_APP_NAME, DRAGON_WINDOW_WIDTH, DRAGON_WINDOW_HEIGHT);
-		m_pWindow->SetEventCallback([this] (ApplicationEvent & ev) { Application::OnEvent(ev); });
+		GlobalEvents::AddListener<ApplicationEvent>([this](ApplicationEvent& ev) -> bool { return OnEvent(ev); });
 
 		// Audio Service, Die
 		// m_pAudioSystem = DragonAudioSystem::Create();
 		// APP_DIE("DragonAudioSystem", m_pAudioSystem);
 
-		// Graphics Service, Die
-		m_pGraphics = m_pWindow->CreateGraphics();
-		APP_DIE("Graphics", m_pGraphics, m_pWindow, (Vector2f)m_pWindow->GetSize());
-
 		bool result = OnInit();
 		
-		DLOG("[DragonApplication] Application has finished initialization.");
+		DINFO("[DragonApplication] Application has finished initialization.");
 
 		return result;
 	}
 
 	void Application::Shutdown()
 	{
-		DLOG("[DragonApplication] Application is shutting down.");
+		DINFO("[DragonApplication] Application is shutting down.");
 		m_running = false;
 	}
 
 	void Application::Run()
 	{
-		m_running = true;
-		DLOG("[DragonApplication] Application has started.");
+		using seconds = std::chrono::duration<double>;
 
-		TimePoint start = Clock::now();
-		TimePoint end = Clock::now();
+		m_running = true;
+		DINFO("[DragonApplication] Application has started.");
+
+		TimeStep::TimePoint start = TimeStep::now();
+		TimeStep::TimePoint end = TimeStep::now();
 		
-		double deltaTime = m_fixedStep; // Start frametime with targeted refresh rate.
+		TimeStep fixedStep = TimeStep(seconds(m_fixedStep));
+
+		TimeStep deltaTime = fixedStep; // Start frametime with targeted refresh rate.
 
 		// Accumulates time, Once we accumulate more time than we call Application::FixedUpdate()
 		double fixedAccumulator = 0.0;
+
+		// Accumulates time for the rendering. Ignored when we have vSync enabled.
+		double renderAccumulator = 0.0;
 
 		while(m_running)
 		{
 			m_pWindow->ProcessEvents();
 
 			// Fixed Update
-			fixedAccumulator += deltaTime;
+			fixedAccumulator += deltaTime.Seconds();
 			if (fixedAccumulator > m_fixedStep)
 			{
 				fixedAccumulator -= m_fixedStep;
-				FixedUpdate((float)m_fixedStep);
+				
+				// Create a fixed time step.
+				FixedUpdate(fixedStep);
+			}
+
+			// Rendering
+			if (!m_isVSyncEnabled)
+			{
+				renderAccumulator += deltaTime.Seconds();
+				if (renderAccumulator > m_renderStep)
+				{
+					renderAccumulator -= m_renderStep;
+					Render();
+				}
+			}
+			else
+			{
+				Render();
 			}
 
 			// Update
-			Update((float)deltaTime);
-
-			// Render
-			Render();
+			Update(deltaTime);
 
 			// Calculate deltaTime
-			end = Clock::now();
-			deltaTime = Duration(end - start).count();
+			end = TimeStep::now();
+			deltaTime = TimeStep(end - start);
+
+			double deltaSeconds = deltaTime.Seconds();
 			
 			// Breakpoint was set or we're running slow.
-			if (deltaTime > 1.0)
+			if (deltaSeconds > 1.0)
 			{
-				DWARN("[DragonApplication] Application is running slow. Frame took: %lf seconds.", deltaTime);
-				deltaTime = m_fixedStep;
+				DWARN("[DragonApplication] Application is running slow. Frame took: %lf seconds.", deltaSeconds);
+				
+				// Reset Time Step to ensure we don't take a very large time step.
+				deltaTime = fixedStep;
 			}
 
 			start = end;
-
 		}
 	}
 
-	void Application::FixedUpdate(float dt)
+	void Application::FixedUpdate(TimeStep dt)
 	{
 		auto& layerStack = m_layers.get_container();
 		for (Layer* pLayer : layerStack)
@@ -139,18 +156,18 @@ namespace dragon
 
 	void Application::Render()
 	{
-		m_pGraphics->Clear(Colors::Black);
+		m_pWindow->Clear(Colors::Black);
 
 		auto& layerStack = m_layers.get_container();
 		for (Layer* pLayer : layerStack)
-			pLayer->Render(*m_pGraphics);
+			pLayer->Render(*m_pWindow);
 
-		m_pGraphics->Display();
+		m_pWindow->SwapBuffers();
 
-		m_drawCounter.Tick();
+		m_renderCounter.Tick();
 	}
 
-	void Application::Update(float dt)
+	void Application::Update(TimeStep dt)
 	{
 		auto& layerStack = m_layers.get_container();
 		for (Layer* pLayer : layerStack)
@@ -159,7 +176,7 @@ namespace dragon
 		m_updateCounter.Tick();
 	}
 
-	void Application::OnEvent(ApplicationEvent& ev)
+	bool Application::OnEvent(ApplicationEvent& ev)
 	{
 		auto& layerStack = m_layers.get_container();
 
@@ -167,14 +184,17 @@ namespace dragon
 		for (auto it = layerStack.rbegin(); it != layerStack.rend(); ++it)
 		{
 			if (ev.IsHandled())
-				break;
+				return true;
 
 			Layer* pLayer = *it;
 			pLayer->OnEvent(ev);
 		}
 
-		// Listen for QuitEvent
-		ev.Dispatch<WindowClosed>([this](WindowClosed& ev) { this->Shutdown(); });
+		// Listen for QuitEvent at last.
+		if (ev.GetEventType() == ApplicationEventType::WindowClosed)
+			this->Shutdown();
+
+		return false;
 	}
 
 	void Application::PushLayer(Layer* pLayer)

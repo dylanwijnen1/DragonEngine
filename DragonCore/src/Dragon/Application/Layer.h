@@ -22,8 +22,8 @@ namespace dragon
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
 
-		virtual void Update(float dt) = 0;
-		virtual void FixedUpdate(float dt) = 0;
+		virtual void Update(TimeStep dt) = 0;
+		virtual void FixedUpdate(TimeStep dt) = 0;
 		virtual void Render(RenderTarget& target) = 0;
 
 		virtual void BeginFrame() {}
